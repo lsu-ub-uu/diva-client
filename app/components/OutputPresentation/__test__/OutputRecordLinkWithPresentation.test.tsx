@@ -1,40 +1,56 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
 import { formDefWithTwoTextVariableWithModeOutput } from '@/__mocks__/data/form/textVar';
-import { renderWithRoutesStub } from '@/utils/testUtils';
 import { OutputRecordLinkWithPresentation } from '../OutputRecordLinkWithPresentation';
+import { createRoutesStub } from 'react-router';
+import userEvent from '@testing-library/user-event';
 
 describe('OutputRecordLinkWithPresentation', () => {
   it('renders a spinner while loading', () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockImplementation(() => new Promise(() => {})),
-    );
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <OutputRecordLinkWithPresentation
+            linkedRecordId='someRecordId'
+            linkedRecordType='someRecordType'
+            presentationRecordLinkId='somePresentationRecordLinkId'
+            hasReadAccess={true}
+          />
+        ),
+      },
+      {
+        path: '/linkedRecord/:recordType/:recordId',
+        loader: () => new Promise(() => {}),
+      },
+    ]);
 
-    render(
-      <OutputRecordLinkWithPresentation
-        linkedRecordId='someRecordId'
-        linkedRecordType='someRecordType'
-        presentationRecordLinkId='somePresentationRecordLinkId'
-        hasReadAccess={true}
-      />,
-    );
+    render(<RoutesStub />);
 
     expect(screen.getByRole('progressbar')).toBeInTheDocument();
   });
 
   it('renders fallback ui when fetch fails', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Fetch error')));
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <OutputRecordLinkWithPresentation
+            linkedRecordId='someRecordId'
+            linkedRecordType='someRecordType'
+            presentationRecordLinkId='somePresentationRecordLinkId'
+            hasReadAccess={true}
+          />
+        ),
+      },
+      {
+        path: '/linkedRecord/:recordType/:recordId',
+        loader: () => ({ error: true }),
+      },
+    ]);
 
-    renderWithRoutesStub(
-      <OutputRecordLinkWithPresentation
-        linkedRecordId='someRecordId'
-        linkedRecordType='someRecordType'
-        presentationRecordLinkId='somePresentationRecordLinkId'
-        hasReadAccess={true}
-      />,
-    );
+    render(<RoutesStub />);
 
     expect(
       await screen.findByText('someRecordType/someRecordId'),
@@ -42,11 +58,21 @@ describe('OutputRecordLinkWithPresentation', () => {
   });
 
   it('renders record data when fetch succeeds', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <OutputRecordLinkWithPresentation
+            linkedRecordId='someRecordId'
+            linkedRecordType='someRecordType'
+            presentationRecordLinkId='somePresentationRecordLinkId'
+            hasReadAccess={true}
+          />
+        ),
+      },
+      {
+        path: '/linkedRecord/:recordType/:recordId',
+        loader: () => ({
           presentation: formDefWithTwoTextVariableWithModeOutput,
           record: {
             record: {
@@ -57,32 +83,34 @@ describe('OutputRecordLinkWithPresentation', () => {
             },
           },
         }),
-      } as Response),
-    );
+      },
+    ]);
 
-    renderWithRoutesStub(
-      <OutputRecordLinkWithPresentation
-        linkedRecordId='someRecordId'
-        linkedRecordType='someRecordType'
-        presentationRecordLinkId='somePresentationRecordLinkId'
-        hasReadAccess={true}
-      />,
-    );
+    render(<RoutesStub />);
 
     expect(await screen.findByText('someValue')).toBeInTheDocument();
   });
 
   it('renders fallback ui without a link when hasReadAccess is false and fetch fails', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Fetch error')));
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <OutputRecordLinkWithPresentation
+            linkedRecordId='someRecordId'
+            linkedRecordType='someRecordType'
+            presentationRecordLinkId='somePresentationRecordLinkId'
+            hasReadAccess={false}
+          />
+        ),
+      },
+      {
+        path: '/linkedRecord/:recordType/:recordId',
+        loader: () => ({ error: true }),
+      },
+    ]);
 
-    renderWithRoutesStub(
-      <OutputRecordLinkWithPresentation
-        linkedRecordId='someRecordId'
-        linkedRecordType='someRecordType'
-        presentationRecordLinkId='somePresentationRecordLinkId'
-        hasReadAccess={false}
-      />,
-    );
+    render(<RoutesStub />);
 
     const text = await screen.findByText('someRecordType/someRecordId');
     expect(text).toBeInTheDocument();
@@ -91,11 +119,21 @@ describe('OutputRecordLinkWithPresentation', () => {
   });
 
   it('renders record data without link icon when hasReadAccess is false', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <OutputRecordLinkWithPresentation
+            linkedRecordId='someRecordId'
+            linkedRecordType='someRecordType'
+            presentationRecordLinkId='somePresentationRecordLinkId'
+            hasReadAccess={false}
+          />
+        ),
+      },
+      {
+        path: '/linkedRecord/:recordType/:recordId',
+        loader: () => ({
           presentation: formDefWithTwoTextVariableWithModeOutput,
           record: {
             record: {
@@ -106,46 +144,347 @@ describe('OutputRecordLinkWithPresentation', () => {
             },
           },
         }),
-      } as Response),
-    );
+      },
+    ]);
 
-    renderWithRoutesStub(
-      <OutputRecordLinkWithPresentation
-        linkedRecordId='someRecordId'
-        linkedRecordType='someRecordType'
-        presentationRecordLinkId='somePresentationRecordLinkId'
-        hasReadAccess={false}
-      />,
-    );
+    render(<RoutesStub />);
 
     expect(await screen.findByText('someValue')).toBeInTheDocument();
     expect(screen.queryByRole('link')).not.toBeInTheDocument();
   });
 
-  it('aborts fetch signal on unmount', async () => {
-    let abortSignal: AbortSignal | undefined;
-    vi.stubGlobal(
-      'fetch',
-      vi.fn((_, init?: RequestInit) => {
-        abortSignal = init?.signal as AbortSignal;
-        return new Promise(() => {});
-      }),
+  it('is possible to publish a linked binary record', async () => {
+    const user = userEvent.setup();
+
+    const publishActionSpy = vi.fn();
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <OutputRecordLinkWithPresentation
+            linkedRecordType='binary'
+            linkedRecordId='someRecordId'
+            presentationRecordLinkId='somePresentationRecordLinkId'
+            hasReadAccess={true}
+            mode='input'
+          />
+        ),
+      },
+      {
+        path: '/linkedRecord/binary/:recordId',
+        loader: () => ({
+          presentation: linkedBinaryPresentation,
+          record: {
+            record: {
+              data: createLinkedBinaryData({ visibility: 'unpublished' }),
+            },
+          },
+          userRights: ['publish'],
+        }),
+      },
+      {
+        path: '/:recordType/:recordId/publish',
+        action: publishActionSpy,
+      },
+    ]);
+
+    render(<RoutesStub />);
+
+    await waitFor(() => expect(screen.getByRole('img')).toBeInTheDocument());
+
+    await user.click(
+      screen.getByRole('button', { name: 'divaClient_publishBinaryText' }),
+    );
+    expect(publishActionSpy).toHaveBeenCalled();
+  });
+
+  it('is possible to unpublish a linked binary record', async () => {
+    const user = userEvent.setup();
+
+    const unpublishActionSpy = vi.fn();
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <OutputRecordLinkWithPresentation
+            linkedRecordType='binary'
+            linkedRecordId='someRecordId'
+            presentationRecordLinkId='somePresentationRecordLinkId'
+            hasReadAccess={true}
+            mode='input'
+          />
+        ),
+      },
+      {
+        path: '/linkedRecord/binary/:recordId',
+        loader: () => ({
+          presentation: linkedBinaryPresentation,
+          record: {
+            record: {
+              data: createLinkedBinaryData({ visibility: 'unpublished' }),
+            },
+          },
+          userRights: ['unpublish'],
+        }),
+      },
+      {
+        path: '/:recordType/:recordId/unpublish',
+        action: unpublishActionSpy,
+      },
+    ]);
+
+    render(<RoutesStub />);
+
+    await waitFor(() => expect(screen.getByRole('img')).toBeInTheDocument());
+
+    await user.click(
+      screen.getByRole('button', { name: 'divaClient_unpublishBinaryText' }),
+    );
+    expect(unpublishActionSpy).toHaveBeenCalled();
+  });
+
+  it('does not render publish or unpublish button for non-binary linked record', async () => {
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <OutputRecordLinkWithPresentation
+            linkedRecordType='someType'
+            linkedRecordId='someRecordId'
+            presentationRecordLinkId='somePresentationRecordLinkId'
+            hasReadAccess={true}
+            mode='input'
+          />
+        ),
+      },
+      {
+        path: '/linkedRecord/:recordType/:recordId',
+        loader: () => ({
+          presentation: formDefWithTwoTextVariableWithModeOutput,
+          record: {
+            record: {
+              data: {
+                name: 'someRootNameInData',
+                children: [{ name: 'someTextVar', value: 'someValue' }],
+              },
+            },
+          },
+          userRights: ['publish', 'unpublish'],
+        }),
+      },
+    ]);
+
+    render(<RoutesStub />);
+
+    await waitFor(() =>
+      expect(screen.getByText('someValue')).toBeInTheDocument(),
     );
 
-    const { unmount } = renderWithRoutesStub(
-      <OutputRecordLinkWithPresentation
-        linkedRecordId='someRecordId'
-        linkedRecordType='someRecordType'
-        presentationRecordLinkId='somePresentationRecordLinkId'
-        hasReadAccess={true}
-      />,
-    );
+    expect(
+      screen.queryByRole('button', { name: 'divaClient_publishBinaryText' }),
+    ).not.toBeInTheDocument();
 
-    expect(abortSignal).toBeDefined();
-    expect(abortSignal?.aborted).toBe(false);
+    expect(
+      screen.queryByRole('button', { name: 'divaClient_unpublishBinaryText' }),
+    ).not.toBeInTheDocument();
+  });
 
-    unmount();
+  it('does not render publish or unpublish binary button for linked binary record when user has no rights', async () => {
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <OutputRecordLinkWithPresentation
+            linkedRecordType='binary'
+            linkedRecordId='someRecordId'
+            presentationRecordLinkId='somePresentationRecordLinkId'
+            hasReadAccess={true}
+            mode='input'
+          />
+        ),
+      },
+      {
+        path: '/linkedRecord/:recordType/:recordId',
+        loader: () => ({
+          presentation: linkedBinaryPresentation,
+          record: {
+            record: {
+              data: createLinkedBinaryData({ visibility: 'published' }),
+            },
+          },
+          userRights: [],
+        }),
+      },
+    ]);
 
-    expect(abortSignal?.aborted).toBe(true);
+    render(<RoutesStub />);
+
+    await waitFor(() => expect(screen.getByRole('img')).toBeInTheDocument());
+
+    expect(
+      screen.queryByRole('button', { name: 'divaClient_publishBinaryText' }),
+    ).not.toBeInTheDocument();
+
+    expect(
+      screen.queryByRole('button', { name: 'divaClient_unpublishBinaryText' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('does not show publish button when in output mode', async () => {
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <OutputRecordLinkWithPresentation
+            linkedRecordType='binary'
+            linkedRecordId='someRecordId'
+            presentationRecordLinkId='somePresentationRecordLinkId'
+            hasReadAccess={true}
+            mode='output'
+          />
+        ),
+      },
+      {
+        path: '/linkedRecord/:recordType/:recordId',
+        loader: () => ({
+          presentation: linkedBinaryPresentation,
+          record: {
+            record: {
+              data: createLinkedBinaryData({ visibility: 'published' }),
+            },
+          },
+          userRights: ['publish'],
+        }),
+      },
+    ]);
+
+    render(<RoutesStub />);
+
+    await waitFor(() => expect(screen.getByRole('img')).toBeInTheDocument());
+
+    expect(
+      screen.queryByRole('button', { name: 'divaClient_publishBinaryText' }),
+    ).not.toBeInTheDocument();
   });
 });
+
+const linkedBinaryPresentation = {
+  form: {
+    presentationId: 'imageGroupWhenLinkedOutputPGroup',
+    type: 'group',
+    name: 'binary',
+    mode: 'output',
+    tooltip: {
+      title: 'binaryGroupText',
+      body: 'binaryGroupDefText',
+    },
+    label: 'binaryGroupText',
+    showLabel: true,
+    attributes: [
+      {
+        type: 'collectionVariable',
+        name: 'type',
+        placeholder: 'initialEmptyValueText',
+        mode: 'output',
+        tooltip: {
+          title: 'binaryTypeCollectionVarText',
+          body: 'binaryTypeCollectionVarDefText',
+        },
+        label: 'binaryTypeCollectionVarText',
+        showLabel: true,
+        options: [
+          {
+            value: 'document',
+            label: 'binaryTypeDocumentItemText',
+          },
+        ],
+      },
+    ],
+    components: [
+      {
+        presentationId: 'thumbnailOnlyImageOutputPGroup',
+        type: 'group',
+        name: 'thumbnail',
+        mode: 'output',
+        tooltip: {
+          title: 'thumbnailGroupText',
+          body: 'thumbnailGroupDefText',
+        },
+        label: 'thumbnailGroupText',
+        showLabel: false,
+        components: [
+          {
+            presentationId: 'thumbnailImagePResLink',
+            name: 'thumbnail',
+            tooltip: {
+              title: 'resourceLinkResLinkText',
+              body: 'resourceLinkResLinkDefText',
+            },
+            label: 'resourceLinkResLinkText',
+            showLabel: false,
+            type: 'resourceLink',
+            outputFormat: 'image',
+            repeat: {
+              minNumberOfRepeatingToShow: 1,
+              repeatMin: 1,
+              repeatMax: 1,
+            },
+            childStyle: [],
+            gridColSpan: 12,
+          },
+        ],
+        repeat: {
+          minNumberOfRepeatingToShow: 1,
+          repeatMin: 0,
+          repeatMax: 1,
+        },
+        childStyle: [],
+        gridColSpan: 12,
+      },
+    ],
+    repeat: {
+      repeatMin: 1,
+      repeatMax: 1,
+    },
+    gridColSpan: 12,
+  },
+};
+
+const createLinkedBinaryData = ({
+  visibility,
+}: {
+  visibility: 'published' | 'unpublished';
+}) => {
+  return {
+    name: 'binary',
+    attributes: { type: 'document' },
+    children: [
+      {
+        name: 'recordInfo',
+        children: [{ name: 'visibility', value: visibility }],
+      },
+      {
+        name: 'thumbnail',
+        children: [
+          {
+            name: 'thumbnail',
+            children: [
+              {
+                name: 'linkedRecordType',
+                value: 'binary',
+              },
+              {
+                name: 'linkedRecordId',
+                value: 'binary:123',
+              },
+              {
+                name: 'mimeType',
+                value: 'image/jpeg',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  };
+};

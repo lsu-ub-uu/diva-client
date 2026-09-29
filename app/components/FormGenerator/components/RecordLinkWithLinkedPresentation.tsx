@@ -23,13 +23,7 @@ import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import { DevInfo } from '@/components/FormGenerator/components/DevInfo';
 import { IconButton } from '@/components/IconButton/IconButton';
 import { OutputRecordLinkWithPresentation } from '@/components/OutputPresentation/OutputRecordLinkWithPresentation';
-import {
-  DownloadIcon,
-  PublishFileIcon,
-  PublishIcon,
-  UnlinkIcon,
-  XIcon,
-} from '@/icons/icons';
+import { UnlinkIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import { useRemixFormContext } from 'remix-hook-form';
 import { FormGeneratorContext } from '../FormGeneratorContext';
@@ -117,17 +111,9 @@ export const RecordLinkWithLinkedPresentation = ({
                 <UnlinkIcon />
               </IconButton>
             )}
-            {component.linkedRecordPresentation.presentedRecordType ===
-              'binary' && (
-              <IconButton
-                size='small'
-                tooltip={`Download ${component.linkedRecordPresentation.presentedRecordType}/${linkedRecordId}`}
-              >
-                <PublishFileIcon />
-              </IconButton>
-            )}
           </>
         }
+        mode='input'
       />
     </div>
   );

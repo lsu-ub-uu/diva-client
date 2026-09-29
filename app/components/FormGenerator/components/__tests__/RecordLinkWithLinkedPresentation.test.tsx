@@ -6,27 +6,10 @@ import { RecordLinkWithLinkedPresentation } from '../RecordLinkWithLinkedPresent
 import { formDefWithTwoTextVariableWithModeOutput } from '@/__mocks__/data/form/textVar';
 import { MockFormProvider } from '@/utils/testUtils';
 import { createRoutesStub } from 'react-router';
+import userEvent from '@testing-library/user-event';
 
 describe('RecordLinkWithLinkedPresentation', () => {
   it('renders linked record presentation', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          presentation: formDefWithTwoTextVariableWithModeOutput,
-          record: {
-            record: {
-              data: {
-                name: 'someRootNameInData',
-                children: [{ name: 'someTextVar', value: 'someValue' }],
-              },
-            },
-          },
-        }),
-      } as Response),
-    );
-
     const mockComponent = {
       linkedRecordPresentation: {
         presentedRecordType: 'someType',
@@ -49,6 +32,20 @@ describe('RecordLinkWithLinkedPresentation', () => {
             />
           </MockFormProvider>
         ),
+      },
+      {
+        path: '/linkedRecord/:recordType/:recordId',
+        loader: () => ({
+          presentation: formDefWithTwoTextVariableWithModeOutput,
+          record: {
+            record: {
+              data: {
+                name: 'someRootNameInData',
+                children: [{ name: 'someTextVar', value: 'someValue' }],
+              },
+            },
+          },
+        }),
       },
     ]);
 
@@ -59,25 +56,7 @@ describe('RecordLinkWithLinkedPresentation', () => {
     );
   });
 
-  it('renders clear button when input mode and not repeating', () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          presentation: formDefWithTwoTextVariableWithModeOutput,
-          record: {
-            record: {
-              data: {
-                name: 'someRootNameInData',
-                children: [{ name: 'someTextVar', value: 'someValue' }],
-              },
-            },
-          },
-        }),
-      } as Response),
-    );
-
+  it('renders clear button when input mode and not repeating', async () => {
     const mockComponent = {
       linkedRecordPresentation: {
         presentedRecordType: 'someType',
@@ -101,21 +80,9 @@ describe('RecordLinkWithLinkedPresentation', () => {
           </MockFormProvider>
         ),
       },
-    ]);
-
-    render(<RoutesStub />);
-
-    expect(
-      screen.getByRole('button', { name: 'divaClient_clearRecordLinkText' }),
-    ).toBeInTheDocument();
-  });
-
-  it('does not render clear button when not input mode', () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
+      {
+        path: '/linkedRecord/:recordType/:recordId',
+        loader: () => ({
           presentation: formDefWithTwoTextVariableWithModeOutput,
           record: {
             record: {
@@ -126,9 +93,19 @@ describe('RecordLinkWithLinkedPresentation', () => {
             },
           },
         }),
-      } as Response),
-    );
+      },
+    ]);
 
+    render(<RoutesStub />);
+
+    await waitFor(() =>
+      expect(
+        screen.getByRole('button', { name: 'divaClient_clearRecordLinkText' }),
+      ).toBeInTheDocument(),
+    );
+  });
+
+  it('does not render clear button when not input mode', () => {
     const mockComponent = {
       linkedRecordPresentation: {
         presentedRecordType: 'someType',
@@ -152,20 +129,9 @@ describe('RecordLinkWithLinkedPresentation', () => {
           </MockFormProvider>
         ),
       },
-    ]);
-    render(<RoutesStub />);
-
-    expect(
-      screen.queryByRole('button', { name: 'divaClient_clearRecordLinkText' }),
-    ).not.toBeInTheDocument();
-  });
-
-  it('does not render clear button when repeating', () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
+      {
+        path: '/linkedRecord/:recordType/:recordId',
+        loader: () => ({
           presentation: formDefWithTwoTextVariableWithModeOutput,
           record: {
             record: {
@@ -176,9 +142,16 @@ describe('RecordLinkWithLinkedPresentation', () => {
             },
           },
         }),
-      } as Response),
-    );
+      },
+    ]);
+    render(<RoutesStub />);
 
+    expect(
+      screen.queryByRole('button', { name: 'divaClient_clearRecordLinkText' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('does not render clear button when repeating', () => {
     const mockComponent = {
       linkedRecordPresentation: {
         presentedRecordType: 'someType',
@@ -203,7 +176,18 @@ describe('RecordLinkWithLinkedPresentation', () => {
         ),
       },
       {
-        path: 'linkedRecord/:recordType/:recordId',
+        path: '/linkedRecord/:recordType/:recordId',
+        loader: () => ({
+          presentation: formDefWithTwoTextVariableWithModeOutput,
+          record: {
+            record: {
+              data: {
+                name: 'someRootNameInData',
+                children: [{ name: 'someTextVar', value: 'someValue' }],
+              },
+            },
+          },
+        }),
       },
     ]);
     render(<RoutesStub />);

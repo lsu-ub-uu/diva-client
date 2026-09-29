@@ -1,10 +1,10 @@
 import type { DataGroup } from '@/cora/cora-data/types.server';
-import type { loader as getLinkedRecordLoader } from '@/routes/resourceRoutes/getLinkedRecord';
-import { withBaseName } from '@/utils/withBasename';
+import { LinkIcon, PublishFileIcon, UnpublishFileIcon } from '@/icons/icons';
+import type { BFFUserRight } from '@/types/record';
 import type { ReactNode } from 'react';
-import { DownloadIcon, LinkIcon } from '@/icons/icons';
-import { useEffect, useState } from 'react';
-import { href, Link } from 'react-router';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { href, Link, useFetcher } from 'react-router';
 import type { FormSchema } from '../FormGenerator/types';
 import { IconButton } from '../IconButton/IconButton';
 import { CircularLoader } from '../Loader/CircularLoader';
@@ -12,14 +12,13 @@ import { OutputPresentation } from './OutputPresentation';
 import styles from './OutputPresentation.module.css';
 import { OutputRecordLinkWithoutPresentation } from './OutputRecordLinkWithoutPresentation';
 
-type LinkedRecordLoaderData = Awaited<ReturnType<typeof getLinkedRecordLoader>>;
-
 interface OutputRecordLinkWithPresentationProps {
   linkedRecordType: string;
   linkedRecordId: string;
   presentationRecordLinkId: string;
   hasReadAccess: boolean;
   actionButtons?: ReactNode;
+  mode?: 'input' | 'output';
 }
 
 export const OutputRecordLinkWithPresentation = ({
@@ -28,43 +27,17 @@ export const OutputRecordLinkWithPresentation = ({
   presentationRecordLinkId,
   hasReadAccess,
   actionButtons,
+  mode = 'output',
 }: OutputRecordLinkWithPresentationProps) => {
-  const [data, setData] = useState<LinkedRecordLoaderData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { data, load, state } = useFetcher();
+
+  const loading = state === 'loading' && !data;
 
   useEffect(() => {
-    const controller = new AbortController();
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setData(null);
-    setLoading(true);
-
-    fetch(
-      withBaseName(
-        `/linkedRecord/${linkedRecordType}/${linkedRecordId}?presentationRecordLinkId=${presentationRecordLinkId}`,
-      ),
-      { signal: controller.signal },
-    )
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then(setData)
-      .catch((err) => {
-        if (
-          !controller.signal.aborted &&
-          !(err instanceof DOMException && err.name === 'AbortError')
-        ) {
-          setData(null);
-        }
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) {
-          setLoading(false);
-        }
-      });
-
-    return () => controller.abort();
-  }, [linkedRecordType, linkedRecordId, presentationRecordLinkId]);
+    load(
+      `/linkedRecord/${linkedRecordType}/${linkedRecordId}?presentationRecordLinkId=${presentationRecordLinkId}`,
+    );
+  }, [load, linkedRecordType, linkedRecordId, presentationRecordLinkId]);
 
   if (loading) {
     return <CircularLoader />;
@@ -72,6 +45,8 @@ export const OutputRecordLinkWithPresentation = ({
 
   const dataGroup = data?.record?.record?.data as DataGroup;
   const presentation = data?.presentation as FormSchema;
+  const userRights = (data?.userRights as BFFUserRight[]) ?? [];
+
   if (!dataGroup || !presentation) {
     return (
       <OutputRecordLinkWithoutPresentation
@@ -102,7 +77,79 @@ export const OutputRecordLinkWithPresentation = ({
           </IconButton>
         )}
         {actionButtons}
+        {linkedRecordType === 'binary' && mode === 'input' && (
+          <BinaryLinkActionButtons
+            userRights={userRights}
+            binaryId={linkedRecordId}
+          />
+        )}
       </div>
     </div>
+  );
+};
+
+interface BinaryLinkActionButtonsProps {
+  userRights: BFFUserRight[];
+  binaryId: string;
+}
+
+const BinaryLinkActionButtons = ({
+  userRights,
+  binaryId: linkedRecordId,
+}: BinaryLinkActionButtonsProps) => {
+  const { t } = useTranslation();
+  const { submit, state, formAction } = useFetcher();
+
+  const isPublishing = state !== 'idle' && formAction?.includes('/publish');
+  const isUnpublishing = state !== 'idle' && formAction?.includes('/unpublish');
+
+  const canPublish = userRights.includes('publish');
+  const canUnpublish = userRights.includes('unpublish');
+
+  return (
+    <>
+      {canPublish && (
+        <IconButton
+          size='small'
+          tooltip={t('divaClient_publishBinaryText')}
+          disabled={isPublishing}
+          onClick={() => {
+            submit(
+              {},
+              {
+                method: 'post',
+                action: href('/:recordType/:recordId/publish', {
+                  recordType: 'binary',
+                  recordId: linkedRecordId,
+                }),
+              },
+            );
+          }}
+        >
+          {isPublishing ? <CircularLoader /> : <PublishFileIcon />}
+        </IconButton>
+      )}
+      {canUnpublish && (
+        <IconButton
+          size='small'
+          tooltip={t('divaClient_unpublishBinaryText')}
+          disabled={isUnpublishing}
+          onClick={() => {
+            submit(
+              {},
+              {
+                method: 'post',
+                action: href('/:recordType/:recordId/unpublish', {
+                  recordType: 'binary',
+                  recordId: linkedRecordId,
+                }),
+              },
+            );
+          }}
+        >
+          {isUnpublishing ? <CircularLoader /> : <UnpublishFileIcon />}
+        </IconButton>
+      )}
+    </>
   );
 };
