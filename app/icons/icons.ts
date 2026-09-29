@@ -41,6 +41,8 @@ export const ValueIcon = ({ className, ...rest }: HTMLProps<SVGSVGElement>) =>
     createElement('circle', { cx: '12', cy: '12', r: '6' }),
   );
 
+export { UnpublishFileIcon } from './UnpublishFileIcon';
+
 export {
   ArchiveRestoreIcon,
   ArrowDownIcon,
@@ -80,7 +82,6 @@ export {
   FilePenIcon,
   FilePlusIcon,
   FileTextIcon,
-  FileXIcon as UnpublishFileIcon,
   FilterIcon,
   FlaskRoundIcon,
   FrownIcon,
