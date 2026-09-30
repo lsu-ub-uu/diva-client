@@ -21,8 +21,8 @@ import { Link, useFetcher } from 'react-router';
 import type { BFFDataRecord } from '@/types/record';
 import {
   ArchiveRestoreIcon,
-  BookCheckIcon,
-  BookDashedIcon,
+  PublishIcon,
+  UnpublishIcon,
   FilePenIcon,
   FileTextIcon,
   ShredderIcon,
@@ -146,7 +146,7 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
             tooltip={t('divaClient_publishRecordText')}
             onClick={publishRecord}
           >
-            {isPublishing ? <CircularLoader /> : <BookCheckIcon />}
+            {isPublishing ? <CircularLoader /> : <PublishIcon />}
           </IconButton>
         );
       case 'unpublish':
@@ -157,7 +157,7 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
             tooltip={t('divaClient_unpublishRecordText')}
             onClick={unpublishRecord}
           >
-            {isUnpublishing ? <CircularLoader /> : <BookDashedIcon />}
+            {isUnpublishing ? <CircularLoader /> : <UnpublishIcon />}
           </IconButton>
         );
       case 'delete':

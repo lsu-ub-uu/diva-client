@@ -30,6 +30,7 @@ import { assertDefined } from '@/utils/invariant';
 import { logError } from '@/logging/logger.server';
 import { getDependencies } from 'server/dependencies/depencencies';
 import type { Route } from './+types/getLinkedRecord';
+import { createUserRights } from '@/cora/transform/transformRecord.server';
 
 export const loader = async ({ url, params, context }: Route.LoaderArgs) => {
   try {
@@ -62,7 +63,12 @@ export const loader = async ({ url, params, context }: Route.LoaderArgs) => {
       presentationGroup as BFFPresentationGroup,
     );
 
-    return { record: recordWrapper, presentation };
+    const userRights = createUserRights(
+      dependencies.recordTypePool.get(recordType),
+      recordWrapper.record,
+    );
+
+    return { record: recordWrapper, presentation, userRights };
   } catch (error) {
     logError(error, 'Server error while fetching linked record data');
 

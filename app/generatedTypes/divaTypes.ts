@@ -1638,7 +1638,7 @@ export interface RoleProjectPersonalGroup {
     value: RoleProjectPersonalCollection;
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
-  }[];
+  };
   __text?: { sv: string; en: string };
 }
 
@@ -1704,7 +1704,7 @@ export interface NamePersonalProjectGroup {
     _type: 'localId';
     __text?: { sv: string; en: string };
   };
-  role?: RoleProjectPersonalGroup;
+  role?: RoleProjectPersonalGroup[];
   affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
   __text?: { sv: string; en: string };
@@ -1816,7 +1816,7 @@ export interface SubjectSubjectGroup {
     };
 
     __text?: { sv: string; en: string };
-  }[];
+  };
   _authority: 'diva';
   __text?: { sv: string; en: string };
 }
@@ -2294,6 +2294,7 @@ export interface RecordInfoOutputUpdateGroup {
   };
   urn: { value: string; __text?: { sv: string; en: string } };
   oldId?: { value: string; __text?: { sv: string; en: string } };
+  oldRecord?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
 
@@ -2424,7 +2425,7 @@ export interface RoleGroup {
     value: RoleCollection;
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
-  }[];
+  };
   __text?: { sv: string; en: string };
 }
 
@@ -2462,7 +2463,7 @@ export interface NamePersonalGroup {
     _type: 'localId';
     __text?: { sv: string; en: string };
   };
-  role?: RoleGroup;
+  role?: RoleGroup[];
   affiliation?: AffiliationPersonalGroup[];
   _type: 'personal';
   __text?: { sv: string; en: string };
@@ -2477,7 +2478,7 @@ export interface NameOrganisationGroup {
     displayName?: { sv: string; en: string };
     __text?: { sv: string; en: string };
   };
-  role?: RoleGroup;
+  role?: RoleGroup[];
   namePart?: { value: string; __text?: { sv: string; en: string } };
   identifier_type_ror?: {
     value: string;
@@ -3885,7 +3886,7 @@ export interface DivaOutputGroup {
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   }[];
-  subject_authority_diva?: SubjectSubjectGroup;
+  subject_authority_diva?: SubjectSubjectGroup[];
   subject_authority_sdg?: SubjectSdgGroup[];
   identifier_type_isbn?: {
     value: string;

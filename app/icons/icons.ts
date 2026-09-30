@@ -41,6 +41,8 @@ export const ValueIcon = ({ className, ...rest }: HTMLProps<SVGSVGElement>) =>
     createElement('circle', { cx: '12', cy: '12', r: '6' }),
   );
 
+export { UnpublishFileIcon } from './UnpublishFileIcon';
+
 export {
   ArchiveRestoreIcon,
   ArrowDownIcon,
@@ -48,8 +50,8 @@ export {
   ArrowUpIcon,
   BanIcon,
   BombIcon,
-  BookCheckIcon,
-  BookDashedIcon,
+  BookCheckIcon as PublishIcon,
+  BookDashedIcon as UnpublishIcon,
   BookOpenIcon,
   BracesIcon,
   BugOffIcon,
@@ -76,6 +78,7 @@ export {
   EllipsisIcon,
   ExternalLinkIcon,
   FileExclamationPointIcon,
+  FileCheckIcon as PublishFileIcon,
   FilePenIcon,
   FilePlusIcon,
   FileTextIcon,
@@ -122,6 +125,7 @@ export {
   Trash2Icon,
   TriangleAlertIcon,
   UndoIcon,
+  UnlinkIcon,
   UploadIcon,
   UsersIcon,
   XIcon,

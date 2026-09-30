@@ -313,8 +313,6 @@ const transformRecordLink = (
     'linkedRecordType',
   );
 
-  /* const actionLinks = getFirstDataGroupWithNameInData(data, 'actionLinks'); */
-
   const linkedRecord = hasChildWithNameInData(data, 'linkedRecord')
     ? transformLinkedRecord(data, dependencies)
     : undefined;
@@ -529,7 +527,7 @@ export const isRequired = (childRef: BFFMetadataChildReference) => {
   return Number(childRef.repeatMin) > 0;
 };
 
-const createUserRights = (
+export const createUserRights = (
   recordType: BFFRecordType,
   coraRecord: CoraRecord,
 ): BFFUserRight[] => {

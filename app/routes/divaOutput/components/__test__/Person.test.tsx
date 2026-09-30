@@ -15,9 +15,11 @@ describe('Person', () => {
     const person = {
       namePart_type_given: { value: 'John' },
       namePart_type_family: { value: 'Doe' },
-      role: {
-        roleTerm: [{ __valueText: { en: 'Author', sv: 'Författare' } }],
-      },
+      role: [
+        {
+          roleTerm: { __valueText: { en: 'Author', sv: 'Författare' } },
+        },
+      ],
     } as NamePersonalGroup;
 
     render(<Person person={person} />);
@@ -29,9 +31,11 @@ describe('Person', () => {
     const person = {
       namePart_type_given: { value: 'John' },
       namePart_type_family: { value: 'Doe' },
-      role: {
-        roleTerm: [{ __valueText: { en: 'Author', sv: 'Författare' } }],
-      },
+      role: [
+        {
+          roleTerm: { __valueText: { en: 'Author', sv: 'Författare' } },
+        },
+      ],
     } as NamePersonalGroup;
 
     render(<Person person={person} expanded />);
@@ -43,12 +47,14 @@ describe('Person', () => {
     const person = {
       namePart_type_given: { value: 'John' },
       namePart_type_family: { value: 'Doe' },
-      role: {
-        roleTerm: [
-          { __valueText: { en: 'Author', sv: 'Författare' } },
-          { __valueText: { en: 'Editor', sv: 'Redaktör' } },
-        ],
-      },
+      role: [
+        {
+          roleTerm: { __valueText: { en: 'Author', sv: 'Författare' } },
+        },
+        {
+          roleTerm: { __valueText: { en: 'Editor', sv: 'Redaktör' } },
+        },
+      ],
     } as NamePersonalGroup;
 
     render(<Person person={person} expanded />);
