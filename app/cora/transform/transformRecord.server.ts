@@ -597,7 +597,7 @@ const hasPublishRight = (coraRecord: CoraRecord): boolean => {
   return !isInTrashBin(coraRecord) && visibility === 'unpublished';
 };
 
-export const hasUnpublishRight = (coraRecord: CoraRecord): boolean => {
+const hasUnpublishRight = (coraRecord: CoraRecord): boolean => {
   if (!coraRecord.actionLinks?.update) {
     return false;
   }
