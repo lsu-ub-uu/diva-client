@@ -249,14 +249,14 @@ export default function CreateRecordRoute({
       <div className='grid-col-12 top-bar'>
         <Breadcrumbs />
       </div>
-      <aside className='navigation-sidebar grid-col-2 grid-col-l-3 grid-col-m-hidden'>
+      <aside className='navigation-sidebar grid-col-2 grid-col-xl-3 grid-col-m-hidden'>
         <NavigationPanel
           links={
             formDefinition ? linksFromFormSchema(formDefinition) || [] : []
           }
         />
       </aside>
-      <main className='record-form grid-col-6 grid-col-l-9 grid-col-m-12'>
+      <main className='record-form grid-col-6 grid-col-xl-9 grid-col-m-12'>
         {notification && notification.severity === 'error' && (
           <Alert severity={notification.severity} className='error-alert'>
             <AlertTitle>{notification.summary}</AlertTitle>
@@ -269,7 +269,7 @@ export default function CreateRecordRoute({
           onChange={handleFormChange}
         />
       </main>
-      <aside className='grid-col-4 grid-col-l-hidden'>
+      <aside className='grid-col-4 grid-col-xl-hidden'>
         {deferredPreviewData && (
           <div className='preview'>
             <OutputPresentation
