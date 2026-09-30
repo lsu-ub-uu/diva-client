@@ -11,12 +11,14 @@ describe('Organisation', () => {
   it('renders a NameOrganisationGroup with name only when not expanded', () => {
     const organisation = {
       namePart: { value: 'Test Organisation' },
-      role: {
-        roleTerm: [
-          { __valueText: { en: 'Publisher', sv: 'Utgivare' } },
-          { __valueText: { en: 'Sponsor', sv: 'Sponsor' } },
-        ],
-      },
+      role: [
+        {
+          roleTerm: { __valueText: { en: 'Publisher', sv: 'Utgivare' } },
+        },
+        {
+          roleTerm: { __valueText: { en: 'Sponsor', sv: 'Sponsor' } },
+        },
+      ],
     } as NameOrganisationGroup;
 
     render(<Organisation organisation={organisation} />);
@@ -38,12 +40,14 @@ describe('Organisation', () => {
   it('renders organisation roles when expanded', () => {
     const organisation = {
       namePart: { value: 'Test Organisation' },
-      role: {
-        roleTerm: [
-          { __valueText: { en: 'Publisher', sv: 'Utgivare' } },
-          { __valueText: { en: 'Sponsor', sv: 'Sponsor' } },
-        ],
-      },
+      role: [
+        {
+          roleTerm: { __valueText: { en: 'Publisher', sv: 'Utgivare' } },
+        },
+        {
+          roleTerm: { __valueText: { en: 'Sponsor', sv: 'Sponsor' } },
+        },
+      ],
     } as NameOrganisationGroup;
 
     render(<Organisation organisation={organisation} expanded />);

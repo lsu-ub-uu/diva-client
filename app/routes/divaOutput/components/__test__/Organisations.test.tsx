@@ -68,18 +68,20 @@ describe('Organisations', () => {
           sv: 'Organisation som författare, redaktör eller annan roll',
         },
         namePart: { value: 'Organisation 2' },
-        role: {
-          roleTerm: [
-            {
+        role: [
+          {
+            roleTerm: {
               value: 'pbl',
               __valueText: { en: 'Publisher', sv: 'Förläggare' },
             },
-            {
+          },
+          {
+            roleTerm: {
               value: 'aut',
               __valueText: { en: 'Author', sv: 'Författare' },
             },
-          ],
-        },
+          },
+        ],
       },
       {
         __text: {

@@ -1,12 +1,11 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import type { FormComponentRecordLink } from '../../types';
 import { RecordLinkWithLinkedPresentation } from '../RecordLinkWithLinkedPresentation';
 
 import { formDefWithTwoTextVariableWithModeOutput } from '@/__mocks__/data/form/textVar';
 import { MockFormProvider } from '@/utils/testUtils';
 import { createRoutesStub } from 'react-router';
-import userEvent from '@testing-library/user-event';
 
 describe('RecordLinkWithLinkedPresentation', () => {
   it('renders linked record presentation', async () => {

@@ -79,12 +79,14 @@ describe('Persons', () => {
         __text: { en: 'Authors', sv: 'Författare' },
         namePart_type_family: { value: 'Personson' },
         namePart_type_given: { value: 'Anna' },
-        role: {
-          roleTerm: [
-            { __valueText: { en: 'Author', sv: 'Författare' } },
-            { __valueText: { en: 'Editor', sv: 'Redaktör' } },
-          ],
-        },
+        role: [
+          {
+            roleTerm: { __valueText: { en: 'Author', sv: 'Författare' } },
+          },
+          {
+            roleTerm: { __valueText: { en: 'Editor', sv: 'Redaktör' } },
+          },
+        ],
       },
     ] as NamePersonalGroup[];
 

@@ -61,17 +61,17 @@ const divaOutput = {
       {
         namePart_type_family: { value: 'Quantum' },
         namePart_type_given: { value: 'Emily' },
-        role: { roleTerm: [{ value: 'aut' }] },
+        role: [{ roleTerm: { value: 'aut' } }],
       },
       {
         namePart_type_family: { value: 'The editor' },
         namePart_type_given: { value: 'Emil' },
-        role: { roleTerm: [{ value: 'edt' }] },
+        role: [{ roleTerm: { value: 'edt' } }],
       },
       {
         namePart_type_family: { value: 'Planck' },
         namePart_type_given: { value: 'Max Jr.' },
-        role: { roleTerm: [{ value: 'edt' }, { value: 'aut' }] },
+        role: [{ roleTerm: { value: 'edt' } }, { roleTerm: { value: 'aut' } }],
       },
     ],
     attachments: {

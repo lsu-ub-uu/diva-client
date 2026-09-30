@@ -87,13 +87,10 @@ const formatOrganisationRoles = (
   organisation: OrganisationProps['organisation'],
   language: 'en' | 'sv',
 ) => {
-  const roleTerm =
-    organisation.role &&
-    'roleTerm' in organisation.role &&
-    organisation.role?.roleTerm;
+  const roles = organisation.role;
 
-  if (Array.isArray(roleTerm) && roleTerm.length > 0) {
-    return ` (${roleTerm.map((role) => role.__valueText?.[language]).join(', ')})`;
+  if (Array.isArray(roles) && roles.length > 0) {
+    return ` (${roles.map((role) => role.roleTerm?.__valueText?.[language]).join(', ')})`;
   }
 
   return '';

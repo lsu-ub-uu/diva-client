@@ -23,7 +23,7 @@ export const generateCitationMeta = (
   }
 
   divaOutput.output.name_type_personal?.forEach((person) => {
-    if (person?.role?.roleTerm?.some((role) => role.value === 'aut')) {
+    if (person?.role?.some((role) => role.roleTerm?.value === 'aut')) {
       meta.push({
         name: 'citation_author',
         content: formatPersonName(person),
