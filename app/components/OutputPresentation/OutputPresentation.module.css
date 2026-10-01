@@ -45,7 +45,7 @@
 
 .output-presentation {
   :global(.form-component-container) {
-    gap: var(--gap-l);
+    gap: var(--gap-l) min(var(--gap), 100% / 24);
   }
 
   &[data-compact='true'] {

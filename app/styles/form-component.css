@@ -25,6 +25,7 @@
 
     @media (width >= 900px) {
       grid-template-columns: repeat(12, 1fr);
+      gap: var(--gap) min(var(--gap), 100% / 24);
     }
   }
 

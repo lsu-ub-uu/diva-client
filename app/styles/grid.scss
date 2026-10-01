@@ -23,6 +23,12 @@
     grid-column: span #{$i} / span #{$i};
   }
 
+  .grid-col-xl-#{$i} {
+    @media (width < 1600px) {
+      grid-column: span #{$i} / span #{$i};
+    }
+  }
+
   .grid-col-l-#{$i} {
     @media (width < 1200px) {
       grid-column: span #{$i} / span #{$i};
@@ -56,6 +62,12 @@
 
 .grid-col-l-hidden {
   @media (width < 1200px) {
+    display: none;
+  }
+}
+
+.grid-col-xl-hidden {
+  @media (width < 1600px) {
     display: none;
   }
 }
