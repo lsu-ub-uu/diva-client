@@ -3617,6 +3617,13 @@ export type BinaryTypeCollection =
   | 'text'
   | 'compressed';
 
+export type BinaryStatusCollection =
+  | 'created'
+  | 'uploaded'
+  | 'processing'
+  | 'done'
+  | 'failed';
+
 export interface RecordInfoBinaryGroup {
   id: { value: string; __text?: { sv: string; en: string } };
   type?: { value: string; __text?: { sv: string; en: string } };
@@ -3633,6 +3640,12 @@ export interface RecordInfoBinaryGroup {
   };
   tsVisibility?: { value: string; __text?: { sv: string; en: string } };
   hostRecord: { value: string; __text?: { sv: string; en: string } };
+  status?: {
+    value: BinaryStatusCollection;
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
+  processingMessage?: { value: string; __text?: { sv: string; en: string } }[];
   __text?: { sv: string; en: string };
 }
 

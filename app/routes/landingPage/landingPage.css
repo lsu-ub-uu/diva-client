@@ -38,6 +38,7 @@
 
   a {
     color: var(--hero-text-color);
+    text-decoration: underline;
   }
 }
 
