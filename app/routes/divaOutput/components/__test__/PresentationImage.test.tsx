@@ -16,10 +16,10 @@ describe('PresentationImage', () => {
             file: {
               linkedRecord: {
                 binary: {
-                  large: {
-                    large: {
-                      id: 'first-attachment-large-id',
-                      name: 'large',
+                  medium: {
+                    medium: {
+                      id: 'first-attachment-medium-id',
+                      name: 'medium',
                     },
                   },
                 },
@@ -31,10 +31,10 @@ describe('PresentationImage', () => {
             file: {
               linkedRecord: {
                 binary: {
-                  large: {
-                    large: {
-                      id: 'second-attachment-large-id',
-                      name: 'large',
+                  medium: {
+                    medium: {
+                      id: 'second-attachment-medium-id',
+                      name: 'medium',
                     },
                   },
                 },
@@ -49,7 +49,7 @@ describe('PresentationImage', () => {
 
     expect(screen.getByRole('presentation')).toHaveAttribute(
       'src',
-      expect.stringContaining('first-attachment-large-id'),
+      expect.stringContaining('first-attachment-medium-id'),
     );
   });
 
@@ -65,7 +65,7 @@ describe('PresentationImage', () => {
     expect(container.querySelector('presentation')).not.toBeInTheDocument();
   });
 
-  it('renders nothing if the first attachment has no large image', () => {
+  it('renders nothing if the first attachment has no medium image', () => {
     const mockData = {
       attachments: {
         attachment: [
@@ -74,7 +74,7 @@ describe('PresentationImage', () => {
             file: {
               linkedRecord: {
                 binary: {
-                  large: {},
+                  medium: {},
                 },
               },
             },
@@ -97,10 +97,10 @@ describe('PresentationImage', () => {
             file: {
               linkedRecord: {
                 binary: {
-                  large: {
-                    large: {
-                      id: 'other-attachment-large-id',
-                      name: 'large',
+                  medium: {
+                    medium: {
+                      id: 'other-attachment-medium-id',
+                      name: 'medium',
                     },
                   },
                 },
@@ -112,10 +112,10 @@ describe('PresentationImage', () => {
             file: {
               linkedRecord: {
                 binary: {
-                  large: {
-                    large: {
-                      id: 'other-fulltext-large-id',
-                      name: 'large',
+                  medium: {
+                    medium: {
+                      id: 'other-fulltext-medium-id',
+                      name: 'medium',
                     },
                   },
                 },
@@ -127,10 +127,10 @@ describe('PresentationImage', () => {
             file: {
               linkedRecord: {
                 binary: {
-                  large: {
-                    large: {
-                      id: 'presentation-image-large-id',
-                      name: 'large',
+                  medium: {
+                    medium: {
+                      id: 'presentation-image-medium-id',
+                      name: 'medium',
                     },
                   },
                 },
@@ -145,7 +145,7 @@ describe('PresentationImage', () => {
 
     expect(screen.getByRole('presentation')).toHaveAttribute(
       'src',
-      expect.stringContaining('presentation-image-large-id'),
+      expect.stringContaining('presentation-image-medium-id'),
     );
   });
 
@@ -158,10 +158,10 @@ describe('PresentationImage', () => {
             file: {
               linkedRecord: {
                 binary: {
-                  large: {
-                    large: {
-                      id: 'other-attachment-large-id',
-                      name: 'large',
+                  medium: {
+                    medium: {
+                      id: 'other-attachment-medium-id',
+                      name: 'medium',
                     },
                   },
                 },
@@ -173,10 +173,10 @@ describe('PresentationImage', () => {
             file: {
               linkedRecord: {
                 binary: {
-                  large: {
-                    large: {
-                      id: 'other-fulltext-large-id',
-                      name: 'large',
+                  medium: {
+                    medium: {
+                      id: 'other-fulltext-medium-id',
+                      name: 'medium',
                     },
                   },
                 },
@@ -191,7 +191,7 @@ describe('PresentationImage', () => {
 
     expect(screen.getByRole('presentation')).toHaveAttribute(
       'src',
-      expect.stringContaining('other-fulltext-large-id'),
+      expect.stringContaining('other-fulltext-medium-id'),
     );
   });
 });

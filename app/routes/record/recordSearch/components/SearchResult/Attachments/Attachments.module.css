@@ -3,6 +3,7 @@
   border-radius: var(--border-radius-s);
   transition: filter 0.1s ease-in-out;
   flex-shrink: 0;
+  max-width: 100px;
 
   &:hover {
     filter: brightness(1.1) contrast(1.1);

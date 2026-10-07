@@ -29,7 +29,7 @@ export const PresentationImage = ({ output }: PresentationImageProps) => {
 };
 
 const getImageUrlFromAttachment = (attachment: AttachmentGroup | undefined) => {
-  const resourceLink = attachment?.file?.linkedRecord?.binary?.large?.large;
+  const resourceLink = attachment?.file?.linkedRecord?.binary?.medium?.medium;
   if (!resourceLink) {
     return null;
   }
