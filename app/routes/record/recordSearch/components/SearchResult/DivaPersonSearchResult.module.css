@@ -1,0 +1,23 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  @media (width < 900px) {
+    font-size: var(--font-size-m);
+    line-height: var(--item-title-line-height);
+  }
+}
+
+.orcid {
+  flex-basis: 100%;
+}
+
+.name {
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  gap: var(--gap);
+  height: fit-content;
+}

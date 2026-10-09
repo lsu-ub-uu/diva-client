@@ -497,8 +497,7 @@ export interface RecordInfoOrganisationUpdateGroup {
 }
 
 export type OrganisationTypeCollection =
-  | 'topOrganisation'
-  | 'partOfOrganisation';
+  'topOrganisation' | 'partOfOrganisation';
 
 export type LanguageSweEngCollection = 'swe' | 'eng';
 
@@ -1047,7 +1046,7 @@ export interface NamePersonVariantGroup {
 }
 
 export interface VariantPersonalGroup {
-  name_type_personal?: NamePersonVariantGroup[];
+  name_type_personal?: NamePersonVariantGroup;
   __text?: { sv: string; en: string };
 }
 
@@ -1572,7 +1571,7 @@ export interface AffiliationGroup {
 export interface PersonUpdateGroup {
   recordInfo: RecordInfoPersonUpdateGroup;
   authority?: AuthorityPersonalGroup;
-  variant?: VariantPersonalGroup;
+  variant?: VariantPersonalGroup[];
   email?: { value: string; __text?: { sv: string; en: string } }[];
   location?: LocationGroup[];
   note_type_biographical?: {
@@ -2573,11 +2572,7 @@ export interface CopyrightDateGroup {
 }
 
 export type DateOtherTypePublicationStatusCollection =
-  | 'online'
-  | 'submitted'
-  | 'accepted'
-  | 'inPress'
-  | 'retracted';
+  'online' | 'submitted' | 'accepted' | 'inPress' | 'retracted';
 
 export interface DateOtherPublicationStatusGroup {
   year?: { value: string; __text?: { sv: string; en: string } };
@@ -2641,9 +2636,7 @@ export interface OriginInfoEditionGroup {
 }
 
 export type IdentifierDisplayLabelIsbnIsmnCollection =
-  | 'print'
-  | 'online'
-  | 'undefined';
+  'print' | 'online' | 'undefined';
 
 export type IdentifierTypeDoiIsbnCollection = 'doi' | 'isbn';
 
@@ -3609,20 +3602,10 @@ export interface Binary {
 }
 
 export type BinaryTypeCollection =
-  | 'generic'
-  | 'image'
-  | 'sound'
-  | 'video'
-  | 'document'
-  | 'text'
-  | 'compressed';
+  'generic' | 'image' | 'sound' | 'video' | 'document' | 'text' | 'compressed';
 
 export type BinaryStatusCollection =
-  | 'created'
-  | 'uploaded'
-  | 'processing'
-  | 'done'
-  | 'failed';
+  'created' | 'uploaded' | 'processing' | 'done' | 'failed';
 
 export interface RecordInfoBinaryGroup {
   id: { value: string; __text?: { sv: string; en: string } };
@@ -3718,14 +3701,10 @@ export interface BinaryGroup {
 }
 
 export type AttachmentRequestedVisibilityCollection =
-  | 'published'
-  | 'unpublished'
-  | 'confidential';
+  'published' | 'unpublished' | 'confidential';
 
 export type AttachmentVersionCollection =
-  | 'submitted'
-  | 'accepted'
-  | 'published';
+  'submitted' | 'accepted' | 'published';
 
 export type DigitizedCollection = 'true' | 'false';
 
@@ -4161,8 +4140,7 @@ export interface GuiElement {
 }
 
 export type PresentationTypeGuiElementCollection =
-  | 'guiElementLink'
-  | 'guiElement';
+  'guiElementLink' | 'guiElement';
 
 export type GuiElementPresentAsCollection = 'link' | 'image';
 
@@ -4225,12 +4203,7 @@ export type PresentationSizeCollection =
   | 'singleInitiallyVisible';
 
 export type SpecifiedHeadlineLevelCollection =
-  | 'h1'
-  | 'h2'
-  | 'h3'
-  | 'h4'
-  | 'h5'
-  | 'h6';
+  'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
 export interface PresentationChildReferenceGroup {
   textStyle?: {
@@ -4283,19 +4256,10 @@ export interface PresentationChildReferencesGroup {
 }
 
 export type PresentationStyleCollection =
-  | 'frame'
-  | 'inline'
-  | 'specification'
-  | 'highlight'
-  | 'rowBased';
+  'frame' | 'inline' | 'specification' | 'highlight' | 'rowBased';
 
 export type OutputFormatCollection =
-  | 'text'
-  | 'image'
-  | 'link'
-  | 'video'
-  | 'sound'
-  | 'download';
+  'text' | 'image' | 'link' | 'video' | 'sound' | 'download';
 
 export type InputTypeItemCollection = 'input' | 'textarea';
 
@@ -4537,10 +4501,7 @@ export type GroupOfRecordTypeCollection =
   | 'other';
 
 export type RecordTypeCategoryCollection =
-  | 'clientNavigation'
-  | 'categoryOne'
-  | 'categoryTwo'
-  | 'categoryThree';
+  'clientNavigation' | 'categoryOne' | 'categoryTwo' | 'categoryThree';
 
 export interface RecordTypeGroup {
   recordInfo: RecordInfoGroup;

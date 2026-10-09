@@ -17,6 +17,7 @@
  */
 
 import type {
+  AuthorityPersonalGroup,
   DivaCourse,
   DivaFunder,
   DivaJournal,
@@ -30,7 +31,9 @@ import type {
   DivaPublisher,
   DivaSeries,
   DivaSubject,
+  PersonUpdateGroup,
   TitleInfoGroup,
+  VariantPersonalGroup,
 } from '@/generatedTypes/divaTypes';
 import type { BFFDataRecord } from '@/types/record';
 
@@ -107,13 +110,16 @@ export const getFullTitleForOutput = (
 };
 
 export const getTitleForPerson = (
-  divaPerson: DivaPerson,
+  name: AuthorityPersonalGroup | VariantPersonalGroup | undefined,
 ): string | undefined => {
+  if (!name) {
+    return undefined;
+  }
   const familyName =
-    divaPerson.person.authority?.name_type_personal?.namePart_type_family
+    name.name_type_personal?.namePart_type_family
       ?.value;
   const givenName =
-    divaPerson.person.authority?.name_type_personal?.namePart_type_given?.value;
+    name.name_type_personal?.namePart_type_given?.value;
 
   if (!familyName && !givenName) {
     return undefined;

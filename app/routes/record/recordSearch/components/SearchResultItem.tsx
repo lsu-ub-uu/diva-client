@@ -1,4 +1,5 @@
 import { DivaOutputSearchResult } from '@/routes/record/recordSearch/components/SearchResult/DivaOutputSearchResult';
+import { DivaPersonSearchResult } from '@/routes/record/recordSearch/components/SearchResult/DivaPersonSearchResult';
 import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
 import { transformToRaw } from '@/cora/transform/transformToRaw';
 import type { BFFDataRecord, Metadata } from '@/types/record';
@@ -12,7 +13,9 @@ export const SearchResultItem = ({ record }: SearchResultItemProps) => {
     return <DivaOutputSearchResult searchResult={record} />;
   }
 
-  // diva-person
+  if (record.recordType === 'diva-person') {
+    return <DivaPersonSearchResult searchResult={record} />;
+  }
 
   // diva-project
 
