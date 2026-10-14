@@ -30,6 +30,10 @@ const expectedPayload = {
             { name: 'linkedRecordId', value: 'someHostRecordId' },
           ],
         },
+        {
+          name: 'status',
+          value: 'created',
+        },
       ],
     },
     { name: 'originalFileName', value: 'testfile.txt' },

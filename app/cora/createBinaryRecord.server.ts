@@ -53,6 +53,10 @@ export const createBinaryRecord = async (
               { name: 'linkedRecordId', value: hostRecordId },
             ],
           },
+          {
+            name: 'status',
+            value: 'created',
+          },
         ],
       },
       { name: 'originalFileName', value: fileName },
