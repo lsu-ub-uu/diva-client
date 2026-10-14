@@ -10,8 +10,15 @@
   }
 }
 
-.orcid {
-  flex-basis: 100%;
+.identifiers {
+  display: flex;
+  gap: var(--gap-l);
+}
+
+.identifier {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap);
 }
 
 .name {

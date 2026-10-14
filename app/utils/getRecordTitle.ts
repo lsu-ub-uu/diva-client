@@ -25,15 +25,13 @@ import type {
   DivaMember,
   DivaOrganisation,
   DivaOutput,
-  DivaPerson,
   DivaProgramme,
   DivaProject,
   DivaPublisher,
   DivaSeries,
   DivaSubject,
-  PersonUpdateGroup,
   TitleInfoGroup,
-  VariantPersonalGroup,
+  VariantPersonalGroup
 } from '@/generatedTypes/divaTypes';
 import type { BFFDataRecord } from '@/types/record';
 
@@ -69,7 +67,7 @@ const getTitleByRecordType = (
     case 'diva-output':
       return getTitleForOutput(record.data as DivaOutput);
     case 'diva-person':
-      return getTitleForPerson(record.data as DivaPerson);
+      return getTitleForPerson(record.data as AuthorityPersonalGroup | VariantPersonalGroup);
     case 'diva-project':
       return getTitleForProject(record.data as DivaProject);
     case 'diva-course':

@@ -1,9 +1,9 @@
 import type { PersonUpdateGroup } from '@/generatedTypes/divaTypes';
 import type { BFFDataRecord } from '@/types/record';
+import { getTitleForPerson } from '@/utils/getRecordTitle';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import styles from './DivaPersonSearchResult.module.css';
-import { useTranslation } from 'react-i18next';
-import { getTitleForPerson } from '@/utils/getRecordTitle';
 
 interface DivaPersonSearchResultProps {
   searchResult: BFFDataRecord;
@@ -42,13 +42,20 @@ export const DivaPersonSearchResult = ({
           </div>
         )}
       </div>
-      <div className={styles['orcid']}>
-        {person?.nameIdentifier_type_orcid?.map((orcid, index) => (
-          <span key={index}>
-            {index > 0 && ', '}
-            {orcid.value}
-          </span>
-        ))}
+      <div className={styles['identifiers']}>
+        <div className={styles['identifier']}>
+          <span>{t('idDivaTextVarText')}:</span>
+          <span>{person.recordInfo.id.value}</span>
+        </div>
+        <div className={styles['identifier']}>
+          <span>{t('nameIdentifierOrcidTextVarText')}:</span>
+          {person?.nameIdentifier_type_orcid?.map((orcid, index) => (
+            <span key={index}>
+              {index > 0 && ', '}
+              {orcid.value}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );
