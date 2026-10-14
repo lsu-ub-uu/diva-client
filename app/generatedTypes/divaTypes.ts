@@ -1047,7 +1047,7 @@ export interface NamePersonVariantGroup {
 }
 
 export interface VariantPersonalGroup {
-  name_type_personal?: NamePersonVariantGroup[];
+  name_type_personal?: NamePersonVariantGroup;
   __text?: { sv: string; en: string };
 }
 
@@ -1572,7 +1572,7 @@ export interface AffiliationGroup {
 export interface PersonUpdateGroup {
   recordInfo: RecordInfoPersonUpdateGroup;
   authority?: AuthorityPersonalGroup;
-  variant?: VariantPersonalGroup;
+  variant?: VariantPersonalGroup[];
   email?: { value: string; __text?: { sv: string; en: string } }[];
   location?: LocationGroup[];
   note_type_biographical?: {
