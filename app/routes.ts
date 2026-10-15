@@ -18,8 +18,9 @@ export default [
     ]),
   ]),
 
-  /* DiVA output specific pages */
+  /* Record type specific pages */
   route('diva-output/:recordId', 'routes/divaOutput/divaOutputView.tsx'),
+  route('diva-person/:recordId', 'routes/divaPerson/divaPersonView.tsx'),
 
   /* Auth */
   route('login', 'routes/auth/login.tsx'),

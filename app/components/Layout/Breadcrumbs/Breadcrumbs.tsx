@@ -76,6 +76,18 @@ export const Breadcrumbs = () => {
               </li>,
             );
           }
+          if (match.id === 'routes/divaPerson/divaPersonView') {
+            crumbs.push(
+              <li key='persons-crumb'>
+                <NavLink
+                  to={href('/:recordType', { recordType: 'diva-person' })}
+                  onClick={scrollToTop}
+                >
+                  {t('diva-personPluralText')}
+                </NavLink>
+              </li>,
+            );
+          }
           crumbs.push(
             <li key={match.id}>
               <NavLink to={match.pathname} onClick={scrollToTop}>
