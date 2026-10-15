@@ -25,12 +25,11 @@ import type {
 } from '@/cora/bffTypes.server';
 import type { RecordWrapper } from '@/cora/cora-data/types.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
+import { createUserRights } from '@/cora/transform/transformRecord.server';
 import { createLinkedRecordDefinition } from '@/data/formDefinition/createFormDefinition.server';
-import { assertDefined } from '@/utils/invariant';
 import { logError } from '@/logging/logger.server';
 import { getDependencies } from 'server/dependencies/depencencies';
 import type { Route } from './+types/getLinkedRecord';
-import { createUserRights } from '@/cora/transform/transformRecord.server';
 
 export const loader = async ({ url, params, context }: Route.LoaderArgs) => {
   try {
@@ -41,11 +40,6 @@ export const loader = async ({ url, params, context }: Route.LoaderArgs) => {
       'presentationRecordLinkId',
     );
 
-    assertDefined(
-      presentationRecordLinkId,
-      'Missing presentationRecordLinkId param',
-    );
-
     const dependencies = await getDependencies();
     const recordResponse = await getRecordDataById<RecordWrapper>(
       recordType,
@@ -54,14 +48,18 @@ export const loader = async ({ url, params, context }: Route.LoaderArgs) => {
     );
     const recordWrapper = recordResponse.data;
 
-    const { presentationGroup, metadataGroup } =
-      getGroupsFromPresentationLinkId(dependencies, presentationRecordLinkId);
+    let presentation;
 
-    const presentation = createLinkedRecordDefinition(
-      dependencies,
-      metadataGroup,
-      presentationGroup as BFFPresentationGroup,
-    );
+    if (presentationRecordLinkId) {
+      const { presentationGroup, metadataGroup } =
+        getGroupsFromPresentationLinkId(dependencies, presentationRecordLinkId);
+
+      presentation = createLinkedRecordDefinition(
+        dependencies,
+        metadataGroup,
+        presentationGroup as BFFPresentationGroup,
+      );
+    }
 
     const userRights = createUserRights(
       dependencies.recordTypePool.get(recordType),

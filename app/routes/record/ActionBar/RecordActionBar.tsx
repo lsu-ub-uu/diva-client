@@ -1,13 +1,14 @@
-import type { BFFDataRecord } from '@/types/record';
 import {
   ArchiveRestoreIcon,
-  PublishIcon,
-  UnpublishIcon,
   FilePenIcon,
   FileTextIcon,
+  OldRecordIcon,
+  PublishIcon,
   ShredderIcon,
   Trash2Icon,
+  UnpublishIcon,
 } from '@/icons/icons';
+import type { BFFDataRecord } from '@/types/record';
 import { useTranslation } from 'react-i18next';
 import { href, Link, useFetcher, useMatches } from 'react-router';
 import { ActionBar } from './ActionBar';
@@ -35,7 +36,8 @@ export const RecordActionBar = ({ record, className }: ActionBarProps) => {
     rights.includes('unpublish') ||
     rights.includes('trash') ||
     rights.includes('untrash') ||
-    rights.includes('delete');
+    rights.includes('delete') ||
+    rights.includes('viewOldRecord');
 
   if (!hasActions) {
     return null;
@@ -195,6 +197,19 @@ export const RecordActionBar = ({ record, className }: ActionBarProps) => {
           }}
         >
           {t('divaClient_deleteRecordText')}
+        </ActionBarButton>
+      )}
+      {record.userRights?.includes('viewOldRecord') && (
+        <ActionBarButton
+          as={Link}
+          icon={<OldRecordIcon />}
+          to={href('/:recordType/:recordId', {
+            recordType: 'diva-oldRecord',
+            recordId: Object.values(record.data)[0].recordInfo?.oldRecord
+              ?.value,
+          })}
+        >
+          {t('divaClient_viewOldRecordText')}
         </ActionBarButton>
       )}
     </ActionBar>

@@ -129,4 +129,5 @@ export {
   UploadIcon,
   UsersIcon,
   XIcon,
+  ScrollTextIcon as OldRecordIcon,
 } from 'lucide-react';

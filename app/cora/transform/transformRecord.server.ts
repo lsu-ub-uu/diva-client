@@ -550,6 +550,11 @@ export const createUserRights = (
   if (hasUnpublishRight(coraRecord)) {
     userRights.push('unpublish');
   }
+
+  if (hasOldRecordRight(coraRecord)) {
+    userRights.push('viewOldRecord');
+  }
+
   return userRights;
 };
 
@@ -617,6 +622,22 @@ const hasUnpublishRight = (coraRecord: CoraRecord): boolean => {
   );
 
   return visibility === 'published';
+};
+
+const hasOldRecordRight = (coraRecord: CoraRecord): boolean => {
+  const recordInfo = getFirstDataGroupWithNameInData(
+    coraRecord.data,
+    'recordInfo',
+  );
+  if (!hasChildWithNameInData(recordInfo, 'oldRecord')) {
+    return false;
+  }
+  const oldRecordLink = getFirstDataGroupWithNameInData(
+    recordInfo,
+    'oldRecord',
+  ) as DataRecordLink;
+
+  return oldRecordLink?.actionLinks?.read !== undefined;
 };
 
 const isInTrashBin = (coraRecord: CoraRecord) => {

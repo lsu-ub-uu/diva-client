@@ -18,6 +18,10 @@ export interface DivaMember {
   'diva-member': DivaMemberGroup;
 }
 
+export interface DivaOldRecord {
+  oldRecord: OldRecordUpdateGroup;
+}
+
 export interface User {
   user: UserGroup;
 }
@@ -3617,13 +3621,6 @@ export type BinaryTypeCollection =
   | 'text'
   | 'compressed';
 
-export type BinaryStatusCollection =
-  | 'created'
-  | 'uploaded'
-  | 'processing'
-  | 'done'
-  | 'failed';
-
 export interface RecordInfoBinaryGroup {
   id: { value: string; __text?: { sv: string; en: string } };
   type?: { value: string; __text?: { sv: string; en: string } };
@@ -3640,12 +3637,6 @@ export interface RecordInfoBinaryGroup {
   };
   tsVisibility?: { value: string; __text?: { sv: string; en: string } };
   hostRecord: { value: string; __text?: { sv: string; en: string } };
-  status?: {
-    value: BinaryStatusCollection;
-    __text?: { sv: string; en: string };
-    __valueText?: { sv: string; en: string };
-  };
-  processingMessage?: { value: string; __text?: { sv: string; en: string } }[];
   __text?: { sv: string; en: string };
 }
 
@@ -5001,5 +4992,26 @@ export interface DivaMemberGroup {
   pageTitleEn?: { value: string; __text?: { sv: string; en: string } };
   hero?: MemberHeroGroup;
   link?: MemberLinkGroup[];
+  __text?: { sv: string; en: string };
+}
+
+export interface RecordInfoOldRecordUpdateGroup {
+  id: { value: string; __text?: { sv: string; en: string } };
+  type: { value: 'diva-oldRecord'; __text?: { sv: string; en: string } };
+  validationType: {
+    value: 'diva-oldRecord';
+    __text?: { sv: string; en: string };
+  };
+  dataDivider: { value: 'divaData'; __text?: { sv: string; en: string } };
+  createdBy: { value: string; __text?: { sv: string; en: string } };
+  tsCreated: { value: string; __text?: { sv: string; en: string } };
+  updated: UpdatedDivaGroup[];
+  oldId?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
+}
+
+export interface OldRecordUpdateGroup {
+  recordInfo: RecordInfoOldRecordUpdateGroup;
+  record?: { value: string; __text?: { sv: string; en: string } };
   __text?: { sv: string; en: string };
 }
