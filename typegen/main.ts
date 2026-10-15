@@ -27,6 +27,7 @@ const RECORD_TYPES = [
   'diva-funder',
   'diva-person',
   'diva-member',
+  'diva-oldRecord',
 ];
 
 let code = `

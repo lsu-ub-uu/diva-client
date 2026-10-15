@@ -37,7 +37,11 @@ import type {
   BFFMetadataItemCollection,
   Dependencies,
 } from '@/cora/bffTypes.server';
-import type { ActionLink, RecordWrapper } from '@/cora/cora-data/types.server';
+import type {
+  ActionLink,
+  DataRecordLink,
+  RecordWrapper,
+} from '@/cora/cora-data/types.server';
 import { listToPool } from 'server/dependencies/util/listToPool';
 import { describe, expect, it } from 'vitest';
 import type {
@@ -2016,6 +2020,101 @@ describe('transformRecord', () => {
   });
 
   describe('userRights', () => {
+    describe('viewOldRecord right', () => {
+      const oldRecordLink: DataRecordLink = {
+        name: 'oldRecord',
+        children: [
+          { name: 'linkedRecordType', value: 'diva-oldRecord' },
+          { name: 'linkedRecordId', value: 'someOldRecordId' },
+        ],
+      };
+
+      it.each<{
+        description: string;
+        oldRecord?: DataRecordLink;
+        expected: boolean;
+      }>([
+        {
+          description: 'includes the right when the old record is readable',
+          oldRecord: {
+            ...oldRecordLink,
+            actionLinks: { read: {} as ActionLink },
+          },
+          expected: true,
+        },
+        {
+          description: 'excludes the right when there is no old record',
+          expected: false,
+        },
+        {
+          description:
+            'excludes the right when the old record has no action links',
+          oldRecord: oldRecordLink,
+          expected: false,
+        },
+        {
+          description:
+            'excludes the right when the old record has no read action',
+          oldRecord: {
+            ...oldRecordLink,
+            actionLinks: { update: {} as ActionLink },
+          },
+          expected: false,
+        },
+      ])('$description', ({ oldRecord, expected }) => {
+        const dependencies = {
+          validationTypePool: listToPool([
+            createValidationType('someValidationTypeId', {
+              metadataGroupId: 'rootGroup',
+            }),
+          ]),
+          recordTypePool: listToPool([createRecordType('someRecordTypeId')]),
+          metadataPool: listToPool([
+            ...createRecordInfoMetadata(),
+            createGroup('rootGroup', 'root', ['recordInfoGroup']),
+            createGroup('recordInfoGroup', 'recordInfo', [
+              'idVar',
+              'typeLink',
+              'validationTypeLink',
+              'oldRecordLink',
+            ]),
+            {
+              id: 'oldRecordLink',
+              type: 'recordLink',
+              nameInData: 'oldRecord',
+              linkedRecordType: 'diva-oldRecord',
+            } as BFFMetadataRecordLink,
+          ]),
+        } as Dependencies;
+        const recordInfo = createRecordInfoData();
+        const record: RecordWrapper = {
+          record: {
+            actionLinks: {},
+            data: {
+              name: 'root',
+              children: [
+                {
+                  ...recordInfo,
+                  children: [
+                    ...recordInfo.children,
+                    ...(oldRecord ? [oldRecord] : []),
+                  ],
+                },
+              ],
+            },
+          },
+        };
+
+        const result = transformRecord(dependencies, record, 'update');
+
+        if (expected) {
+          expect(result.userRights).toContain('viewOldRecord');
+        } else {
+          expect(result.userRights).not.toContain('viewOldRecord');
+        }
+      });
+    });
+
     describe('trash/untrash rights', () => {
       it('includes trash right when recordType has useTrashBin set to true and data has an update actionLink', () => {
         const dependencies = {

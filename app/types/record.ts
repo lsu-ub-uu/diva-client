@@ -46,7 +46,8 @@ export type BFFUserRight =
   | 'trash'
   | 'untrash'
   | 'publish'
-  | 'unpublish';
+  | 'unpublish'
+  | 'viewOldRecord';
 
 export interface BFFUpdate {
   updateAt: string;

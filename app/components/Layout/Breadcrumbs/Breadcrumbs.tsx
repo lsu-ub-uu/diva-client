@@ -76,6 +76,18 @@ export const Breadcrumbs = () => {
               </li>,
             );
           }
+          if (match.id === 'routes/divaOldRecord/divaOldRecordView') {
+            crumbs.push(
+              <li key='publikationer-crumb'>
+                <NavLink
+                  to={href('/:recordType', { recordType: 'diva-oldRecord' })}
+                  onClick={scrollToTop}
+                >
+                  {t('diva-oldRecordPluralText')}
+                </NavLink>
+              </li>,
+            );
+          }
           crumbs.push(
             <li key={match.id}>
               <NavLink to={match.pathname} onClick={scrollToTop}>
