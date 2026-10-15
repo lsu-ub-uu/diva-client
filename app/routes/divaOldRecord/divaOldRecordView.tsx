@@ -1,19 +1,18 @@
 import { sessionContext } from '@/auth/sessionMiddleware.server';
+import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
+import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
+import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
+import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
 import type { DivaOldRecord } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import type { BFFDataRecord } from '@/types/record';
 import { formatXml } from '@/utils/formatXml';
-import { getDependencies } from 'server/dependencies/depencencies';
-import type { Route } from './+types/divaOldRecordView';
-import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { useTranslation } from 'react-i18next';
 import { isRouteErrorResponse } from 'react-router';
-import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
-import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
-import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
+import { getDependencies } from 'server/dependencies/depencencies';
 import { RecordActionBar } from '../record/ActionBar/RecordActionBar';
-import record from '../record/record';
+import type { Route } from './+types/divaOldRecordView';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { recordId } = params;
