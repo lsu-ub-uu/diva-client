@@ -43,6 +43,8 @@ listenForDataChange((changeEvent) => {
 
 export const app = express();
 
+app.set('trust proxy', 1);
+
 app.use(
   createRequestHandler({
     build: () => import('virtual:react-router/server-build'),
