@@ -62,83 +62,6 @@ aside {
   }
 }
 
-dt {
-  color: var(--color-label);
-
-  &:not(:first-child) {
-    margin-top: var(--gap-l);
-  }
-}
-
-dd {
-  padding-left: var(--gap);
-}
-
-dd + dd {
-  padding-left: 0;
-
-  &:not(:has(> button))::before {
-    content: ', ';
-  }
-}
-
-dd:has(+ dd),
-dd + dd {
-  display: inline;
-}
-
-dd.block {
-  display: block;
-  margin-bottom: var(--gap-s);
-  padding-left: var(--gap);
-
-  &::before {
-    display: none;
-  }
-}
-
-dd.inline {
-  display: inline;
-}
-
-dl.inline-definitions {
-  dt {
-    display: inline;
-    margin-top: 0;
-
-    /* Force a line break before each dt */
-    &::before {
-      content: '';
-      display: block;
-      margin-top: var(--gap-s);
-    }
-
-    &:first-child::before {
-      margin-top: 0;
-    }
-
-    &::after {
-      content: ':';
-    }
-  }
-
-  dd {
-    display: inline;
-  }
-}
-
-dl.compact {
-  dt {
-    margin-top: var(--gap);
-  }
-}
-
-section {
-  dt:first-child {
-    margin-top: 0;
-  }
-}
-
 section section {
   border: none;
   padding: 0;
@@ -177,6 +100,8 @@ address {
 }
 
 .expanded-card {
+  --definition-list-term-gap: var(--gap-s);
+
   border: 1px solid var(--color-output-card-border);
   background: var(--color-output-card-background);
   border-radius: var(--border-radius-s);
@@ -185,18 +110,6 @@ address {
 
   .name {
     font-weight: bold;
-  }
-
-  dt:not(:first-child) {
-    margin-top: var(--gap-s);
-  }
-
-  .inline-definitions {
-    row-gap: 0;
-
-    dt {
-      margin-top: 0;
-    }
   }
 }
 
@@ -288,6 +201,8 @@ address {
 }
 
 .attachment .record-details {
+  --definition-list-term-gap: var(--gap);
+
   padding: var(--gap-s);
   font-size: var(--font-size-s);
   transition:
@@ -309,9 +224,5 @@ address {
 
   dl {
     padding-right: var(--gap);
-  }
-
-  dt {
-    margin-top: var(--gap);
   }
 }

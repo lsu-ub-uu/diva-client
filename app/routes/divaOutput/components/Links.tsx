@@ -23,7 +23,7 @@ export const Links = ({ output }: LinkProps) => {
   return (
     <>
       <h2>{t('divaClient_outputLinksText')}</h2>
-      <dl>
+      <dl data-values='inline'>
         {orderLinks && (
           <Term
             label={orderLinks?.[0]?.__text?.[language]}

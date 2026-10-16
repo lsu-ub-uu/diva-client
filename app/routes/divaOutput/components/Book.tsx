@@ -22,7 +22,7 @@ export const Book = ({ book }: BookProps) => {
   return (
     <section aria-labelledby={id}>
       <h2 id={id}>{book?.__text?.[language]}</h2>
-      <dl className='inline-definitions'>
+      <dl data-values='inline' data-layout='inline'>
         {book.book && (
           <Term
             label={book.book?.__text?.[language]}

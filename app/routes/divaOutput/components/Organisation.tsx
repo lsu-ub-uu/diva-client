@@ -31,7 +31,7 @@ export const Organisation = ({ organisation, expanded }: OrganisationProps) => {
         {formatOrganisationName(organisation, language)}{' '}
       </span>
       {formatOrganisationRoles(organisation, language)}
-      <dl>
+      <dl data-values='inline'>
         {organisation.identifier_type_ror && (
           <Term
             label={organisation.identifier_type_ror.__text?.[language]}

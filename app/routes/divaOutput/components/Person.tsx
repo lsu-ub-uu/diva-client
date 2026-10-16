@@ -63,7 +63,7 @@ export const Person = ({ person, expanded = false }: PersonProps) => {
         return <TextAffiliation key={index} affiliation={affiliation} />;
       })}
       {person.person?.linkedRecord?.person?.nameIdentifier_type_orcid && (
-        <dl>
+        <dl data-values='inline'>
           {/*  TODO: Add publication ORCID when its in the model*/}
 
           {person.person?.linkedRecord?.person?.nameIdentifier_type_orcid?.map(
@@ -166,7 +166,7 @@ const LinkedAffiliation = ({
     <>
       <div className='affiliation'>
         <span>{formatLinkedAffiliationName(affiliation, language)}</span>
-        <dl className='affiliation inline-definitions'>
+        <dl className='affiliation' data-values='inline' data-layout='inline'>
           {affiliation.organisation?.linkedRecord.organisation
             .identifier_type_ror && (
             <Term
@@ -197,7 +197,7 @@ const TextAffiliation = ({
       <div className='affiliation'>
         <span>{formatTextAffiliationName(affiliation, language)}</span>
 
-        <dl className='inline-definitions'>
+        <dl data-values='inline' data-layout='inline'>
           {affiliation.identifier_type_ror && (
             <Term
               label={affiliation.identifier_type_ror.__text?.[language]}

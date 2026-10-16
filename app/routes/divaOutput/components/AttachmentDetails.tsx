@@ -29,7 +29,7 @@ export const AttachmentDetails = ({ attachment }: AttachmentProps) => {
         <InfoIcon />
       </IconButton>
       <Popover id={id} title={t('divaClient_attachmentDetailsText')}>
-        <dl className='compact'>
+        <dl data-values='inline' data-density='compact'>
           <Term
             label={t('attachmentLabelFullTextCollectionVarText')}
             value={t(`${attachment._label}ItemText`)}

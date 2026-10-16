@@ -21,7 +21,7 @@ export const Journal = ({ journal }: JournalProps) => {
   return (
     <section aria-labelledby={id}>
       <h2 id={id}>{journal.__text?.[language]}</h2>
-      <dl className='inline-definitions'>
+      <dl data-values='inline' data-layout='inline'>
         {journal.journal?.linkedRecord.journal ? (
           <JournalInfo journal={journal.journal?.linkedRecord.journal} />
         ) : (

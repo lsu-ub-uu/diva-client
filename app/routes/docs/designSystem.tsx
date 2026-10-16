@@ -420,6 +420,72 @@ export default function DesignSystem() {
           </div>
         </section>
 
+        <section aria-labelledby='definition-lists-heading'>
+          <h2 id='definition-lists-heading'>Definition Lists</h2>
+          <div>
+            <h3>Default</h3>
+            <dl>
+              <dt>Title</dt>
+              <dd>Research and collaboration across disciplines</dd>
+              <dt>Authors</dt>
+              <dd>Anna Andersson</dd>
+              <dd>Erik Johansson</dd>
+              <dt>Abstract</dt>
+              <dd>
+                This study explores how researchers share knowledge across
+                disciplines, institutions, and countries, with a focus on making
+                research accessible to a wider audience.
+              </dd>
+            </dl>
+          </div>
+          <div>
+            <h3>Compact</h3>
+            <dl data-density='compact'>
+              <dt>Published</dt>
+              <dd>2026</dd>
+              <dt>Language</dt>
+              <dd>English</dd>
+              <dt>Access</dt>
+              <dd>Open access</dd>
+            </dl>
+          </div>
+          <div>
+            <h3>Inline Labels</h3>
+            <dl data-layout='inline' data-values='inline'>
+              <dt>ISBN</dt>
+              <dd>978-3-16-148410-0</dd>
+              <dt>Languages</dt>
+              <dd>English</dd>
+              <dd>Swedish</dd>
+              <dt>Website</dt>
+              <dd>
+                <a href='https://www.diva-portal.org/'>DiVA portal</a>
+              </dd>
+            </dl>
+          </div>
+          <div>
+            <h3>Repeated and Block Values</h3>
+            <dl data-values='inline'>
+              <dt>Keywords</dt>
+              <dd>Open science</dd>
+              <dd>Collaboration</dd>
+              <dd>Research data</dd>
+              <dt>Affiliations</dt>
+              <dd data-display='block'>Uppsala University</dd>
+              <dd data-display='block'>Stockholm University</dd>
+              <dt>Publication</dt>
+              <dd data-display='block'>
+                <dl data-layout='inline'>
+                  <dt>Journal</dt>
+                  <dd>Journal of Open Research</dd>
+                  <dt>Volume</dt>
+                  <dd>12</dd>
+                </dl>
+              </dd>
+            </dl>
+          </div>
+        </section>
+
         {/* Spacing Section */}
         <section>
           <h2>Spacing (Gaps)</h2>

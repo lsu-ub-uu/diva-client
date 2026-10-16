@@ -22,7 +22,7 @@ export const Funder = ({ funder }: FunderProps) => {
   return (
     <section aria-labelledby={id}>
       <h2 id={id}>{funder.__text?.[language]}</h2>
-      <dl>
+      <dl data-values='inline'>
         {funder.funder && (
           <Term
             label={funder.funder?.__text?.[language]}

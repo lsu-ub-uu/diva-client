@@ -20,6 +20,7 @@
 @import './typography.css' layer(root);
 @import './spacing.css' layer(root);
 @import './normalize.css' layer(root);
+@import './definition-list.css' layer(root);
 @import './form-component.css' layer(components);
 @import './grid.scss' layer(root);
 

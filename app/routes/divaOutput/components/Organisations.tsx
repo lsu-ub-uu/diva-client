@@ -24,7 +24,7 @@ export const Organisations = ({ organisations }: OrganisationsProps) => {
     <>
       <dt>{organisations?.[0]?.__text?.[language]}</dt>
       {organisationsToShow?.map((organisation, index) => (
-        <dd key={index} className='block' id={`organisation-${id}-${index}`}>
+        <dd key={index} data-display='block' id={`organisation-${id}-${index}`}>
           <Organisation organisation={organisation} expanded={expanded} />
         </dd>
       ))}

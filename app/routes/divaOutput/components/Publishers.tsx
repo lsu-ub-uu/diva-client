@@ -17,7 +17,7 @@ export const Publishers = ({ publishers }: PublishersProps) => {
         <DataText data={publishers} />
       </dt>
       {publishers.map((publisher, index) => (
-        <dd key={index} className='block'>
+        <dd key={index} data-display='block'>
           <Publisher publisher={publisher} />
         </dd>
       ))}

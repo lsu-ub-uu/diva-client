@@ -17,7 +17,7 @@ export const ResearchData = ({ researchData }: ResearchDataProps) => {
   return (
     <section aria-labelledby={id}>
       <h2 id={id}>{researchData.__text?.[language]}</h2>
-      <dl className='inline-definitions'>
+      <dl data-values='inline' data-layout='inline'>
         <TitleInfo titleInfo={researchData.titleInfo} />
         <Term
           label={researchData.identifier_type_doi?.__text?.[language]}

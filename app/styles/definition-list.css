@@ -1,0 +1,68 @@
+dl > dt {
+  color: var(--color-label);
+
+  &:not(:first-child) {
+    margin-top: var(--definition-list-term-gap, var(--gap-l));
+  }
+}
+
+dl > dd {
+  padding-left: var(--gap);
+}
+
+dl[data-density='compact'] {
+  --definition-list-term-gap: var(--gap);
+}
+
+dl[data-values='inline'] {
+  > :where(dd:has(+ dd), dd + dd) {
+    display: inline;
+  }
+
+  > :where(dd + dd) {
+    padding-left: 0;
+
+    &:not(:has(> button))::before {
+      content: ', ';
+    }
+  }
+}
+
+dl > dd[data-display='block'] {
+  display: block;
+  margin-bottom: var(--gap-s);
+  padding-left: var(--gap);
+
+  &::before {
+    display: none;
+  }
+}
+
+dl[data-layout='inline'] {
+  > dt {
+    display: inline;
+    margin-top: 0;
+
+    &::before {
+      content: '';
+      display: block;
+      margin-top: var(--gap-s);
+    }
+
+    &:first-child::before {
+      margin-top: 0;
+    }
+
+    &::after {
+      content: ':';
+    }
+  }
+
+  > :where(dd) {
+    display: inline;
+  }
+}
+
+dl > dd[data-display='inline'] {
+  display: inline;
+}

@@ -16,7 +16,7 @@ export const StudentDegrees = ({ studentDegrees }: StudentDegreeGroupProps) => {
   return studentDegrees?.map((studentDegree, index) => (
     <section key={index} aria-labelledby={`student-degree-${index}`}>
       <h2 id={`student-degree-${index}`}>{studentDegree.__text?.[language]}</h2>
-      <dl>
+      <dl data-values='inline'>
         <Term
           label={studentDegree.course?.__text?.[language]}
           value={

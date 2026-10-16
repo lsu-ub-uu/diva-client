@@ -25,7 +25,7 @@ export const Series = ({ series, headlineLevel = 'h2' }: SeriesProps) => {
   return (
     <section aria-labelledby={id}>
       <HeadlineComponent id={id}>{series.__text?.[language]}</HeadlineComponent>
-      <dl className='inline-definitions'>
+      <dl data-values='inline' data-layout='inline'>
         {series.series && (
           <Term
             label={series.series.__text?.[language]}

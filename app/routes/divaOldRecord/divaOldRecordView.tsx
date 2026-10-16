@@ -13,6 +13,7 @@ import { isRouteErrorResponse } from 'react-router';
 import { getDependencies } from 'server/dependencies/depencencies';
 import { RecordActionBar } from '../record/ActionBar/RecordActionBar';
 import type { Route } from './+types/divaOldRecordView';
+import { Term } from '../divaOutput/components/Term';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { recordId } = params;
@@ -47,12 +48,19 @@ export default function DivaOldRecordView({
           <Breadcrumbs />
           <RecordActionBar record={loaderData.record} />
         </div>
-        <h1>
-          {oldRecord?.__text?.[language]} - {oldRecord.recordInfo?.oldId?.value}
-        </h1>
+        <h1>{oldRecord?.__text?.[language]}</h1>
 
-        <h2>{oldRecord.record?.__text?.[language]}</h2>
-        <pre>{formatXml(oldRecord.record?.value)}</pre>
+        <dl>
+          <Term
+            label={oldRecord.recordInfo?.oldId}
+            value={oldRecord.recordInfo?.oldId?.value}
+          />
+          <Term
+            variant='block'
+            label={oldRecord.record}
+            value={<pre>{formatXml(oldRecord.record?.value)}</pre>}
+          />
+        </dl>
       </div>
     </div>
   );

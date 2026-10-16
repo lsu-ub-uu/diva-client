@@ -24,7 +24,7 @@ export const Term = ({ label, value, lang, variant = 'inline' }: TermProps) => {
             key={index}
             {...(lang && { lang: mapISO639_2b_to_ISO639_1(lang) })}
             dir='auto'
-            className={variant === 'block' ? 'block' : 'inline'}
+            data-display={variant}
           >
             {val}
           </dd>
@@ -33,7 +33,7 @@ export const Term = ({ label, value, lang, variant = 'inline' }: TermProps) => {
         <dd
           {...(lang && { lang: mapISO639_2b_to_ISO639_1(lang) })}
           dir='auto'
-          className={variant === 'block' ? 'block' : 'inline'}
+          data-display={variant}
         >
           {value}
         </dd>

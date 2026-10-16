@@ -24,7 +24,7 @@ export const ConferencePublication = ({
   return (
     <section aria-labelledby={id}>
       <h2 id={id}>{conferencePublication.__text?.[language]}</h2>
-      <dl className='inline-definitions'>
+      <dl data-values='inline' data-layout='inline'>
         {conferencePublication.proceeding && (
           <Term
             label={conferencePublication.proceeding?.__text?.[language]}

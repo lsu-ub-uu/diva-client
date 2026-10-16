@@ -54,7 +54,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
               ? getFullTitleForOutput(data)
               : t('divaClient_missingTitleText')}
           </h1>
-          <dl>
+          <dl data-values='inline'>
             <Persons persons={output.name_type_personal} />
             <Organisations organisations={output.name_type_corporate} />
             <Term
@@ -178,7 +178,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
             output.related_type_retracted) && (
             <section>
               <h2>{t('divaClient_relatedPublicationsText')}</h2>
-              <dl>
+              <dl data-values='inline'>
                 {output.related?.map((relatedOutput, index) => (
                   <RelatedOutput key={index} relatedOutput={relatedOutput} />
                 ))}
@@ -191,7 +191,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
               </dl>
             </section>
           )}
-          <dl>
+          <dl data-values='inline'>
             <Term
               label={output.note_type_external?.__text?.[language]}
               value={
@@ -207,7 +207,7 @@ export const OutputView = ({ data }: OutputViewProps) => {
         <PresentationImage output={output} />
         <Attachments attachments={output.attachments} />
         <Links output={output} />
-        <dl>
+        <dl data-values='inline'>
           <Term
             label={
               output['accessCondition_authority_kb-se']?.__text?.[language]

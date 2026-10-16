@@ -19,7 +19,7 @@ export const Project = ({ project }: ProjectProps) => {
       <h2 id={id}>
         <DataText data={project} />
       </h2>
-      <dl>
+      <dl data-values='inline'>
         {project.project && (
           <Term
             label={project.project}

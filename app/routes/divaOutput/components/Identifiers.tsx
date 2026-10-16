@@ -15,7 +15,7 @@ export const Identifiers = ({ output }: IdentifiersProps) => {
   return (
     <section aria-labelledby='identifiers-heading'>
       <h2 id='identifiers-heading'> {t('divaClient_identifierText')}</h2>
-      <dl className='inline-definitions'>
+      <dl data-values='inline' data-layout='inline'>
         <Term
           label={t('divaClient_divaIdText')}
           value={output.recordInfo.id.value}

@@ -31,7 +31,7 @@ export const Persons = ({ persons }: PersonsProps) => {
         <dd
           key={index}
           id={`person-${id}-${index}`}
-          className={!expandable || expanded ? 'block' : ''}
+          data-display={!expandable || expanded ? 'block' : undefined}
         >
           <Person person={person} key={index} expanded={expanded} />
         </dd>
