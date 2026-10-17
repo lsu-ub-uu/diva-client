@@ -24,7 +24,8 @@ export const sessionMiddleware: MiddlewareFunction<Response> = async (
 ) => {
   const session = await getSessionFromCookie(request);
   let auth = session.get('auth') as Auth | undefined;
-  let notification = session.get('notification');
+  const sessionNotification = session.get('notification');
+  let notification = sessionNotification;
 
   let shouldCommitSession = false;
   let shouldDestroySession = false;
@@ -44,7 +45,7 @@ export const sessionMiddleware: MiddlewareFunction<Response> = async (
       shouldCommitSession = true;
     },
     get notification() {
-      if (notification !== undefined) {
+      if (sessionNotification !== undefined) {
         shouldCommitSession = true;
       }
       return notification;
