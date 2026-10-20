@@ -501,8 +501,7 @@ export interface RecordInfoOrganisationUpdateGroup {
 }
 
 export type OrganisationTypeCollection =
-  | 'topOrganisation'
-  | 'partOfOrganisation';
+  'topOrganisation' | 'partOfOrganisation';
 
 export type LanguageSweEngCollection = 'swe' | 'eng';
 
@@ -2577,11 +2576,7 @@ export interface CopyrightDateGroup {
 }
 
 export type DateOtherTypePublicationStatusCollection =
-  | 'online'
-  | 'submitted'
-  | 'accepted'
-  | 'inPress'
-  | 'retracted';
+  'online' | 'submitted' | 'accepted' | 'inPress' | 'retracted';
 
 export interface DateOtherPublicationStatusGroup {
   year?: { value: string; __text?: { sv: string; en: string } };
@@ -2645,9 +2640,7 @@ export interface OriginInfoEditionGroup {
 }
 
 export type IdentifierDisplayLabelIsbnIsmnCollection =
-  | 'print'
-  | 'online'
-  | 'undefined';
+  'print' | 'online' | 'undefined';
 
 export type IdentifierTypeDoiIsbnCollection = 'doi' | 'isbn';
 
@@ -3613,20 +3606,7 @@ export interface Binary {
 }
 
 export type BinaryTypeCollection =
-  | 'generic'
-  | 'image'
-  | 'sound'
-  | 'video'
-  | 'document'
-  | 'text'
-  | 'compressed';
-
-export type BinaryStatusCollection =
-  | 'created'
-  | 'uploaded'
-  | 'processing'
-  | 'done'
-  | 'failed';
+  'generic' | 'image' | 'sound' | 'video' | 'document' | 'text' | 'compressed';
 
 export interface RecordInfoBinaryGroup {
   id: { value: string; __text?: { sv: string; en: string } };
@@ -3644,12 +3624,6 @@ export interface RecordInfoBinaryGroup {
   };
   tsVisibility?: { value: string; __text?: { sv: string; en: string } };
   hostRecord: { value: string; __text?: { sv: string; en: string } };
-  status?: {
-    value: BinaryStatusCollection;
-    __text?: { sv: string; en: string };
-    __valueText?: { sv: string; en: string };
-  };
-  processingMessage?: { value: string; __text?: { sv: string; en: string } }[];
   __text?: { sv: string; en: string };
 }
 
@@ -3722,14 +3696,10 @@ export interface BinaryGroup {
 }
 
 export type AttachmentRequestedVisibilityCollection =
-  | 'published'
-  | 'unpublished'
-  | 'confidential';
+  'published' | 'unpublished' | 'confidential';
 
 export type AttachmentVersionCollection =
-  | 'submitted'
-  | 'accepted'
-  | 'published';
+  'submitted' | 'accepted' | 'published';
 
 export type DigitizedCollection = 'true' | 'false';
 
@@ -4165,8 +4135,7 @@ export interface GuiElement {
 }
 
 export type PresentationTypeGuiElementCollection =
-  | 'guiElementLink'
-  | 'guiElement';
+  'guiElementLink' | 'guiElement';
 
 export type GuiElementPresentAsCollection = 'link' | 'image';
 
@@ -4229,12 +4198,7 @@ export type PresentationSizeCollection =
   | 'singleInitiallyVisible';
 
 export type SpecifiedHeadlineLevelCollection =
-  | 'h1'
-  | 'h2'
-  | 'h3'
-  | 'h4'
-  | 'h5'
-  | 'h6';
+  'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
 export interface PresentationChildReferenceGroup {
   textStyle?: {
@@ -4287,19 +4251,10 @@ export interface PresentationChildReferencesGroup {
 }
 
 export type PresentationStyleCollection =
-  | 'frame'
-  | 'inline'
-  | 'specification'
-  | 'highlight'
-  | 'rowBased';
+  'frame' | 'inline' | 'specification' | 'highlight' | 'rowBased';
 
 export type OutputFormatCollection =
-  | 'text'
-  | 'image'
-  | 'link'
-  | 'video'
-  | 'sound'
-  | 'download';
+  'text' | 'image' | 'link' | 'video' | 'sound' | 'download';
 
 export type InputTypeItemCollection = 'input' | 'textarea';
 
@@ -4541,10 +4496,7 @@ export type GroupOfRecordTypeCollection =
   | 'other';
 
 export type RecordTypeCategoryCollection =
-  | 'clientNavigation'
-  | 'categoryOne'
-  | 'categoryTwo'
-  | 'categoryThree';
+  'clientNavigation' | 'categoryOne' | 'categoryTwo' | 'categoryThree';
 
 export interface RecordTypeGroup {
   recordInfo: RecordInfoGroup;
@@ -5001,6 +4953,24 @@ export interface DivaMemberGroup {
   };
   textColorDarkMode?: { value: string; __text?: { sv: string; en: string } };
   logoSvg?: { value: string; __text?: { sv: string; en: string } };
+  logoBinary_lang_swe?: {
+    value: string;
+    linkedRecord: {
+      binary: BinaryGroup;
+    };
+
+    _lang: 'swe';
+    __text?: { sv: string; en: string };
+  };
+  logoBinary_lang_eng?: {
+    value: string;
+    linkedRecord: {
+      binary: BinaryGroup;
+    };
+
+    _lang: 'eng';
+    __text?: { sv: string; en: string };
+  };
   pageTitleSv?: { value: string; __text?: { sv: string; en: string } };
   pageTitleEn?: { value: string; __text?: { sv: string; en: string } };
   hero?: MemberHeroGroup;

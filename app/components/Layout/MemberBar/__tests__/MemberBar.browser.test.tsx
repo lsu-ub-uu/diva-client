@@ -99,6 +99,65 @@ describe('<MemberBar />', () => {
     ).toEqual(member.logo.svg);
   });
 
+  it.each([
+    {
+      lang: 'sv',
+      binarySv: '/sv-logo.png',
+      binaryEn: '/en-logo.png',
+      expected: '/sv-logo.png',
+    },
+    {
+      lang: 'en',
+      binarySv: '/sv-logo.png',
+      binaryEn: '/en-logo.png',
+      expected: '/en-logo.png',
+    },
+    {
+      lang: 'en',
+      binarySv: '/sv-logo.png',
+      binaryEn: undefined,
+      expected: '/sv-logo.png',
+    },
+    {
+      lang: 'sv',
+      binarySv: undefined,
+      binaryEn: '/en-logo.png',
+      expected: '/en-logo.png',
+    },
+  ] as const)(
+    'uses $expected for $lang with binarySv=$binarySv and binaryEn=$binaryEn',
+    async ({ lang, binarySv, binaryEn, expected }) => {
+      vi.mocked(useLanguage).mockReturnValue(lang);
+
+      const member = {
+        id: 'uu-member',
+        hostnames: ['uu.diva-portal.org'],
+        pageTitle: { sv: 'Uppsala universitet', en: 'Uppsala University' },
+        backgroundColor: '#111111',
+        textColor: '#FFFFFF',
+        logo: {
+          binarySv,
+          binaryEn,
+          svg: '<svg><title>SVG fallback</title></svg>',
+        },
+        links: [],
+        loginUnitIds: [],
+        hero: {} as BFFMemberHero,
+      } as BFFMember;
+
+      const screen = await render(
+        <MemberBar member={member} loggedIn={false} />,
+      );
+
+      expect(
+        screen
+          .getByRole('img', { name: `${member.pageTitle[lang]} logo` })
+          .element()
+          .getAttribute('src'),
+      ).toBe(expected);
+    },
+  );
+
   it('shows english links when language is english', async () => {
     vi.mocked(useLanguage).mockReturnValue('en');
 
@@ -456,12 +515,15 @@ describe('<MemberBar />', () => {
 
     const screen = await render(<MemberBar member={member} loggedIn={false} />);
 
-      const triggerButton = screen.getByRole('button', { name: 'divaClient_memberBarLinksText' });
+    const triggerButton = screen.getByRole('button', {
+      name: 'divaClient_memberBarLinksText',
+    });
     await triggerButton.click();
 
-
     await expect
-      .element(screen.getByRole('link', { name: 'Uppsala universitetsbibliotek' }))
+      .element(
+        screen.getByRole('link', { name: 'Uppsala universitetsbibliotek' }),
+      )
       .toHaveAttribute('href', 'https://www.uu.se/bibliotek');
   });
 });
