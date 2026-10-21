@@ -24,6 +24,7 @@ import type { BFFMember } from '@/cora/bffTypes.server';
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import { transformMembers } from '@/cora/transform/transformMembers.server';
 import { describe, expect, it, vi } from 'vitest';
+import { HttpError } from '@/cora/httpClient.server';
 
 vi.mock('@/cora/getRecordDataById.server');
 
@@ -173,8 +174,6 @@ describe('transformMember', () => {
     const transformData = await transformMembers(divaMemberListWithBinaryLogos);
     const binarySvId = 'binary:10281625222100513';
     const binaryEnId = 'binary:10281633103310090';
-    expect(getRecordDataById).toHaveBeenCalledWith('binary', binarySvId);
-    expect(getRecordDataById).toHaveBeenCalledWith('binary', binaryEnId);
     expect(transformData).toHaveLength(1);
     expect(transformData[0]).toStrictEqual({
       id: 'uu-theme',
@@ -186,10 +185,46 @@ describe('transformMember', () => {
       backgroundColor: '#CCCCCC',
       textColor: '#990000',
       logo: {
-        svg: '<svg></svg>',
-        binarySv: `http://testUrl.com/diva/rest/record/binary/${binarySvId}/master`,
-        binaryEn: `http://testUrl.com/diva/rest/record/binary/${binaryEnId}/master`,
+        binarySv: `/binary/${binarySvId}/master`,
+        binaryEn: `/binary/${binaryEnId}/master`,
       },
+      hostnames: ['uu.localhost'],
+      loginUnitIds: ['uu'],
+      hero: {
+        title: {
+          sv: 'Hjälte',
+          en: 'Hero',
+          cimode: 'titleText',
+        },
+        imageUrl: '/divaclient/public/images/hero/hero.jpg',
+        imageAttribution: {
+          source: {
+            displayLabel: 'Source',
+            url: 'https://example.com/source',
+          },
+          license: {
+            displayLabel: 'License',
+          },
+        },
+      },
+    } satisfies BFFMember);
+  });
+
+  it('does not include binary logos when binary records are not readable', async () => {
+    vi.mocked(getRecordDataById).mockThrow(new HttpError(403, 'Unauthorized'));
+
+    const transformData = await transformMembers(divaMemberListWithBinaryLogos);
+    expect(transformData).toHaveLength(1);
+    expect(transformData[0]).toStrictEqual({
+      id: 'uu-theme',
+      pageTitle: {
+        sv: 'Uppsala Universitet',
+        en: 'Uppsala University',
+        cimode: 'pageTitleText',
+      },
+      backgroundColor: '#CCCCCC',
+      textColor: '#990000',
+      logo: {},
       hostnames: ['uu.localhost'],
       loginUnitIds: ['uu'],
       hero: {

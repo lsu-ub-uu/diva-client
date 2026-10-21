@@ -42,6 +42,7 @@ import type {
   BFFMemberLink,
 } from '../bffTypes.server';
 import { transformSweEngText } from './transformSweEngText.server';
+import { href } from 'react-router';
 
 export const transformMembers = async (
   dataListWrapper: DataListWrapper,
@@ -172,13 +173,29 @@ const getBinaryRecord = async (
     recordLink,
     'linkedRecordId',
   );
-  const binaryRecord = await getRecordDataById<RecordWrapper>(
-    recordType,
-    recordId,
-  );
-  const master = getFirstDataGroupWithNameInData(
-    binaryRecord.data.record.data,
-    'master',
-  );
-  return getAllRecordLinksWithNameInData(master, 'master')[0]?.readLink?.url;
+  try {
+    const binaryRecord = await getRecordDataById<RecordWrapper>(
+      recordType,
+      recordId,
+    );
+    const masterGroup = getFirstDataGroupWithNameInData(
+      binaryRecord.data.record.data,
+      'master',
+    );
+
+    const masterResourceLink = getFirstDataGroupWithNameInData(
+      masterGroup,
+      'master',
+    );
+
+    const masterResourceId = getFirstDataAtomicValueWithNameInData(
+      masterResourceLink,
+      'linkedRecordId',
+    );
+
+    return href('/binary/:id/:name', { id: masterResourceId, name: 'master' });
+  } catch (error) {
+    console.error('Failed to fetch member logo binary:', error);
+    return undefined;
+  }
 };
