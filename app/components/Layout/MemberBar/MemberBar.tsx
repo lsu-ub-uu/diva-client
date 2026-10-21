@@ -61,16 +61,7 @@ export const MemberBar = ({ member, loggedIn, children }: MemberBarProps) => {
       aria-label={member.pageTitle[lang]}
     >
       <div className={clsx(styles['bar-content'], 'grid')}>
-        {member.logo.svg && (
-          <div
-            role='img'
-            aria-label={`${member.pageTitle[lang]} logo`}
-            className={styles['logo-wrapper']}
-            dangerouslySetInnerHTML={{
-              __html: member.logo.svg,
-            }}
-          />
-        )}
+        <MemberLogo member={member} />
         {links && links.length > 0 && (
           <>
             <div className={styles['links']}>
@@ -112,6 +103,37 @@ export const MemberBar = ({ member, loggedIn, children }: MemberBarProps) => {
         <div className={styles['button-wrapper']}>{children}</div>
       </div>
     </section>
+  );
+};
+
+const MemberLogo = ({ member }: { member: BFFMember }) => {
+  const lang = useLanguage();
+  const binaryLogo =
+    (lang === 'en' ? member.logo.binaryEn : member.logo.binarySv) ||
+    member.logo.binarySv ||
+    member.logo.binaryEn;
+
+  if (binaryLogo) {
+    return (
+      <div className={styles['logo-wrapper']}>
+        <img src={binaryLogo} alt={`${member.pageTitle[lang]} logo`} />
+      </div>
+    );
+  }
+
+  if (!member.logo.svg) {
+    return null;
+  }
+
+  return (
+    <div
+      role='img'
+      aria-label={`${member.pageTitle[lang]} logo`}
+      className={styles['logo-wrapper']}
+      dangerouslySetInnerHTML={{
+        __html: member.logo.svg,
+      }}
+    />
   );
 };
 

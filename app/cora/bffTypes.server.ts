@@ -187,11 +187,7 @@ export interface BFFLinkedRecordPresentation {
 }
 
 export type PresentationStyle =
-  | 'inline'
-  | 'frame'
-  | 'specification'
-  | 'highlight'
-  | 'rowBased';
+  'inline' | 'frame' | 'specification' | 'highlight' | 'rowBased';
 
 export type PresentationSize =
   | 'firstSmaller'
@@ -222,10 +218,7 @@ export interface BFFPresentationGroup extends BFFPresentationOfSingleMetadata {
   specifiedHeadlineLevel?: string;
   showHeadline?: string;
   presentAs?:
-    | 'map'
-    | 'recordRelation'
-    | 'externalLinkWithValue'
-    | 'onlyTranslatedText';
+    'map' | 'recordRelation' | 'externalLinkWithValue' | 'onlyTranslatedText';
 }
 
 export type HeadlineLevel = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
@@ -406,6 +399,8 @@ export interface BFFMember {
   links?: BFFMemberLink[];
   logo: {
     svg?: string;
+    binarySv?: string;
+    binaryEn?: string;
   };
   hero: BFFMemberHero;
 }

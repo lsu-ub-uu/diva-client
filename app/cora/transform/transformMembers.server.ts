@@ -19,6 +19,7 @@
 import type {
   DataGroup,
   DataListWrapper,
+  DataRecordLink,
   RecordWrapper,
 } from '@/cora/cora-data/types.server';
 
@@ -32,6 +33,8 @@ import {
 } from '@/cora/cora-data/CoraDataUtils.server';
 import { getFirstDataAtomicValueWithNameInData } from '@/cora/cora-data/CoraDataUtilsWrappers.server';
 import { removeEmpty } from '@/utils/structs/removeEmpty';
+import { getRecordDataById } from '@/cora/getRecordDataById.server';
+
 import type {
   BFFImageAttribution,
   BFFMember,
@@ -40,13 +43,15 @@ import type {
 } from '../bffTypes.server';
 import { transformSweEngText } from './transformSweEngText.server';
 
-export const transformMembers = (
+export const transformMembers = async (
   dataListWrapper: DataListWrapper,
-): BFFMember[] => {
-  return dataListWrapper.dataList.data.map(transformMember);
+): Promise<BFFMember[]> => {
+  return Promise.all(dataListWrapper.dataList.data.map(transformMember));
 };
 
-export const transformMember = (recordWrapper: RecordWrapper): BFFMember => {
+export const transformMember = async (
+  recordWrapper: RecordWrapper,
+): Promise<BFFMember> => {
   const data = recordWrapper.record.data;
   return removeEmpty({
     id: getFirstDataAtomicValueWithNameInData(
@@ -79,6 +84,8 @@ export const transformMember = (recordWrapper: RecordWrapper): BFFMember => {
       svg: hasChildWithNameInData(data, 'logoSvg')
         ? getFirstDataAtomicValueWithNameInData(data, 'logoSvg')
         : undefined,
+      binarySv: await getBinaryRecord(data, 'swe'),
+      binaryEn: await getBinaryRecord(data, 'eng'),
     },
     links: hasChildWithNameInData(data, 'link')
       ? transformLinks(getAllDataGroupsWithNameInData(data, 'link'))
@@ -143,4 +150,35 @@ const transformSourceOrLicense = (data: DataGroup) => {
       ? getFirstDataAtomicValueWithNameInData(data, 'url')
       : undefined,
   };
+};
+
+const getBinaryRecord = async (
+  data: DataGroup,
+  lang: 'swe' | 'eng',
+): Promise<string | undefined> => {
+  const recordLink = data.children.find(
+    (child): child is DataRecordLink =>
+      child.name === 'logoBinary' && child.attributes?.lang === lang,
+  );
+  if (!recordLink) {
+    return undefined;
+  }
+
+  const recordType = getFirstDataAtomicValueWithNameInData(
+    recordLink,
+    'linkedRecordType',
+  );
+  const recordId = getFirstDataAtomicValueWithNameInData(
+    recordLink,
+    'linkedRecordId',
+  );
+  const binaryRecord = await getRecordDataById<RecordWrapper>(
+    recordType,
+    recordId,
+  );
+  const master = getFirstDataGroupWithNameInData(
+    binaryRecord.data.record.data,
+    'master',
+  );
+  return getAllRecordLinksWithNameInData(master, 'master')[0]?.readLink?.url;
 };

@@ -195,7 +195,7 @@ const loadDependencies = async () => {
   );
 
   try {
-    const members = transformMembers(coraMembers.data);
+    const members = await transformMembers(coraMembers.data);
     dependencies.memberPool = listToPool<BFFMember>(members);
   } catch (error) {
     logError(error, 'Error transforming members');
