@@ -58,3 +58,8 @@ slask.*
 # Vitest browser mode
 .vitest-attachments
 __screenshots__
+
+/target/
+.settings/
+.project
+.classpath
