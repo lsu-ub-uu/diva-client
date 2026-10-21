@@ -135,10 +135,6 @@
                 "value": "Uppsala University"
               },
               {
-                "name": "logoSvg",
-                "value": "<svg></svg>"
-              },
-              {
                 "children": [
                   {
                     "name": "linkedRecordType",
