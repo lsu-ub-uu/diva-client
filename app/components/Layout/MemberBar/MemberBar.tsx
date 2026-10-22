@@ -26,6 +26,7 @@ import React from 'react';
 import { ChevronDownIcon } from '@/icons/icons';
 import clsx from 'clsx';
 import { Popover } from '@/components/Popover/Popover';
+import { withBaseName } from '@/utils/withBasename';
 
 interface MemberBarProps {
   member: BFFMember | undefined;
@@ -116,7 +117,10 @@ const MemberLogo = ({ member }: { member: BFFMember }) => {
   if (binaryLogo) {
     return (
       <div className={styles['logo-wrapper']}>
-        <img src={binaryLogo} alt={`${member.pageTitle[lang]} logo`} />
+        <img
+          src={withBaseName(binaryLogo)}
+          alt={`${member.pageTitle[lang]} logo`}
+        />
       </div>
     );
   }
