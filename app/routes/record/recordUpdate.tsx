@@ -41,6 +41,7 @@ import { logError } from '@/logging/logger.server';
 import { cleanFormData } from '@/utils/cleanFormData';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { useDeferredValue, useState } from 'react';
+import type { ShouldRevalidateFunctionArgs } from 'react-router';
 import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordUpdate';
@@ -140,12 +141,18 @@ export const action = async ({
   }
 
   try {
-    await updateRecord(
+    const record = await updateRecord(
       dependencies,
       validationType,
       recordId,
       validatedFormData as unknown as BFFDataRecord,
       auth,
+    );
+    const updatedDefaultValues = createDefaultValuesFromFormSchema(
+      formDefinition,
+      record.data,
+      getMemberFromHostname(request, dependencies),
+      auth && createUser(auth),
     );
     flashNotification({
       severity: 'success',
@@ -154,10 +161,33 @@ export const action = async ({
         id: recordId,
       }),
     });
+    console.log(
+      'Record updated successfully',
+      JSON.stringify(record, null, 2),
+      JSON.stringify(updatedDefaultValues, null, 2),
+    );
+    return { record, defaultValues: updatedDefaultValues };
   } catch (error) {
     logError(error, 'Error while updating record');
     flashNotification(createNotificationFromHttpError(t, error));
   }
+};
+
+export const shouldRevalidate = ({
+  actionResult,
+  formMethod,
+  currentUrl,
+  nextUrl,
+  defaultShouldRevalidate,
+}: ShouldRevalidateFunctionArgs) => {
+  if (
+    formMethod === 'POST' &&
+    actionResult?.record &&
+    currentUrl.href === nextUrl.href
+  ) {
+    return false;
+  }
+  return defaultShouldRevalidate;
 };
 
 export const meta = ({ loaderData }: Route.MetaArgs) => {
@@ -166,24 +196,24 @@ export const meta = ({ loaderData }: Route.MetaArgs) => {
 
 export default function UpdateRecordRoute({
   loaderData,
+  actionData,
 }: Route.ComponentProps) {
-  const {
-    record,
-    formDefinition,
-    previewFormDefinition,
-    notification,
-    defaultValues,
-  } = loaderData;
+  const { formDefinition, previewFormDefinition } = loaderData;
+  const notification = actionData?.record ? undefined : loaderData.notification;
+  const record = actionData?.record ?? loaderData.record;
+  const defaultValues = actionData?.record
+    ? actionData.defaultValues
+    : loaderData.defaultValues;
   const lastUpdate =
     record?.updated && record.updated[record.updated?.length - 1].updateAt;
 
-  const [previewData, setPreviewData] = useState<BFFDataRecordData | null>(
-    record.data,
+  const [preview, setPreview] = useState({ record, data: record.data });
+  const deferredPreviewData = useDeferredValue(
+    preview.record === record ? preview.data : record.data,
   );
-  const deferredPreviewData = useDeferredValue(previewData);
 
   const handleFormChange = (data: BFFDataRecordData) => {
-    setPreviewData(data);
+    setPreview({ record, data });
   };
 
   return (
