@@ -5043,6 +5043,13 @@ export interface RecordInfoOldRecordUpdateGroup {
 
 export interface OldRecordUpdateGroup {
   recordInfo: RecordInfoOldRecordUpdateGroup;
-  record?: { value: string; __text?: { sv: string; en: string } };
+  record?: {
+    value: string;
+    linkedRecord: {
+      binary: BinaryGroup;
+    };
+
+    __text?: { sv: string; en: string };
+  }[];
   __text?: { sv: string; en: string };
 }
