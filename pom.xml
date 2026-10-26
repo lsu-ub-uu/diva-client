@@ -33,7 +33,7 @@
 
   <properties>
     <frontend-maven-plugin.version>2.0.2</frontend-maven-plugin.version>
-    <nodeVersion>v25.9.0</nodeVersion>
+    <nodeVersion>v26.12.1</nodeVersion>
   </properties>
 
 
