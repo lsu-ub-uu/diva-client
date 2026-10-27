@@ -18,6 +18,7 @@
 import divaMemberListWithAllData from '@/__mocks__/bff/divaMemberListWithAllData.json';
 import divaMemberListWithMinimalData from '@/__mocks__/bff/divaMemberListWithMinimalData.json';
 import divaMemberListWithBinaryLogos from '@/__mocks__/bff/divaMemberListWithBinaryLogos.json';
+import divaMemberListWithBinaryHero from '@/__mocks__/bff/divaMemberListWithBinaryHero.json';
 import divaMemberBinaryRecord from '@/__mocks__/bff/divaMemberBinaryRecord';
 import emptyDataList from '@/__mocks__/bff/emptyDataList.json';
 import type { BFFMember } from '@/cora/bffTypes.server';
@@ -171,7 +172,9 @@ describe('transformMember', () => {
       headers: new Headers(),
     }));
 
+    vi.stubEnv('BASE_URL', '/divaclient/');
     const transformData = await transformMembers(divaMemberListWithBinaryLogos);
+    vi.unstubAllEnvs();
     const binarySvId = 'binary:10281625222100513';
     const binaryEnId = 'binary:10281633103310090';
     expect(transformData).toHaveLength(1);
@@ -185,8 +188,8 @@ describe('transformMember', () => {
       backgroundColor: '#CCCCCC',
       textColor: '#990000',
       logo: {
-        binarySv: `/binary/${binarySvId}/master`,
-        binaryEn: `/binary/${binaryEnId}/master`,
+        binarySv: `/divaclient/binary/${binarySvId}/master`,
+        binaryEn: `/divaclient/binary/${binaryEnId}/master`,
       },
       hostnames: ['uu.localhost'],
       loginUnitIds: ['uu'],
@@ -245,5 +248,20 @@ describe('transformMember', () => {
         },
       },
     } satisfies BFFMember);
+  });
+
+  it('transforms a member with binary hero image', async () => {
+    vi.mocked(getRecordDataById).mockImplementation(async (_type, id) => ({
+      data: divaMemberBinaryRecord(id),
+      status: 200,
+      headers: new Headers(),
+    }));
+
+    const transformData = await transformMembers(divaMemberListWithBinaryHero);
+    const binaryHeroId = 'binary:10281625222100513';
+    expect(transformData).toHaveLength(1);
+    expect(transformData[0].hero.imageUrl).toBe(
+      `/binary/${binaryHeroId}/master`,
+    );
   });
 });
