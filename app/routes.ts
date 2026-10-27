@@ -20,10 +20,6 @@ export default [
 
   /* record type specific pages */
   route('diva-output/:recordId', 'routes/divaOutput/divaOutputView.tsx'),
-  route(
-    'diva-oldRecord/:recordId',
-    'routes/divaOldRecord/divaOldRecordView.tsx',
-  ),
 
   /* Auth */
   route('login', 'routes/auth/login.tsx'),
