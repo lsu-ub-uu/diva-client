@@ -16,17 +16,16 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import styles from './MemberBar.module.css';
+import { Button } from '@/components/Button/Button';
+import { Popover } from '@/components/Popover/Popover';
 import type { BFFMember, BFFMemberLink } from '@/cora/bffTypes.server';
 import { useLanguage } from '@/i18n/useLanguage';
-import { Button } from '@/components/Button/Button';
-import { useTranslation } from 'react-i18next';
-import type { ReactNode } from 'react';
-import React from 'react';
 import { ChevronDownIcon } from '@/icons/icons';
 import clsx from 'clsx';
-import { Popover } from '@/components/Popover/Popover';
-import { withBaseName } from '@/utils/withBasename';
+import type { ReactNode } from 'react';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import styles from './MemberBar.module.css';
 
 interface MemberBarProps {
   member: BFFMember | undefined;
@@ -117,10 +116,7 @@ const MemberLogo = ({ member }: { member: BFFMember }) => {
   if (binaryLogo) {
     return (
       <div className={styles['logo-wrapper']}>
-        <img
-          src={withBaseName(binaryLogo)}
-          alt={`${member.pageTitle[lang]} logo`}
-        />
+        <img src={binaryLogo} alt={`${member.pageTitle[lang]} logo`} />
       </div>
     );
   }

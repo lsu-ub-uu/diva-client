@@ -172,7 +172,9 @@ describe('transformMember', () => {
       headers: new Headers(),
     }));
 
+    vi.stubEnv('BASE_URL', '/divaclient/');
     const transformData = await transformMembers(divaMemberListWithBinaryLogos);
+    vi.unstubAllEnvs();
     const binarySvId = 'binary:10281625222100513';
     const binaryEnId = 'binary:10281633103310090';
     expect(transformData).toHaveLength(1);
@@ -186,8 +188,8 @@ describe('transformMember', () => {
       backgroundColor: '#CCCCCC',
       textColor: '#990000',
       logo: {
-        binarySv: `/binary/${binarySvId}/master`,
-        binaryEn: `/binary/${binaryEnId}/master`,
+        binarySv: `/divaclient/binary/${binarySvId}/master`,
+        binaryEn: `/divaclient/binary/${binaryEnId}/master`,
       },
       hostnames: ['uu.localhost'],
       loginUnitIds: ['uu'],
@@ -249,6 +251,12 @@ describe('transformMember', () => {
   });
 
   it('transforms a member with binary hero image', async () => {
+    vi.mocked(getRecordDataById).mockImplementation(async (_type, id) => ({
+      data: divaMemberBinaryRecord(id),
+      status: 200,
+      headers: new Headers(),
+    }));
+
     const transformData = await transformMembers(divaMemberListWithBinaryHero);
     const binaryHeroId = 'binary:10281625222100513';
     expect(transformData).toHaveLength(1);

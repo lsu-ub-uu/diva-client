@@ -86,8 +86,8 @@ export const transformMember = async (
       svg: hasChildWithNameInData(data, 'logoSvg')
         ? getFirstDataAtomicValueWithNameInData(data, 'logoSvg')
         : undefined,
-      binarySv: await getBinaryRecord(data, 'swe'),
-      binaryEn: await getBinaryRecord(data, 'eng'),
+      binarySv: await getBinaryRecordForLanguage(data, 'swe'),
+      binaryEn: await getBinaryRecordForLanguage(data, 'eng'),
     },
     links: hasChildWithNameInData(data, 'link')
       ? transformLinks(getAllDataGroupsWithNameInData(data, 'link'))
@@ -138,42 +138,12 @@ const transformHeroImageUrl = async (heroGroup: DataGroup): Promise<string> => {
       heroGroup,
       'heroImage',
     );
-    try {
-      const recordType = getFirstDataAtomicValueWithNameInData(
-        heroImageBinaryLink,
-        'linkedRecordType',
-      );
-      const recordId = getFirstDataAtomicValueWithNameInData(
-        heroImageBinaryLink,
-        'linkedRecordId',
-      );
-      const binaryRecord = await getRecordDataById<RecordWrapper>(
-        recordType,
-        recordId,
-      );
-      const masterGroup = getFirstDataGroupWithNameInData(
-        binaryRecord.data.record.data,
-        'master',
-      );
-
-      const masterResourceLink = getFirstDataGroupWithNameInData(
-        masterGroup,
-        'master',
-      );
-
-      const masterResourceId = getFirstDataAtomicValueWithNameInData(
-        masterResourceLink,
-        'linkedRecordId',
-      );
-
-      return withBaseName(
-        href('/binary/:id/:name', {
-          id: masterResourceId,
-          name: 'master',
-        }),
-      );
-    } catch (error) {
-      console.error('Failed to fetch member hero image binary:', error);
+    const binaryUrl = await getBinaryRecord(
+      heroImageBinaryLink,
+      'Failed to fetch member hero image binary:',
+    );
+    if (binaryUrl) {
+      return binaryUrl;
     }
   }
 
@@ -207,26 +177,18 @@ const transformSourceOrLicense = (data: DataGroup) => {
 };
 
 const getBinaryRecord = async (
-  data: DataGroup,
-  lang: 'swe' | 'eng',
+  recordLink: DataGroup,
+  errorMessage: string,
 ): Promise<string | undefined> => {
-  const recordLink = data.children.find(
-    (child): child is DataRecordLink =>
-      child.name === 'logoBinary' && child.attributes?.lang === lang,
-  );
-  if (!recordLink) {
-    return undefined;
-  }
-
-  const recordType = getFirstDataAtomicValueWithNameInData(
-    recordLink,
-    'linkedRecordType',
-  );
-  const recordId = getFirstDataAtomicValueWithNameInData(
-    recordLink,
-    'linkedRecordId',
-  );
   try {
+    const recordType = getFirstDataAtomicValueWithNameInData(
+      recordLink,
+      'linkedRecordType',
+    );
+    const recordId = getFirstDataAtomicValueWithNameInData(
+      recordLink,
+      'linkedRecordId',
+    );
     const binaryRecord = await getRecordDataById<RecordWrapper>(
       recordType,
       recordId,
@@ -246,9 +208,25 @@ const getBinaryRecord = async (
       'linkedRecordId',
     );
 
-    return href('/binary/:id/:name', { id: masterResourceId, name: 'master' });
+    return withBaseName(
+      href('/binary/:id/:name', { id: masterResourceId, name: 'master' }),
+    );
   } catch (error) {
-    console.error('Failed to fetch member logo binary:', error);
+    console.error(errorMessage, error);
     return undefined;
   }
+};
+
+const getBinaryRecordForLanguage = async (
+  data: DataGroup,
+  lang: 'swe' | 'eng',
+): Promise<string | undefined> => {
+  const recordLink = data.children.find(
+    (child): child is DataRecordLink =>
+      child.name === 'logoBinary' && child.attributes?.lang === lang,
+  );
+  if (!recordLink) {
+    return undefined;
+  }
+  return getBinaryRecord(recordLink, 'Failed to fetch member logo binary:');
 };
