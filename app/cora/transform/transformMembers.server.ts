@@ -43,6 +43,7 @@ import type {
 } from '../bffTypes.server';
 import { transformSweEngText } from './transformSweEngText.server';
 import { href } from 'react-router';
+import { withBaseName } from '@/utils/withBasename';
 
 export const transformMembers = async (
   dataListWrapper: DataListWrapper,
@@ -97,7 +98,7 @@ export const transformMember = async (
     loginUnitIds: getAllRecordLinksWithNameInData(data, 'loginUnit').map(
       (recordLink) => recordLink.id,
     ),
-    hero: transformHero(getFirstDataGroupWithNameInData(data, 'hero')),
+    hero: await transformHero(getFirstDataGroupWithNameInData(data, 'hero')),
   } satisfies BFFMember);
 };
 
@@ -114,17 +115,69 @@ const transformLink = (data: DataGroup): BFFMemberLink => {
   };
 };
 
-const transformHero = (data: DataGroup): BFFMemberHero => {
+const transformHero = async (heroGroup: DataGroup): Promise<BFFMemberHero> => {
   return {
-    title: transformSweEngText(getFirstDataGroupWithNameInData(data, 'title')),
-    subTitle: hasChildWithNameInData(data, 'subTitle')
-      ? transformSweEngText(getFirstDataGroupWithNameInData(data, 'subTitle'))
+    title: transformSweEngText(
+      getFirstDataGroupWithNameInData(heroGroup, 'title'),
+    ),
+    subTitle: hasChildWithNameInData(heroGroup, 'subTitle')
+      ? transformSweEngText(
+          getFirstDataGroupWithNameInData(heroGroup, 'subTitle'),
+        )
       : undefined,
-    imageUrl: getFirstDataAtomicValueWithNameInData(data, 'imageUrl'),
+    imageUrl: await transformHeroImageUrl(heroGroup),
     imageAttribution: transformImageAttribution(
-      getFirstDataGroupWithNameInData(data, 'imageAttribution'),
+      getFirstDataGroupWithNameInData(heroGroup, 'imageAttribution'),
     ),
   };
+};
+
+const transformHeroImageUrl = async (heroGroup: DataGroup): Promise<string> => {
+  if (hasChildWithNameInData(heroGroup, 'heroImage')) {
+    const heroImageBinaryLink = getFirstDataGroupWithNameInData(
+      heroGroup,
+      'heroImage',
+    );
+    try {
+      const recordType = getFirstDataAtomicValueWithNameInData(
+        heroImageBinaryLink,
+        'linkedRecordType',
+      );
+      const recordId = getFirstDataAtomicValueWithNameInData(
+        heroImageBinaryLink,
+        'linkedRecordId',
+      );
+      const binaryRecord = await getRecordDataById<RecordWrapper>(
+        recordType,
+        recordId,
+      );
+      const masterGroup = getFirstDataGroupWithNameInData(
+        binaryRecord.data.record.data,
+        'master',
+      );
+
+      const masterResourceLink = getFirstDataGroupWithNameInData(
+        masterGroup,
+        'master',
+      );
+
+      const masterResourceId = getFirstDataAtomicValueWithNameInData(
+        masterResourceLink,
+        'linkedRecordId',
+      );
+
+      return withBaseName(
+        href('/binary/:id/:name', {
+          id: masterResourceId,
+          name: 'master',
+        }),
+      );
+    } catch (error) {
+      console.error('Failed to fetch member hero image binary:', error);
+    }
+  }
+
+  return getFirstDataAtomicValueWithNameInData(heroGroup, 'imageUrl');
 };
 
 const transformImageAttribution = (data: DataGroup): BFFImageAttribution => {

@@ -18,6 +18,7 @@
 import divaMemberListWithAllData from '@/__mocks__/bff/divaMemberListWithAllData.json';
 import divaMemberListWithMinimalData from '@/__mocks__/bff/divaMemberListWithMinimalData.json';
 import divaMemberListWithBinaryLogos from '@/__mocks__/bff/divaMemberListWithBinaryLogos.json';
+import divaMemberListWithBinaryHero from '@/__mocks__/bff/divaMemberListWithBinaryHero.json';
 import divaMemberBinaryRecord from '@/__mocks__/bff/divaMemberBinaryRecord';
 import emptyDataList from '@/__mocks__/bff/emptyDataList.json';
 import type { BFFMember } from '@/cora/bffTypes.server';
@@ -245,5 +246,14 @@ describe('transformMember', () => {
         },
       },
     } satisfies BFFMember);
+  });
+
+  it('transforms a member with binary hero image', async () => {
+    const transformData = await transformMembers(divaMemberListWithBinaryHero);
+    const binaryHeroId = 'binary:10281625222100513';
+    expect(transformData).toHaveLength(1);
+    expect(transformData[0].hero.imageUrl).toBe(
+      `/binary/${binaryHeroId}/master`,
+    );
   });
 });
