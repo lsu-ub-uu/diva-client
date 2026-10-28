@@ -85,4 +85,26 @@ describe('transformCoraBinaryResponse', () => {
     expect(transformed.statusText).toBe('Partial Content');
     await expect(transformed.text()).resolves.toBe('binary-data');
   });
+
+  it('forwards only content type and transformed content disposition', async () => {
+    const response = new Response('decoded XML body', {
+      headers: {
+        'content-encoding': 'gzip',
+        'content-length': '42',
+        'content-type': 'application/xml',
+        etag: '"upstream"',
+        'set-cookie': 'session=secret',
+        vary: 'Accept-Encoding',
+        'x-upstream-id': 'request-123',
+      },
+    });
+
+    const transformed = await transformCoraBinaryResponse(response, 'download');
+
+    expect([...transformed.headers.keys()].sort()).toEqual([
+      'content-disposition',
+      'content-type',
+    ]);
+    expect(transformed.headers.get('content-type')).toBe('application/xml');
+  });
 });

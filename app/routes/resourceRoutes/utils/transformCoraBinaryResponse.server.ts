@@ -4,14 +4,18 @@ export const transformCoraBinaryResponse = async (
   response: Response,
   fallbackFileName: string,
 ) => {
-  const headers = new Headers(response.headers);
+  const headers = new Headers();
+  const contentType = response.headers.get('content-type');
+  if (contentType) {
+    headers.set('Content-Type', contentType);
+  }
   const coraFileName = parseFileNameFromContentDisposition(
     response.headers.get('content-disposition'),
   );
   const downloadFileName = buildDownloadFileName(
     coraFileName,
     fallbackFileName,
-    response.headers.get('content-type'),
+    contentType,
   );
   headers.set(
     'Content-Disposition',
