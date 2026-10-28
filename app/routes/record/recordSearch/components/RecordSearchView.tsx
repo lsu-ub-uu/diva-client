@@ -11,9 +11,13 @@ import { MemberPicker } from '@/components/MemberPicker/MemberPicker';
 
 interface RecordSearchViewProps {
   searchView: SearchView;
+  recordType: string;
 }
 
-export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
+export const RecordSearchView = ({
+  searchView,
+  recordType,
+}: RecordSearchViewProps) => {
   const {
     searchFormDefinition,
     query,
@@ -74,9 +78,11 @@ export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
   return (
     <>
       <main className='grid-col-9 grid-col-l-12 search-main'>
-        <div className='search-member-picker'>
-          <MemberPicker />
-        </div>
+        {recordType !== 'diva-person' && recordType !== 'diva-project' ? (
+          <div className='search-member-picker'>
+            <MemberPicker />
+          </div>
+        ) : null}
         <RecordSearchMain
           query={query}
           onQueryChange={handleQueryChange}

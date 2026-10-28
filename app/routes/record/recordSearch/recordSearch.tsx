@@ -64,8 +64,14 @@ export const links = () => [{ rel: 'stylesheet', href: css }];
 
 export default function RecordSearch({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation();
-  const { title, recordTypeTextId, validationTypes, userRights, searchView } =
-    loaderData;
+  const {
+    title,
+    recordTypeTextId,
+    validationTypes,
+    userRights,
+    searchView,
+    recordTypeId,
+  } = loaderData;
 
   return (
     <div className='grid main-content'>
@@ -82,7 +88,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
         <h1>{title}</h1>
       </div>
       {searchView && userRights.includes('search') ? (
-        <RecordSearchView searchView={searchView} />
+        <RecordSearchView searchView={searchView} recordType={recordTypeId} />
       ) : (
         <div className='grid-col-6 grid-col-l-12'>
           <Alert severity='info'>
