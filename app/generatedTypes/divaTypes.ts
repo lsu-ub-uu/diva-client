@@ -1540,6 +1540,23 @@ export type LanguageCollection =
   | 'zxx'
   | 'zza';
 
+export interface NameIdentifierLocalIdGroup {
+  nameIdentifier_type_localId?: {
+    value: string;
+    _type: 'localId';
+    __text?: { sv: string; en: string };
+  };
+  permissionUnit?: {
+    value: string;
+    linkedRecord: {
+      permissionUnit: PermissionUnitGroup;
+    };
+
+    __text?: { sv: string; en: string };
+  };
+  __text?: { sv: string; en: string };
+}
+
 export type DescriptionCollection = 'researchGroup';
 
 export interface AffiliationGroup {
@@ -1584,11 +1601,7 @@ export interface PersonUpdateGroup {
     _lang: LanguageCollection;
     __text?: { sv: string; en: string };
   }[];
-  nameIdentifier_type_localId?: {
-    value: string;
-    _type: 'localId';
-    __text?: { sv: string; en: string };
-  }[];
+  localId?: NameIdentifierLocalIdGroup[];
   nameIdentifier_type_orcid?: {
     value: string;
     _type: 'orcid';
@@ -3609,7 +3622,7 @@ export type BinaryTypeCollection =
   'generic' | 'image' | 'sound' | 'video' | 'document' | 'text' | 'compressed';
 
 export type BinaryStatusCollection =
-  'created' | 'uploaded' | 'processing' | 'done' | 'failed';
+  'created' | 'uploaded' | 'reconvert' | 'processing' | 'done' | 'failed';
 
 export interface RecordInfoBinaryGroup {
   id: { value: string; __text?: { sv: string; en: string } };

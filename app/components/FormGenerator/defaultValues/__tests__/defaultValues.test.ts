@@ -53,6 +53,7 @@ import {
   createDefaultValuesFromComponent,
   createDefaultValuesFromComponents,
   createDefaultValuesFromFormSchema,
+  createDefaultValuesFromRecordCopy,
   generateRepeatingObject,
   getMinNumberOfRepeatingToShow,
   mergeArrays,
@@ -68,6 +69,52 @@ import {
 import * as generateRepeatIdModule from '../generateRepeatId';
 import type { BFFMember } from '@/cora/bffTypes.server';
 import type { User } from '@/auth/createUser';
+
+describe('createDefaultValuesFromRecordCopy', () => {
+  it('copies draft fields while preserving new-record metadata and defaults', () => {
+    const defaults = {
+      output: {
+        recordInfo: { permissionUnit: { value: 'current-user-unit' } },
+        genre: { value: 'default-genre' },
+        title: { value: '' },
+      },
+    };
+    const source = {
+      output: {
+        title: { value: 'Unsaved title' },
+        recordInfo: {
+          id: { value: 'original-id' },
+          validationType: { value: 'original-validation-type' },
+          createdBy: { value: 'original-user' },
+          permissionUnit: { value: 'original-unit' },
+          updated: {
+            updatedBy: { value: 'abc' },
+            tsUpdated: { value: 'def' },
+          },
+        },
+      },
+    };
+
+    expect(createDefaultValuesFromRecordCopy(defaults, source)).toEqual({
+      output: {
+        recordInfo: {
+          permissionUnit: { value: 'original-unit' },
+        },
+        genre: { value: 'default-genre' },
+        title: { value: 'Unsaved title' },
+      },
+    });
+    expect(source.output.recordInfo.id.value).toBe('original-id');
+    expect(source.output.recordInfo.validationType.value).toBe(
+      'original-validation-type',
+    );
+    expect(source.output.recordInfo.updated).toEqual({
+      updatedBy: { value: 'abc' },
+      tsUpdated: { value: 'def' },
+    });
+    expect(defaults.output.title.value).toBe('');
+  });
+});
 
 describe('defaultValues', () => {
   beforeEach(() => {

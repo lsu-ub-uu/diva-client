@@ -20,7 +20,10 @@ import { createUser } from '@/auth/createUser';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { RecordForm } from '@/components/Form/RecordForm';
-import { createDefaultValuesFromFormSchema } from '@/components/FormGenerator/defaultValues/defaultValues';
+import {
+  createDefaultValuesFromFormSchema,
+  createDefaultValuesFromRecordCopy,
+} from '@/components/FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { NavigationPanel } from '@/components/NavigationPanel/NavigationPanel';
@@ -42,7 +45,12 @@ import { assertDefined } from '@/utils/invariant';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDeferredValue, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { data, isRouteErrorResponse, redirect } from 'react-router';
+import {
+  data,
+  isRouteErrorResponse,
+  redirect,
+  useLocation,
+} from 'react-router';
 import { getValidatedFormData } from 'remix-hook-form';
 import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
@@ -227,8 +235,21 @@ export default function CreateRecordRoute({
     validationTypes,
   } = loaderData;
 
+  const location = useLocation();
+  const recordCopy = location.state?.recordCopy as
+    | { recordType: string; validationType: string; data: BFFDataRecordData }
+    | undefined;
+  const isRecordCopy =
+    recordCopy &&
+    formDefinition &&
+    recordCopy.validationType === formDefinition.validationTypeId &&
+    location.pathname.endsWith(`/${recordCopy.recordType}/create`);
+  const initialValues = isRecordCopy
+    ? createDefaultValuesFromRecordCopy(defaultValues ?? {}, recordCopy.data)
+    : (defaultValues ?? {});
+
   const [previewData, setPreviewData] = useState<BFFDataRecordData | null>(
-    null,
+    isRecordCopy ? initialValues : null,
   );
   const deferredPreviewData = useDeferredValue(previewData);
 
@@ -265,7 +286,7 @@ export default function CreateRecordRoute({
         )}
         <RecordForm
           formSchema={formDefinition}
-          defaultValues={defaultValues}
+          defaultValues={initialValues}
           onChange={handleFormChange}
         />
       </main>
