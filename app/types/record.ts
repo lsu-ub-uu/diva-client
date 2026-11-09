@@ -38,6 +38,7 @@ export interface BFFDataRecord<T = BFFDataRecordData> {
 export type BFFDataRecordData = Record<string, any>;
 
 export type BFFUserRight =
+  | 'create'
   | 'read'
   | 'read_incoming_links'
   | 'update'

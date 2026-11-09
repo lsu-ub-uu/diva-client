@@ -11,7 +11,7 @@ import {
 } from '@/icons/icons';
 import type { BFFDataRecord } from '@/types/record';
 import { useTranslation } from 'react-i18next';
-import { href, Link, useFetcher, useHref, useMatches } from 'react-router';
+import { href, Link, useFetcher, useMatches } from 'react-router';
 import { ActionBar } from './ActionBar';
 import { ActionBarButton } from './ActionBarButton';
 
@@ -23,12 +23,6 @@ export const RecordActionBar = ({ record, className }: ActionBarProps) => {
   const matches = useMatches();
   const { t } = useTranslation();
   const fetcher = useFetcher();
-  const copyAction = useHref(
-    `${href('/:recordType/:recordId/update', {
-      recordType: record.recordType,
-      recordId: record.id,
-    })}?intent=copy`,
-  );
 
   const isOnUpdatePage = matches.at(-1)?.id === 'routes/record/recordUpdate';
   const isOnViewPage =
@@ -125,9 +119,13 @@ export const RecordActionBar = ({ record, className }: ActionBarProps) => {
     <ActionBar className={className}>
       {isOnUpdatePage && rights.includes('update') && (
         <ActionBarButton
-          type='submit'
-          form='record-update-form'
-          formAction={copyAction}
+          as={Link}
+          to={{
+            pathname: href('/:recordType/create', {
+              recordType: record.recordType,
+            }),
+            search: `?${new URLSearchParams({ duplicateFrom: record.id, validationType: record.validationType })}`,
+          }}
           icon={<CopyPlusIcon />}
         >
           {t('divaClient_copyAsNewText')}

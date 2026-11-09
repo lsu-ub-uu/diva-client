@@ -45,38 +45,6 @@ export interface RecordData {
   [key: string]: any;
 }
 
-export const createDefaultValuesFromRecordCopy = (
-  defaultValues: RecordData,
-  sourceData: RecordData,
-) => {
-  const copiedData = Object.fromEntries(
-    Object.entries(sourceData).map(([rootName, rootData]) => [
-      rootName,
-      Object.fromEntries(
-        Object.entries(rootData).map(([name, value]) => [
-          name,
-          name === 'recordInfo'
-            ? Object.fromEntries(
-              Object.entries(value as RecordData).filter(
-                ([recordInfoName]) =>
-                  recordInfoName !== 'id' &&
-                  recordInfoName !== 'urn' &&
-                  recordInfoName !== 'createdBy' &&
-                  recordInfoName !== 'tsCreated' &&
-                  recordInfoName !== 'oldId' &&
-                  recordInfoName !== 'oldRecord' &&
-                  recordInfoName !== 'validationType' &&
-                  recordInfoName !== 'updated',
-              ),
-            )
-            : value,
-        ]),
-      ),
-    ]),
-  );
-  return mergeObjects(structuredClone(defaultValues), structuredClone(copiedData));
-};
-
 export const createDefaultValuesFromFormSchema = (
   formSchema: FormSchema,
   existingRecordData: RecordData | undefined = undefined,

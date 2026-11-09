@@ -22,7 +22,7 @@ import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { RecordForm } from '@/components/Form/RecordForm';
 import {
   createDefaultValuesFromFormSchema,
-  createDefaultValuesFromRecordCopy,
+  type RecordData,
 } from '@/components/FormGenerator/defaultValues/defaultValues';
 import { generateYupSchemaFromFormSchema } from '@/components/FormGenerator/validation/yupSchema';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
@@ -33,31 +33,27 @@ import { ValidationTypePicker } from '@/components/ValidationTypePicker/Validati
 import { transformToRaw } from '@/cora/transform/transformToRaw';
 import { createRecord } from '@/data/createRecord.server';
 import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByValidationTypeId.server';
+import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { NotFoundError } from '@/errorHandling/NotFoundError';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
+import { logError } from '@/logging/logger.server';
 import type { BFFDataRecordData } from '@/types/record';
+import { cleanFormData } from '@/utils/cleanFormData';
 import { createNotificationFromHttpError } from '@/utils/createNotificationFromHttpError';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
 import { assertDefined } from '@/utils/invariant';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDeferredValue, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  data,
-  isRouteErrorResponse,
-  redirect,
-  useLocation,
-} from 'react-router';
+import { data, isRouteErrorResponse, redirect } from 'react-router';
 import { getValidatedFormData } from 'remix-hook-form';
 import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
-import { cleanFormData } from '@/utils/cleanFormData';
-import { logError } from '@/logging/logger.server';
 
 export const loader = async ({
   request,
@@ -70,20 +66,33 @@ export const loader = async ({
   const dependencies = await getDependencies();
   const member = getMemberFromHostname(request, dependencies);
   const user = auth && createUser(auth);
+  const recordType = params.recordType;
 
   let validationTypeId = url.searchParams.get('validationType');
+  const duplicateFromRecordId = url.searchParams.get('duplicateFrom');
+
+  let recordToDuplicate: BFFDataRecordData | undefined;
+  if (duplicateFromRecordId) {
+    recordToDuplicate = await getRecordByRecordTypeAndRecordId({
+      dependencies,
+      recordType,
+      recordId: duplicateFromRecordId,
+      authToken: auth?.data.token,
+      mode: 'update',
+    });
+  }
 
   if (!validationTypeId) {
     if (!auth) {
       throw data(null, { status: 401 });
     }
-    const validationTypes = getValidationTypes(params.recordType, dependencies);
+    const validationTypes = getValidationTypes(recordType, dependencies);
     if (validationTypes && validationTypes.length === 1) {
       validationTypeId = validationTypes[0].value;
     } else {
       const title = t('divaClient_createRecordText', {
         rootGroupTitle: t(
-          dependencies.recordTypePool.get(params.recordType).textId,
+          dependencies.recordTypePool.get(recordType).textId,
         ).toLowerCase(),
       });
       return {
@@ -121,7 +130,7 @@ export const loader = async ({
 
   const defaultValues = createDefaultValuesFromFormSchema(
     formDefinition,
-    undefined,
+    cleanRecordForDuplicate(recordToDuplicate?.data),
     member,
     user,
   );
@@ -143,6 +152,20 @@ export const loader = async ({
     breadcrumb,
     validationTypes: null,
   };
+};
+
+const cleanRecordForDuplicate = (recordData: RecordData) => {
+  return Object.fromEntries(
+    Object.entries(recordData).map(([rootName, rootData]) => [
+      rootName,
+      Object.fromEntries(
+        Object.entries(rootData).map(([name, value]) => [
+          name,
+          name === 'recordInfo' ? undefined : value,
+        ]),
+      ),
+    ]),
+  );
 };
 
 export const action = async ({ context, request }: Route.ActionArgs) => {
@@ -234,22 +257,8 @@ export default function CreateRecordRoute({
     defaultValues,
     validationTypes,
   } = loaderData;
-
-  const location = useLocation();
-  const recordCopy = location.state?.recordCopy as
-    | { recordType: string; validationType: string; data: BFFDataRecordData }
-    | undefined;
-  const isRecordCopy =
-    recordCopy &&
-    formDefinition &&
-    recordCopy.validationType === formDefinition.validationTypeId &&
-    location.pathname.endsWith(`/${recordCopy.recordType}/create`);
-  const initialValues = isRecordCopy
-    ? createDefaultValuesFromRecordCopy(defaultValues ?? {}, recordCopy.data)
-    : (defaultValues ?? {});
-
   const [previewData, setPreviewData] = useState<BFFDataRecordData | null>(
-    isRecordCopy ? initialValues : null,
+    null,
   );
   const deferredPreviewData = useDeferredValue(previewData);
 
@@ -286,7 +295,7 @@ export default function CreateRecordRoute({
         )}
         <RecordForm
           formSchema={formDefinition}
-          defaultValues={initialValues}
+          defaultValues={defaultValues}
           onChange={handleFormChange}
         />
       </main>

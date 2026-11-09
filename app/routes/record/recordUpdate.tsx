@@ -140,16 +140,6 @@ export const action = async ({
     return { errors, defaultValues };
   }
 
-  if (new URL(request.url).searchParams.get('intent') === 'copy') {
-    return {
-      recordCopy: {
-        recordType: recordTypeId,
-        validationType,
-        data: validatedFormData as BFFDataRecordData,
-      },
-    };
-  }
-
   try {
     await updateRecord(
       dependencies,
@@ -177,20 +167,7 @@ export const meta = ({ loaderData }: Route.MetaArgs) => {
 
 export default function UpdateRecordRoute({
   loaderData,
-  actionData,
 }: Route.ComponentProps) {
-  const navigate = useNavigate();
-  const recordCopy = actionData?.recordCopy;
-
-  useEffect(() => {
-    if (recordCopy) {
-      void navigate(
-        `${href('/:recordType/create', { recordType: recordCopy.recordType })}?${new URLSearchParams({ validationType: recordCopy.validationType })}`,
-        { state: { recordCopy } },
-      );
-    }
-  }, [navigate, recordCopy]);
-
   const {
     record,
     formDefinition,
@@ -229,12 +206,6 @@ export default function UpdateRecordRoute({
 
         <RecordForm
           key={lastUpdate}
-          id='record-update-form'
-          action={href('/:recordType/:recordId/update', {
-            recordType: record.recordType,
-            recordId: record.id,
-          })}
-          allowNavigation={!!recordCopy}
           defaultValues={defaultValues}
           formSchema={formDefinition}
           onChange={handleFormChange}
