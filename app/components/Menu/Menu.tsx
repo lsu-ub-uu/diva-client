@@ -191,5 +191,9 @@ export const useMenu = () => {
     onKeyDown: handleKeyDown,
   };
 
-  return { menuProps, triggerProps };
+  const closeMenu = () => {
+    menuRef.current?.hidePopover();
+  };
+
+  return { menuProps, triggerProps, closeMenu };
 };

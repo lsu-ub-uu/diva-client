@@ -57,7 +57,10 @@ describe('RecordActionBar', () => {
     render(<RoutesStub initialEntries={['/someRecordType/123/update']} />);
 
     expect(
-      screen.getByRole('link', { name: 'divaClient_viewRecordText' }),
+      screen.getByRole('link', {
+        name: 'divaClient_viewRecordText',
+        hidden: true,
+      }),
     ).toBeInTheDocument();
 
     expect(
@@ -170,7 +173,10 @@ describe('RecordActionBar', () => {
     render(<RoutesStub />);
 
     expect(
-      screen.getByRole('button', { name: 'divaClient_deleteRecordText' }),
+      screen.getByRole('menuitem', {
+        name: /divaClient_deleteRecordText/,
+        hidden: true,
+      }),
     ).toBeInTheDocument();
   });
 
@@ -218,7 +224,10 @@ describe('RecordActionBar', () => {
     render(<RoutesStub />);
 
     expect(
-      screen.getByRole('button', { name: 'divaClient_trashRecordText' }),
+      screen.getByRole('menuitem', {
+        name: /divaClient_trashRecordText/,
+        hidden: true,
+      }),
     ).toBeInTheDocument();
   });
 
@@ -266,7 +275,10 @@ describe('RecordActionBar', () => {
     render(<RoutesStub />);
 
     expect(
-      screen.getByRole('button', { name: 'divaClient_untrashButtonText' }),
+      screen.getByRole('button', {
+        name: 'divaClient_untrashButtonText',
+        hidden: true,
+      }),
     ).toBeInTheDocument();
   });
 
@@ -598,7 +610,10 @@ describe('RecordActionBar', () => {
     render(<RoutesStub initialEntries={['/diva-output/1234']} />);
 
     expect(
-      screen.getByRole('link', { name: 'divaClient_copyAsNewText' }),
+      screen.getByRole('link', {
+        name: 'divaClient_copyAsNewText',
+        hidden: true,
+      }),
     ).toHaveAttribute(
       'href',
       '/diva-person/create?duplicateFrom=1234&validationType=diva-person',

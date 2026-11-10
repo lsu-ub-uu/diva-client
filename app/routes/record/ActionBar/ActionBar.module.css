@@ -2,26 +2,19 @@
   display: flex;
   flex-flow: row;
   justify-content: flex-end;
+  gap: var(--gap);
   background-color: var(--color-card);
-  padding: var(--gap-s);
   border-radius: var(--border-radius-s);
   border: 1px solid var(--color-card-dark);
-
-  @media (width < 900px) {
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: var(--gap-s);
-
-    .action-bar-button a,
-    button {
-      justify-content: flex-start;
-    }
-  }
 }
 
-.action-bar-button {
-  a,
-  button {
-    white-space: nowrap;
+.record-action-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--gap);
+
+  svg {
+    font-size: 1.2em;
   }
 }

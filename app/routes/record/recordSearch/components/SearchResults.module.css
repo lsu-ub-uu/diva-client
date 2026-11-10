@@ -55,15 +55,3 @@
     grid-template-columns: 1fr;
   }
 }
-
-.record-action-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap);
-  color: var(--color-label);
-
-  @media (width < 900px) {
-    flex-direction: row;
-    justify-self: end;
-  }
-}
