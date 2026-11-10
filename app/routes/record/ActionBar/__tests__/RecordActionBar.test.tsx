@@ -41,12 +41,16 @@ describe('RecordActionBar', () => {
       {
         id: 'routes/record/recordView',
         path: '/:recordType/:recordId',
-        Component: () => <RecordActionBar record={record} />,
+        Component: () => (
+          <RecordActionBar record={record} recordTypeUserRights={[]} />
+        ),
       },
       {
         id: 'routes/record/recordUpdate',
         path: '/:recordType/:recordId/update',
-        Component: () => <RecordActionBar record={record} />,
+        Component: () => (
+          <RecordActionBar record={record} recordTypeUserRights={[]} />
+        ),
       },
     ]);
 
@@ -97,12 +101,16 @@ describe('RecordActionBar', () => {
       {
         id: 'routes/record/recordView',
         path: '/:recordType/:recordId',
-        Component: () => <RecordActionBar record={record} />,
+        Component: () => (
+          <RecordActionBar record={record} recordTypeUserRights={[]} />
+        ),
       },
       {
         id: 'routes/record/recordUpdate',
         path: '/:recordType/:recordId/update',
-        Component: () => <RecordActionBar record={record} />,
+        Component: () => (
+          <RecordActionBar record={record} recordTypeUserRights={[]} />
+        ),
       },
     ]);
 
@@ -153,7 +161,9 @@ describe('RecordActionBar', () => {
     const RoutesStub = createRoutesStub([
       {
         path: '/',
-        Component: () => <RecordActionBar record={record} />,
+        Component: () => (
+          <RecordActionBar record={record} recordTypeUserRights={[]} />
+        ),
       },
     ]);
 
@@ -199,7 +209,9 @@ describe('RecordActionBar', () => {
     const RoutesStub = createRoutesStub([
       {
         path: '/',
-        Component: () => <RecordActionBar record={record} />,
+        Component: () => (
+          <RecordActionBar record={record} recordTypeUserRights={[]} />
+        ),
       },
     ]);
 
@@ -245,7 +257,9 @@ describe('RecordActionBar', () => {
     const RoutesStub = createRoutesStub([
       {
         path: '/',
-        Component: () => <RecordActionBar record={record} />,
+        Component: () => (
+          <RecordActionBar record={record} recordTypeUserRights={[]} />
+        ),
       },
     ]);
 
@@ -292,12 +306,16 @@ describe('RecordActionBar', () => {
       {
         id: 'routes/record/recordView',
         path: '/:recordType/:recordId',
-        Component: () => <RecordActionBar record={record} />,
+        Component: () => (
+          <RecordActionBar record={record} recordTypeUserRights={[]} />
+        ),
       },
       {
         id: 'routes/record/recordUpdate',
         path: '/:recordType/:recordId/update',
-        Component: () => <RecordActionBar record={record} />,
+        Component: () => (
+          <RecordActionBar record={record} recordTypeUserRights={[]} />
+        ),
       },
     ]);
 
@@ -344,12 +362,16 @@ describe('RecordActionBar', () => {
       {
         id: 'routes/record/recordView',
         path: '/:recordType/:recordId',
-        Component: () => <RecordActionBar record={record} />,
+        Component: () => (
+          <RecordActionBar record={record} recordTypeUserRights={[]} />
+        ),
       },
       {
         id: 'routes/record/recordUpdate',
         path: '/:recordType/:recordId/update',
-        Component: () => <RecordActionBar record={record} />,
+        Component: () => (
+          <RecordActionBar record={record} recordTypeUserRights={[]} />
+        ),
       },
     ]);
 
@@ -396,7 +418,9 @@ describe('RecordActionBar', () => {
     const RoutesStub = createRoutesStub([
       {
         path: '/',
-        Component: () => <RecordActionBar record={record} />,
+        Component: () => (
+          <RecordActionBar record={record} recordTypeUserRights={[]} />
+        ),
       },
     ]);
 
@@ -442,7 +466,9 @@ describe('RecordActionBar', () => {
     const RoutesStub = createRoutesStub([
       {
         path: '/',
-        Component: () => <RecordActionBar record={record} />,
+        Component: () => (
+          <RecordActionBar record={record} recordTypeUserRights={[]} />
+        ),
       },
     ]);
 
@@ -490,7 +516,7 @@ describe('RecordActionBar', () => {
         path: '/',
         Component: () => (
           <div data-testid='wrapper'>
-            <RecordActionBar record={record} />
+            <RecordActionBar record={record} recordTypeUserRights={[]} />
           </div>
         ),
       },
@@ -536,7 +562,9 @@ describe('RecordActionBar', () => {
     const RoutesStub = createRoutesStub([
       {
         path: '/',
-        Component: () => <RecordActionBar record={record} />,
+        Component: () => (
+          <RecordActionBar record={record} recordTypeUserRights={[]} />
+        ),
       },
     ]);
 
@@ -544,6 +572,63 @@ describe('RecordActionBar', () => {
 
     expect(
       screen.queryByRole('button', { name: 'divaClient_untrashButtonText' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('renders copy as new link when record type has create right', () => {
+    const record = {
+      id: '1234',
+      recordType: 'diva-person',
+      validationType: 'diva-person',
+      updated: [],
+      userRights: [],
+      actionLinks: {},
+      data: {},
+    } as BFFDataRecord;
+    const RoutesStub = createRoutesStub([
+      {
+        id: 'routes/divaOutput/divaOutputView',
+        path: '/diva-output/:recordId',
+        Component: () => (
+          <RecordActionBar record={record} recordTypeUserRights={['create']} />
+        ),
+      },
+    ]);
+
+    render(<RoutesStub initialEntries={['/diva-output/1234']} />);
+
+    expect(
+      screen.getByRole('link', { name: 'divaClient_copyAsNewText' }),
+    ).toHaveAttribute(
+      'href',
+      '/diva-person/create?duplicateFrom=1234&validationType=diva-person',
+    );
+  });
+
+  it('does not render copy as new link when record type lacks create right', () => {
+    const record = {
+      id: '1234',
+      recordType: 'diva-person',
+      validationType: 'diva-person',
+      updated: [],
+      userRights: ['update'],
+      actionLinks: {},
+      data: {},
+    } as BFFDataRecord;
+    const RoutesStub = createRoutesStub([
+      {
+        id: 'routes/divaOutput/divaOutputView',
+        path: '/diva-output/:recordId',
+        Component: () => (
+          <RecordActionBar record={record} recordTypeUserRights={[]} />
+        ),
+      },
+    ]);
+
+    render(<RoutesStub initialEntries={['/diva-output/1234']} />);
+
+    expect(
+      screen.queryByRole('link', { name: 'divaClient_copyAsNewText' }),
     ).not.toBeInTheDocument();
   });
 });

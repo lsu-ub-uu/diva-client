@@ -23,16 +23,23 @@ import { data, isRouteErrorResponse, Outlet } from 'react-router';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordType';
 import { getDependencies } from 'server/dependencies/depencencies';
+import { getUserRightsForRecordType } from '@/data/getUserRightsForRecordType.server';
+import { sessionContext } from '@/auth/sessionMiddleware.server';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { t } = context.get(i18nContext);
+  const { auth } = context.get(sessionContext);
 
   const dependencies = await getDependencies();
   if (!dependencies.recordTypePool.has(params.recordType)) {
     throw data('divaClient_errorRecordTypeNotFoundText', { status: 404 });
   }
   const recordType = dependencies.recordTypePool.get(params.recordType);
-  return { breadcrumb: t(recordType.pluralTextId) };
+  const recordTypeUserRights = await getUserRightsForRecordType(
+    recordType.id,
+    auth,
+  );
+  return { breadcrumb: t(recordType.pluralTextId), recordTypeUserRights };
 };
 
 export const meta = ({ loaderData }: Route.MetaArgs) => {

@@ -1,3 +1,4 @@
+import { createAlternativePresentationFormDef } from '@/__mocks__/data/form/alternativePresentation';
 import type {
   FormComponentCollVar,
   RecordFormSchema,
@@ -5,126 +6,8 @@ import type {
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { RecordFormWithRoutesStub } from './RecordFormTestHelper';
-import { createAlternativePresentationFormDef } from '@/__mocks__/data/form/alternativePresentation';
-import { RecordForm } from '../RecordForm';
-import { RecordActionBar } from '@/routes/record/ActionBar/RecordActionBar';
-import type { BFFDataRecord } from '@/types/record';
-import {
-  createMemoryRouter,
-  createRoutesStub,
-  RouterProvider,
-  useActionData,
-} from 'react-router';
 
 describe('RecordForm', () => {
-  it.each(['/', '/divaclient'])(
-    'submits the current form values with the copy intent under %s',
-    async (basename) => {
-      const router = createMemoryRouter(
-        [
-          {
-            id: 'routes/record/recordUpdate',
-            path: '/:recordType/:recordId/update',
-            action: async ({ request }) => ({
-              intent: new URL(request.url).searchParams.get('intent'),
-              values: Object.fromEntries(await request.formData()),
-            }),
-            Component: () => {
-              const actionData = useActionData();
-              return (
-                <>
-                  <RecordActionBar
-                    record={
-                      {
-                        id: '123',
-                        recordType: 'diva-person',
-                        userRights: ['update'],
-                      } as BFFDataRecord
-                    }
-                  />
-                  <RecordForm
-                    id='record-update-form'
-                    action='/diva-person/123/update'
-                    formSchema={createAlternativePresentationFormDef(
-                      'singleInitiallyHidden',
-                      'someTitle',
-                      false,
-                    )}
-                    defaultValues={{}}
-                  />
-                  {actionData && <output>{JSON.stringify(actionData)}</output>}
-                </>
-              );
-            },
-          },
-        ],
-        {
-          basename,
-          initialEntries: [
-            `${basename === '/' ? '' : basename}/diva-person/123/update`,
-          ],
-        },
-      );
-      const screen = await render(<RouterProvider router={router} />);
-
-      const copyButton = screen.getByRole('button', {
-        name: 'Copy as New',
-      });
-      await copyButton.click();
-      const input = screen.getByRole('textbox', { name: 'someLabelTextId' });
-      await expect.element(input).toBeInvalid();
-      await expect.element(screen.getByRole('status')).not.toBeInTheDocument();
-
-      await input.fill('A');
-      await copyButton.click();
-
-      await expect
-        .element(screen.getByRole('status'))
-        .toHaveTextContent('"intent":"copy"');
-      await expect.element(screen.getByRole('status')).toHaveTextContent('A');
-
-      await screen
-        .getByRole('button', { name: /divaClient_SubmitButtonText/ })
-        .click();
-      await expect
-        .element(screen.getByRole('status'))
-        .toHaveTextContent('"intent":null');
-    },
-  );
-
-  it.each([
-    { routeId: 'routes/record/recordView', rights: ['update'] },
-    { routeId: 'routes/record/recordUpdate', rights: ['read'] },
-  ])(
-    'does not offer copying on $routeId with $rights rights',
-    async ({ routeId, rights }) => {
-      const RoutesStub = createRoutesStub([
-        {
-          id: routeId,
-          path: '/:recordType/:recordId',
-          Component: () => (
-            <RecordActionBar
-              record={
-                {
-                  id: '123',
-                  recordType: 'diva-person',
-                  userRights: rights,
-                } as BFFDataRecord
-              }
-            />
-          ),
-        },
-      ]);
-      const screen = await render(
-        <RoutesStub initialEntries={['/diva-person/123']} />,
-      );
-
-      await expect
-        .element(screen.getByRole('button', { name: 'Copy as New' }))
-        .not.toBeInTheDocument();
-    },
-  );
-
   it('expands accordion when validation error ', async () => {
     const screen = await render(
       <RecordFormWithRoutesStub

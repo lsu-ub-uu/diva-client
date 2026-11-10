@@ -26,7 +26,14 @@ import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { getRecordTitle } from '@/utils/getRecordTitle';
 import { useTranslation } from 'react-i18next';
-import { isRouteErrorResponse, Link, Outlet } from 'react-router';
+import { type loader as recordTypeLoader } from '../record/recordType';
+
+import {
+  isRouteErrorResponse,
+  Link,
+  Outlet,
+  useRouteLoaderData,
+} from 'react-router';
 import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/record';
@@ -107,6 +114,11 @@ export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
 export default function RecordTypeRoute({ loaderData }: Route.ComponentProps) {
   const { record } = loaderData;
 
+  const recordTypeLoaderData = useRouteLoaderData<typeof recordTypeLoader>(
+    'routes/record/recordType',
+  );
+  const recordTypeUserRights = recordTypeLoaderData?.recordTypeUserRights ?? [];
+
   function isInTrashBin() {
     const rootGroup = Object.values(record.data)[0];
     return rootGroup.recordInfo?.inTrashBin?.value === 'true';
@@ -122,7 +134,10 @@ export default function RecordTypeRoute({ loaderData }: Route.ComponentProps) {
         )}
         <div className='top-bar grid-col-12'>
           <Breadcrumbs />
-          <RecordActionBar record={record} />
+          <RecordActionBar
+            record={record}
+            recordTypeUserRights={recordTypeUserRights}
+          />
         </div>
       </div>
       <Outlet />

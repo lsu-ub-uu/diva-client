@@ -8,8 +8,8 @@ import {
   ShredderIcon,
   Trash2Icon,
   UnpublishIcon,
-  EllipsisIcon,
 } from '@/icons/icons';
+import type { UserRightActionLink } from '@/data/getUserRightsForRecordType.server';
 import type { BFFDataRecord } from '@/types/record';
 import { useTranslation } from 'react-i18next';
 import { href, Link, useFetcher, useMatches } from 'react-router';
@@ -18,9 +18,14 @@ import { ActionBarButton } from './ActionBarButton';
 
 interface ActionBarProps {
   record: BFFDataRecord;
+  recordTypeUserRights: UserRightActionLink[];
   className?: string;
 }
-export const RecordActionBar = ({ record, className }: ActionBarProps) => {
+export const RecordActionBar = ({
+  record,
+  className,
+  recordTypeUserRights,
+}: ActionBarProps) => {
   const matches = useMatches();
   const { t } = useTranslation();
   const fetcher = useFetcher();
@@ -34,6 +39,8 @@ export const RecordActionBar = ({ record, className }: ActionBarProps) => {
     (isOnUpdatePage && rights.includes('update')) ||
     (!isOnViewPage && rights.includes('read')) ||
     (!isOnUpdatePage && rights.includes('update')) ||
+    recordTypeUserRights.includes('create') ||
+    rights.includes('create') ||
     rights.includes('publish') ||
     rights.includes('unpublish') ||
     rights.includes('trash') ||
@@ -117,7 +124,7 @@ export const RecordActionBar = ({ record, className }: ActionBarProps) => {
 
   return (
     <ActionBar className={className}>
-      {rights.includes('update') && (
+      {recordTypeUserRights.includes('create') && (
         <ActionBarButton
           as={Link}
           to={{

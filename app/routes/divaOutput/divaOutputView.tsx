@@ -15,6 +15,8 @@ import { getFullTitleForOutput } from '@/utils/getRecordTitle';
 import { assertDefined } from '@/utils/invariant';
 import { CodeXmlIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
+import { type loader as recordTypeLoader } from '../record/recordType';
+import { useRouteLoaderData } from 'react-router';
 import {
   href,
   isRouteErrorResponse,
@@ -27,6 +29,7 @@ import type { Route } from '../divaOutput/+types/divaOutputView';
 import { RecordActionBar } from '../record/ActionBar/RecordActionBar';
 import css from './divaOutputView.css?url';
 import { generateCitationMeta } from './utils/generateCitationMeta';
+import { getUserRightsForRecordType } from '@/data/getUserRightsForRecordType.server';
 
 export const loader = async ({ url, params, context }: Route.LoaderArgs) => {
   const { t } = context.get(i18nContext);
@@ -35,6 +38,11 @@ export const loader = async ({ url, params, context }: Route.LoaderArgs) => {
   const apiUrl = externalCoraApiUrl(`/record/diva-output/${recordId}`);
   const externalSystemUrl = process.env.CORA_EXTERNAL_SYSTEM_URL;
   assertDefined(externalSystemUrl, 'CORA_EXTERNAL_SYSTEM_URL is not defined');
+
+  const recordTypeUserRights = await getUserRightsForRecordType(
+    'diva-output',
+    auth,
+  );
 
   const origin = url.origin;
   const dependencies = await getDependencies();
@@ -58,6 +66,7 @@ export const loader = async ({ url, params, context }: Route.LoaderArgs) => {
       apiUrl,
       externalSystemUrl,
       origin,
+      recordTypeUserRights,
     };
   } catch (error) {
     throw createRouteErrorResponse(error);
@@ -117,7 +126,10 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
             >
               <CodeXmlIcon />
             </IconButton>
-            <RecordActionBar record={record} />
+            <RecordActionBar
+              record={record}
+              recordTypeUserRights={loaderData.recordTypeUserRights}
+            />
           </div>
         </div>
       </div>
