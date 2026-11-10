@@ -130,7 +130,9 @@ export const loader = async ({
 
   const defaultValues = createDefaultValuesFromFormSchema(
     formDefinition,
-    cleanRecordForDuplicate(recordToDuplicate?.data),
+    recordToDuplicate
+      ? cleanRecordForDuplicate(recordToDuplicate?.data)
+      : undefined,
     member,
     user,
   );
@@ -161,7 +163,7 @@ const cleanRecordForDuplicate = (recordData: RecordData) => {
       Object.fromEntries(
         Object.entries(rootData).map(([name, value]) => [
           name,
-          name === 'recordInfo' ? undefined : value,
+          name === 'recordInfo' ? {} : value,
         ]),
       ),
     ]),

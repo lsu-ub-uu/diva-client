@@ -8,6 +8,7 @@ import {
   ShredderIcon,
   Trash2Icon,
   UnpublishIcon,
+  EllipsisIcon,
 } from '@/icons/icons';
 import type { BFFDataRecord } from '@/types/record';
 import { useTranslation } from 'react-i18next';
@@ -28,7 +29,6 @@ export const RecordActionBar = ({ record, className }: ActionBarProps) => {
   const isOnViewPage =
     matches.at(-1)?.id === 'routes/record/recordView' ||
     matches.at(-1)?.id === 'routes/divaOutput/divaOutputView';
-
   const rights = record.userRights ?? [];
   const hasActions =
     (isOnUpdatePage && rights.includes('update')) ||
@@ -117,7 +117,7 @@ export const RecordActionBar = ({ record, className }: ActionBarProps) => {
 
   return (
     <ActionBar className={className}>
-      {isOnUpdatePage && rights.includes('update') && (
+      {rights.includes('update') && (
         <ActionBarButton
           as={Link}
           to={{
