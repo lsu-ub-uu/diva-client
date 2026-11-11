@@ -9,6 +9,7 @@ import type {
 } from '@/components/FormGenerator/types';
 import { SearchResults } from '../SearchResults';
 import { createRoutesStub } from 'react-router';
+import type { DivaJournal } from '@/generatedTypes/divaTypes';
 
 describe('SearchResults', () => {
   it('renders as busy when searching', () => {
@@ -149,7 +150,9 @@ describe('SearchResults', () => {
         ],
       },
     } as RecordFormSchema;
-    const resultData = { root: { title: { value: 'Some result title' } } };
+    const resultData = {
+      journal: { titleInfo: { title: { value: 'Some result title' } } },
+    } as DivaJournal;
     const searchResults: BFFSearchResult = {
       fromNo: 1,
       toNo: 1,
@@ -157,11 +160,11 @@ describe('SearchResults', () => {
       containDataOfType: 'mixed',
       data: [
         {
-          recordType: 'someRecordType',
+          recordType: 'diva-journal',
           id: '1',
           presentation: resultSchema,
           data: resultData,
-          validationType: 'someValidationType',
+          validationType: 'diva-journal',
           actionLinks: {},
         },
       ],
@@ -183,6 +186,8 @@ describe('SearchResults', () => {
     ]);
 
     render(<RouteStub />);
-    expect(screen.getByText('Some result title')).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Some result title' }),
+    ).toHaveAttribute('href', '/diva-journal/1');
   });
 });

@@ -1,9 +1,13 @@
 import type { BFFDataRecord } from '@/types/record';
 import { createRoutesStub } from 'react-router';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+import { useUser } from '@/utils/rootLoaderDataUtils';
 import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { RecordActionBar } from '../RecordActionBar';
+import type { User } from '@/auth/createUser';
+
+vi.mock('@/utils/rootLoaderDataUtils');
 
 const createRecord = (
   userRights: BFFDataRecord['userRights'] = [],
@@ -65,7 +69,7 @@ describe('RecordActionBar', () => {
       data: {},
     } as BFFDataRecord;
     const RoutesStub = createRoutesStub([
-      { id: 'root', loader: () => undefined },
+      { id: 'root', path: '/', loader: () => undefined },
       {
         id: 'routes/divaOutput/divaOutputView',
         path: '/diva-output/:recordId',
@@ -88,6 +92,7 @@ describe('RecordActionBar', () => {
   });
 
   it('keeps update in the action bar when it is the only action', async () => {
+    vi.mocked(useUser).mockReturnValue({} as User);
     const record = {
       id: '1234',
       recordType: 'diva-person',
@@ -98,7 +103,6 @@ describe('RecordActionBar', () => {
       data: {},
     } as BFFDataRecord;
     const RoutesStub = createRoutesStub([
-      { id: 'root', loader: () => ({ user: {} }) },
       {
         id: 'routes/divaOutput/divaOutputView',
         path: '/diva-output/:recordId',
@@ -126,6 +130,8 @@ describe('RecordActionBar', () => {
   });
 
   it('shows the remaining available actions in the dropdown', async () => {
+    vi.mocked(useUser).mockReturnValue({} as User);
+
     const record = {
       id: '1234',
       recordType: 'diva-person',
@@ -146,7 +152,6 @@ describe('RecordActionBar', () => {
       },
     } as BFFDataRecord;
     const RoutesStub = createRoutesStub([
-      { id: 'root', loader: () => undefined },
       {
         id: 'routes/divaOutput/divaOutputView',
         path: '/diva-output/:recordId',
