@@ -4,19 +4,18 @@ import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { TrashAlert } from '@/components/TrashAlert/TrashAlert';
 import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
+import { getUserRightsForRecordType } from '@/data/getUserRightsForRecordType.server';
 import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import type { DivaOutput } from '@/generatedTypes/divaTypes';
+import { CodeXmlIcon } from '@/icons/icons';
 import { OutputView } from '@/routes/divaOutput/components/OutputView';
 import type { BFFDataRecord } from '@/types/record';
 import { getFullTitleForOutput } from '@/utils/getRecordTitle';
 import { assertDefined } from '@/utils/invariant';
-import { CodeXmlIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
-import { type loader as recordTypeLoader } from '../record/recordType';
-import { useRouteLoaderData } from 'react-router';
 import {
   href,
   isRouteErrorResponse,
@@ -29,7 +28,6 @@ import type { Route } from '../divaOutput/+types/divaOutputView';
 import { RecordActionBar } from '../record/ActionBar/RecordActionBar';
 import css from './divaOutputView.css?url';
 import { generateCitationMeta } from './utils/generateCitationMeta';
-import { getUserRightsForRecordType } from '@/data/getUserRightsForRecordType.server';
 
 export const loader = async ({ url, params, context }: Route.LoaderArgs) => {
   const { t } = context.get(i18nContext);
@@ -115,20 +113,10 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
         <div className='top-bar'>
           <Breadcrumbs />
           <div className='top-bar-actions'>
-            <IconButton
-              as='a'
-              href={apiUrl}
-              target='_blank'
-              rel='noopener noreferrer nofollow'
-              aria-label='View raw data'
-              size='small'
-              tooltip={t('divaClient_viewInApiText')}
-            >
-              <CodeXmlIcon />
-            </IconButton>
             <RecordActionBar
               record={record}
               recordTypeUserRights={loaderData.recordTypeUserRights}
+              apiUrl={apiUrl}
             />
           </div>
         </div>

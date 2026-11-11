@@ -28,6 +28,7 @@ const renderRecordActionBar = async (
     <RecordActionBar
       record={record}
       recordTypeUserRights={recordTypeUserRights}
+      apiUrl='someUrl/rest'
     />
   );
   const RoutesStub = createRoutesStub([
@@ -52,7 +53,40 @@ const renderRecordActionBar = async (
   return render(<RoutesStub initialEntries={[initialEntry]} />);
 };
 
-describe('RecordActionBar action menu', () => {
+describe('RecordActionBar', () => {
+  it('shows only view in api link and no  menu if not logged in', async () => {
+    const record = {
+      id: '1234',
+      recordType: 'diva-person',
+      validationType: 'diva-person',
+      updated: [],
+      userRights: ['update'],
+      actionLinks: {},
+      data: {},
+    } as BFFDataRecord;
+    const RoutesStub = createRoutesStub([
+      { id: 'root', loader: () => undefined },
+      {
+        id: 'routes/divaOutput/divaOutputView',
+        path: '/diva-output/:recordId',
+        Component: () => (
+          <RecordActionBar
+            record={record}
+            recordTypeUserRights={[]}
+            apiUrl='someUrl/rest'
+          />
+        ),
+      },
+    ]);
+
+    const screen = await render(
+      <RoutesStub initialEntries={['/diva-output/1234']} />,
+    );
+    await expect
+      .element(screen.getByRole('link', { name: 'divaClient_viewInApiText' }))
+      .toBeInTheDocument();
+  });
+
   it('keeps update in the action bar when it is the only action', async () => {
     const record = {
       id: '1234',
@@ -64,11 +98,16 @@ describe('RecordActionBar action menu', () => {
       data: {},
     } as BFFDataRecord;
     const RoutesStub = createRoutesStub([
+      { id: 'root', loader: () => ({ user: {} }) },
       {
         id: 'routes/divaOutput/divaOutputView',
         path: '/diva-output/:recordId',
         Component: () => (
-          <RecordActionBar record={record} recordTypeUserRights={[]} />
+          <RecordActionBar
+            record={record}
+            recordTypeUserRights={[]}
+            apiUrl='someUrl/rest'
+          />
         ),
       },
     ]);
@@ -80,6 +119,7 @@ describe('RecordActionBar action menu', () => {
     await expect
       .element(screen.getByRole('link', { name: 'divaClient_editRecordText' }))
       .toHaveAttribute('href', '/diva-person/1234/update');
+
     await expect
       .element(screen.getByRole('button', { name: 'Actions' }))
       .not.toBeInTheDocument();
@@ -106,11 +146,16 @@ describe('RecordActionBar action menu', () => {
       },
     } as BFFDataRecord;
     const RoutesStub = createRoutesStub([
+      { id: 'root', loader: () => undefined },
       {
         id: 'routes/divaOutput/divaOutputView',
         path: '/diva-output/:recordId',
         Component: () => (
-          <RecordActionBar record={record} recordTypeUserRights={['create']} />
+          <RecordActionBar
+            record={record}
+            recordTypeUserRights={['create']}
+            apiUrl='someUrl/rest'
+          />
         ),
       },
     ]);

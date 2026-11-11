@@ -74,7 +74,6 @@ export const SearchResults = ({
             <div className={styles['result-list-item-content']}>
               <SearchResultItem record={record} />
               <div className={styles['record-action-buttons']}>
-                {/* <RecordActionButtons record={record} /> */}
                 <RecordActionMenu
                   record={record}
                   recordTypeUserRights={recordTypeUserRights}

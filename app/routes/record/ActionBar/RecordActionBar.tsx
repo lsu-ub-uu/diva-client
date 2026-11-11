@@ -1,59 +1,58 @@
+import { Button } from '@/components/Button/Button';
+import type { UserRightActionLink } from '@/data/getUserRightsForRecordType.server';
 import {
-  ArchiveRestoreIcon,
   ChevronDownIcon,
-  CopyPlusIcon,
+  CodeXmlIcon,
   EllipsisIcon,
   FilePenIcon,
   FileTextIcon,
-  OldRecordIcon,
-  PublishIcon,
-  ShredderIcon,
-  Trash2Icon,
-  UnpublishIcon,
 } from '@/icons/icons';
-import { Menu, useMenu } from '@/components/Menu/Menu';
-import { MenuItem } from '@/components/Menu/MenuItem';
-import type { UserRightActionLink } from '@/data/getUserRightsForRecordType.server';
 import type { BFFDataRecord } from '@/types/record';
 import { useTranslation } from 'react-i18next';
-import { href, Link, useFetcher, useMatches } from 'react-router';
+import { href, Link, useMatches } from 'react-router';
 import { ActionBar } from './ActionBar';
 import { ActionBarButton } from './ActionBarButton';
-import { RecordActionMenu, type RecordMenuAction } from './RecordActionMenu';
+import { RecordActionMenu } from './RecordActionMenu';
+import { useUser } from '@/utils/rootLoaderDataUtils';
+import styles from './ActionBar.module.css';
 
 interface ActionBarProps {
   record: BFFDataRecord;
   recordTypeUserRights: UserRightActionLink[];
   className?: string;
+  apiUrl: string;
 }
 export const RecordActionBar = ({
   record,
   className,
   recordTypeUserRights,
+  apiUrl,
 }: ActionBarProps) => {
   const matches = useMatches();
   const { t } = useTranslation();
+  const user = useUser();
+
   const isOnUpdatePage = matches.at(-1)?.id === 'routes/record/recordUpdate';
   const isOnViewPage =
     matches.at(-1)?.id === 'routes/record/recordView' ||
     matches.at(-1)?.id === 'routes/divaOutput/divaOutputView';
   const recordUserRights = record.userRights ?? [];
 
-  const hasActions =
-    (isOnUpdatePage && recordUserRights.includes('update')) ||
-    (!isOnViewPage && recordUserRights.includes('read')) ||
-    (!isOnUpdatePage && recordUserRights.includes('update')) ||
-    recordTypeUserRights.includes('create') ||
-    recordUserRights.includes('create') ||
-    recordUserRights.includes('publish') ||
-    recordUserRights.includes('unpublish') ||
-    recordUserRights.includes('trash') ||
-    recordUserRights.includes('untrash') ||
-    recordUserRights.includes('delete') ||
-    recordUserRights.includes('viewOldRecord');
-
-  if (!hasActions) {
-    return null;
+  if (!user) {
+    return (
+      <Button
+        as='a'
+        variant='tertiary'
+        href={apiUrl}
+        target='_blank'
+        rel='noopener noreferrer nofollow'
+        aria-label='View raw data'
+        size='small'
+      >
+        <CodeXmlIcon />
+        {t('divaClient_viewInApiText')}
+      </Button>
+    );
   }
 
   return (
@@ -70,6 +69,7 @@ export const RecordActionBar = ({
           {t('divaClient_editRecordText')}
         </ActionBarButton>
       )}
+
       {!isOnViewPage && recordUserRights.includes('read') && (
         <ActionBarButton
           as={Link}
@@ -83,12 +83,27 @@ export const RecordActionBar = ({
         </ActionBarButton>
       )}
 
+      <ActionBarButton
+        as='a'
+        variant='tertiary'
+        href={apiUrl}
+        target='_blank'
+        rel='noopener noreferrer nofollow'
+        aria-label='View raw data'
+        icon={<CodeXmlIcon />}
+      >
+        {t('divaClient_viewInApiText')}
+      </ActionBarButton>
       <RecordActionMenu
         record={record}
         recordTypeUserRights={recordTypeUserRights}
         excludeActions={['view', 'update']}
+        className={styles['action-bar-button']}
       >
-        <EllipsisIcon /> {t('divaClient_moreNavigationText')}{' '}
+        <EllipsisIcon />
+        <span className={styles['action-bar-button-text']}>
+          {t('divaClient_moreNavigationText')}
+        </span>
         <ChevronDownIcon />
       </RecordActionMenu>
     </ActionBar>

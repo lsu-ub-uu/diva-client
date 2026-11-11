@@ -6,30 +6,35 @@ import {
 import { CircularLoader } from '@/components/Loader/CircularLoader';
 import { Menu, useMenu } from '@/components/Menu/Menu';
 import { MenuItem } from '@/components/Menu/MenuItem';
+import type { UserRightActionLink } from '@/data/getUserRightsForRecordType.server';
 import {
-  ChevronDownIcon,
+  ArchiveRestoreIcon,
   CopyPlusIcon,
-  EllipsisIcon,
+  FilePenIcon,
   FileTextIcon,
+  PublishIcon,
   ShredderIcon,
   Trash2Icon,
-  ArchiveRestoreIcon,
-  PublishIcon,
-  FilePenIcon,
 } from '@/icons/icons';
+import type { BFFDataRecord } from '@/types/record';
 import { useTranslation } from 'react-i18next';
 import { href, Link, useFetcher } from 'react-router';
-import styles from './ActionBar.module.css';
-import type { UserRightActionLink } from '@/data/getUserRightsForRecordType.server';
-import type { BFFDataRecord } from '@/types/record';
+import styles from './RecordActionMenu.module.css';
 
-export interface RecordMenuAction {
+interface RecordMenuActionBase {
   id: string;
   children: React.ReactNode;
   icon: React.ReactNode;
-  type: 'link' | 'button';
-  to?: string | { pathname: string; search: string };
-  action?: string;
+}
+
+export interface RecordMenuLinkAction extends RecordMenuActionBase {
+  type: 'link';
+  to: string | { pathname: string; search: string };
+}
+
+export interface RecordMenuButtonAction extends RecordMenuActionBase {
+  type: 'button';
+  action: string;
   redirect?: boolean;
   confirmDialog?: {
     headingText: string;
@@ -39,16 +44,23 @@ export interface RecordMenuAction {
   };
 }
 
+export type RecordMenuAction = RecordMenuLinkAction | RecordMenuButtonAction;
+
 interface RecordActionMenuProps {
   children: React.ReactNode;
+  className?: string;
   menuButtonProps?: ButtonProps;
   record: BFFDataRecord;
   recordTypeUserRights: UserRightActionLink[];
   excludeActions?: string[];
 }
 
+const isLinkAction = (item: RecordMenuAction): item is RecordMenuLinkAction =>
+  item.type === 'link';
+
 export const RecordActionMenu = ({
   children,
+  className,
   record,
   recordTypeUserRights,
   excludeActions = [],
@@ -60,19 +72,6 @@ export const RecordActionMenu = ({
 
   const getMenuActions = (): RecordMenuAction[] => {
     const actions: RecordMenuAction[] = [];
-
-    if (recordUserRights.includes('read')) {
-      actions.push({
-        id: 'view',
-        children: t('divaClient_viewRecordText'),
-        type: 'link',
-        to: href('/:recordType/:recordId', {
-          recordType: record.recordType,
-          recordId: record.id,
-        }),
-        icon: <FileTextIcon />,
-      });
-    }
 
     if (recordUserRights.includes('update')) {
       actions.push({
@@ -189,27 +188,55 @@ export const RecordActionMenu = ({
 
   return (
     <>
-      <Button variant='tertiary' {...menuButtonProps} {...triggerProps}>
+      <Button
+        variant='tertiary'
+        className={className}
+        {...menuButtonProps}
+        {...triggerProps}
+      >
         {children}
       </Button>
       <Menu {...menuProps}>
-        {menuActions.map((action) => (
-          <RecordActionMenuItem key={action.id} {...action} />
-        ))}
+        {menuActions.map((action) =>
+          isLinkAction(action) ? (
+            <RecordActionMenuLinkItem key={action.id} action={action} />
+          ) : (
+            <RecordActionMenuButtonItem key={action.id} buttonAction={action} />
+          ),
+        )}
       </Menu>
     </>
   );
 };
 
-const RecordActionMenuItem = ({
-  icon,
-  confirmDialog,
-  children,
+const RecordActionMenuLinkItem = ({
   action,
-  redirect = false,
-  type,
-  to,
-}: RecordMenuAction) => {
+}: {
+  action: RecordMenuLinkAction;
+}) => {
+  const { to, icon, children } = action;
+  return (
+    <MenuItem>
+      <Link to={to} className={styles['record-action-menu-item']}>
+        {icon}
+        {children}
+      </Link>
+    </MenuItem>
+  );
+};
+
+const RecordActionMenuButtonItem = ({
+  buttonAction,
+}: {
+  buttonAction: RecordMenuButtonAction;
+}) => {
+  const {
+    redirect = false,
+    action,
+    icon,
+    confirmDialog,
+    children,
+  } = buttonAction;
   const { showConfirmDialog, confirmDialogRef } = useConfirmDialog();
   const fetcher = useFetcher();
 
@@ -227,34 +254,28 @@ const RecordActionMenuItem = ({
 
   return (
     <MenuItem>
-      {type === 'link' ? (
-        <Link to={to} className={styles['record-action-menu-item']}>
-          {pending ? <CircularLoader /> : icon}
-          {children}
-        </Link>
-      ) : (
-        <button
-          type='button'
-          disabled={pending}
-          className={styles['record-action-menu-item']}
-          onClick={() => {
-            if (action) {
-              if (confirmDialog) {
-                showConfirmDialog((returnValue) => {
-                  if (returnValue === 'submit') {
-                    onAction();
-                  }
-                });
-              } else {
-                onAction();
-              }
+      <button
+        type='button'
+        disabled={pending}
+        className={styles['record-action-menu-item']}
+        onClick={() => {
+          if (action) {
+            if (confirmDialog) {
+              showConfirmDialog((returnValue) => {
+                if (returnValue === 'submit') {
+                  onAction();
+                }
+              });
+            } else {
+              onAction();
             }
-          }}
-        >
-          {pending ? <CircularLoader /> : icon}
-          {children}
-        </button>
-      )}
+          }
+        }}
+      >
+        {pending ? <CircularLoader /> : icon}
+        {children}
+      </button>
+
       {confirmDialog && (
         <ConfirmDialog
           ref={confirmDialogRef}
