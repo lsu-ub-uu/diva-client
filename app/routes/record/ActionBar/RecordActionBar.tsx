@@ -88,7 +88,6 @@ export const RecordActionBar = ({
         href={apiUrl}
         target='_blank'
         rel='noopener noreferrer nofollow'
-        aria-label='View raw data'
         icon={<CodeXmlIcon />}
       >
         {t('divaClient_viewInApiText')}
