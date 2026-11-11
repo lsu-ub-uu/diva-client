@@ -276,7 +276,7 @@ describe('RecordActionBar', () => {
 
     expect(
       screen.getByRole('button', {
-        name: 'divaClient_untrashButtonText',
+        name: 'divaClient_untrashRecordText',
         hidden: true,
       }),
     ).toBeInTheDocument();
@@ -583,7 +583,7 @@ describe('RecordActionBar', () => {
     render(<RoutesStub />);
 
     expect(
-      screen.queryByRole('button', { name: 'divaClient_untrashButtonText' }),
+      screen.queryByRole('button', { name: 'divaClient_untrashRecordText' }),
     ).not.toBeInTheDocument();
   });
 

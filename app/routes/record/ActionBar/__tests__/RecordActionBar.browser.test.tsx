@@ -75,24 +75,24 @@ describe('RecordActionBar action menu', () => {
     await expect
       .element(screen.getByRole('link', { name: 'divaClient_editRecordText' }))
       .toHaveAttribute('href', '/diva-person/1234/update');
-    await userEvent.click(screen.getByRole('button', { name: 'Actions' }));
+    await userEvent.click(
+      screen.getByRole('button', { name: 'divaClient_moreNavigationText' }),
+    );
 
     const menu = screen.getByRole('menu');
     const menuItemNames = Array.from(
       menu
         .element()
-        .querySelectorAll(
-          '[role="menuitem"] > div > button, [role="menuitem"] > div > a',
-        ),
+        .querySelectorAll('[role="menuitem"] > a, [role="menuitem"] > button'),
     ).map((item) => item.textContent?.trim());
 
     expect(menuItemNames).toEqual([
       'divaClient_copyAsNewText',
+      'divaClient_deleteRecordText',
+      'divaClient_trashRecordText',
+      'divaClient_untrashRecordText',
       'divaClient_publishRecordText',
       'divaClient_unpublishRecordText',
-      'divaClient_trashRecordText',
-      'divaClient_untrashButtonText',
-      'divaClient_deleteRecordText',
       'divaClient_viewOldRecordText',
     ]);
     await expect
