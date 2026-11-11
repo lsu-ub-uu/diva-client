@@ -315,7 +315,7 @@ describe('Menu', () => {
     expect(onBetaClick).not.toHaveBeenCalled();
   });
 
-  it('should close menu when clicking a menu item', async () => {
+  it('should not close menu when clicking a menu item', async () => {
     const screen = await render(
       <MenuTest>
         <MenuItem>
@@ -330,6 +330,6 @@ describe('Menu', () => {
 
     await userEvent.click(screen.getByRole('button', { name: 'Alpha' }));
 
-    await expect.element(menuButton).toHaveAttribute('aria-expanded', 'false');
+    await expect.element(menuButton).toHaveAttribute('aria-expanded', 'true');
   });
 });

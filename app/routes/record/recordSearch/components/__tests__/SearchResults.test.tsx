@@ -12,21 +12,28 @@ import { createRoutesStub } from 'react-router';
 
 describe('SearchResults', () => {
   it('renders as busy when searching', () => {
-    render(
-      <SearchResults
-        searchResults={{
-          fromNo: 0,
-          toNo: 0,
-          totalNo: 0,
-          containDataOfType: 'mixed',
-          data: [],
-        }}
-        searching={true}
-        start={1}
-        userHasSearched={false}
-        validationErrors={new Map()}
-      />,
-    );
+    const RouteStub = createRoutesStub([
+      {
+        path: '/',
+        Component: () => (
+          <SearchResults
+            searchResults={{
+              fromNo: 0,
+              toNo: 0,
+              totalNo: 0,
+              containDataOfType: 'mixed',
+              data: [],
+            }}
+            searching={true}
+            start={1}
+            userHasSearched={false}
+            validationErrors={new Map()}
+          />
+        ),
+      },
+    ]);
+
+    render(<RouteStub />);
 
     expect(screen.getByRole('list')).toHaveAttribute('aria-busy', 'true');
   });
