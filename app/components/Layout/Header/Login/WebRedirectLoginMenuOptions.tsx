@@ -23,10 +23,12 @@ import { useTranslation } from 'react-i18next';
 
 interface WebRedirectLoginOptionsProps {
   webRedirectLoginUnits: LoginDefinition[];
+  onOptionClick: () => void;
 }
 
 export const WebRedirectLoginMenuOptions = ({
   webRedirectLoginUnits,
+  onOptionClick,
 }: WebRedirectLoginOptionsProps) => {
   const { t } = useTranslation();
   if (webRedirectLoginUnits.length === 0) {
@@ -37,7 +39,13 @@ export const WebRedirectLoginMenuOptions = ({
       <h3>{t('divaClient_LoginWebRedirectText')}</h3>
       {webRedirectLoginUnits.map(({ loginDescription, url }) => (
         <MenuItem key={loginDescription} text={t(loginDescription)}>
-          <button type='button' onClick={() => logInWithWebRedirect(url!)}>
+          <button
+            type='button'
+            onClick={() => {
+              logInWithWebRedirect(url!);
+              onOptionClick();
+            }}
+          >
             {t(loginDescription)}
           </button>
         </MenuItem>

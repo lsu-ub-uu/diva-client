@@ -24,11 +24,13 @@ import { href, Link } from 'react-router';
 interface PasswordLoginOptionsProps {
   passwordLoginUnits: LoginDefinition[];
   returnTo: string;
+  onOptionClick: () => void;
 }
 
 export const PasswordLoginMenuOptions = ({
   passwordLoginUnits,
   returnTo,
+  onOptionClick,
 }: PasswordLoginOptionsProps) => {
   const { t } = useTranslation();
   if (passwordLoginUnits.length === 0) {
@@ -44,6 +46,7 @@ export const PasswordLoginMenuOptions = ({
               pathname: href('/login'),
               search: `?loginUnit=${id}&returnTo=${returnTo}`,
             }}
+            onClick={onOptionClick}
           >
             {t(loginDescription)}
           </Link>
