@@ -133,9 +133,9 @@
 .navigation-grid {
   display: grid;
   justify-content: center;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, calc((100% - 2 * var(--gap-xl)) / 3));
   gap: var(--gap-xl);
-  max-width: 800px;
+  max-width: 1200px;
   width: 100vw;
   margin: 0 auto;
   padding: var(--gap-xl) var(--gap);
