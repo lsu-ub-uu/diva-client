@@ -59,7 +59,7 @@ export const TopNavigation = ({ navigation }: TopNavigationProps) => {
   const devMode = useIsDevMode();
   const location = useLocation();
   const { t } = useTranslation();
-  const { triggerProps, menuProps } = useMenu();
+  const { triggerProps, menuProps, closeMenu } = useMenu();
 
   const isOtherNavActive = navigation.otherNavigationItems.some((navItem) =>
     location.pathname.startsWith(navItem.link),
@@ -100,6 +100,7 @@ export const TopNavigation = ({ navigation }: TopNavigationProps) => {
                   <NavLink
                     to={navItem.link}
                     className={styles['menu-navigation-link']}
+                    onClick={closeMenu}
                   >
                     {icons[navItem.id]}
                     {t(navItem.textId)}
@@ -112,6 +113,7 @@ export const TopNavigation = ({ navigation }: TopNavigationProps) => {
                     <NavLink
                       to={href('/design-system')}
                       className={styles['menu-navigation-link']}
+                      onClick={closeMenu}
                     >
                       <PaletteIcon />
                       Design system

@@ -52,10 +52,16 @@ export default function LoginMenu({
   const { t } = useTranslation();
   const location = useLocation();
 
-  const { menuProps: loginMenuProps, triggerProps: loginTriggerProps } =
-    useMenu();
-  const { menuProps: logoutMenuProps, triggerProps: logoutTriggerProps } =
-    useMenu();
+  const {
+    menuProps: loginMenuProps,
+    triggerProps: loginTriggerProps,
+    closeMenu: closeLoginMenu,
+  } = useMenu();
+  const {
+    menuProps: logoutMenuProps,
+    triggerProps: logoutTriggerProps,
+    closeMenu: closeLogoutMenu,
+  } = useMenu();
 
   const searchParams = new URLSearchParams(location.search);
   const rawReturnTo =
@@ -77,10 +83,12 @@ export default function LoginMenu({
       },
       { action: '/login', method: 'post' },
     );
+    closeLoginMenu();
   };
 
   const logout = () => {
     fetcher.submit({ returnTo }, { method: 'post', action: '/logout' });
+    closeLogoutMenu();
   };
 
   const loginButtonProps: ButtonProps = {
@@ -149,12 +157,14 @@ export default function LoginMenu({
             webRedirectLoginUnits={loginUnits.filter(
               ({ type }) => type === 'webRedirect',
             )}
+            onOptionClick={closeLoginMenu}
           />
           <PasswordLoginMenuOptions
             passwordLoginUnits={loginUnits.filter(
               ({ type }) => type === 'password',
             )}
             returnTo={returnTo}
+            onOptionClick={closeLoginMenu}
           />
         </Menu>
       </div>

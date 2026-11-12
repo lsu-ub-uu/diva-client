@@ -1,9 +1,9 @@
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { IconButton } from '@/components/IconButton/IconButton';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { TrashAlert } from '@/components/TrashAlert/TrashAlert';
 import { externalCoraApiUrl } from '@/cora/helper.server';
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
+import { getUserRightsForRecordType } from '@/data/getUserRightsForRecordType.server';
 import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
@@ -13,7 +13,6 @@ import { OutputView } from '@/routes/divaOutput/components/OutputView';
 import type { BFFDataRecord } from '@/types/record';
 import { getFullTitleForOutput } from '@/utils/getRecordTitle';
 import { assertDefined } from '@/utils/invariant';
-import { CodeXmlIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import {
   href,
@@ -35,6 +34,11 @@ export const loader = async ({ url, params, context }: Route.LoaderArgs) => {
   const apiUrl = externalCoraApiUrl(`/record/diva-output/${recordId}`);
   const externalSystemUrl = process.env.CORA_EXTERNAL_SYSTEM_URL;
   assertDefined(externalSystemUrl, 'CORA_EXTERNAL_SYSTEM_URL is not defined');
+
+  const recordTypeUserRights = await getUserRightsForRecordType(
+    'diva-output',
+    auth,
+  );
 
   const origin = url.origin;
   const dependencies = await getDependencies();
@@ -58,6 +62,7 @@ export const loader = async ({ url, params, context }: Route.LoaderArgs) => {
       apiUrl,
       externalSystemUrl,
       origin,
+      recordTypeUserRights,
     };
   } catch (error) {
     throw createRouteErrorResponse(error);
@@ -89,8 +94,6 @@ export const meta = ({ loaderData, error }: Route.MetaArgs) => {
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
 export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation();
-
   const record = loaderData.record;
   const apiUrl = loaderData.apiUrl;
   const isInTrashBin =
@@ -106,18 +109,11 @@ export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
         <div className='top-bar'>
           <Breadcrumbs />
           <div className='top-bar-actions'>
-            <IconButton
-              as='a'
-              href={apiUrl}
-              target='_blank'
-              rel='noopener noreferrer nofollow'
-              aria-label='View raw data'
-              size='small'
-              tooltip={t('divaClient_viewInApiText')}
-            >
-              <CodeXmlIcon />
-            </IconButton>
-            <RecordActionBar record={record} />
+            <RecordActionBar
+              record={record}
+              recordTypeUserRights={loaderData.recordTypeUserRights}
+              apiUrl={apiUrl}
+            />
           </div>
         </div>
       </div>

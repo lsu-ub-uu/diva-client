@@ -28,7 +28,6 @@ export const MenuItem = ({ children, text }: MenuItemProps) => {
           menuContext?.unRegisterItem(id);
         }
       }}
-      onMouseUp={() => menuContext?.closeMenu()}
     >
       {children}
     </li>

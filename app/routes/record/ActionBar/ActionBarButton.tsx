@@ -30,8 +30,8 @@ export const ActionBarButton = ({
   return (
     <div className={styles['action-bar-button']}>
       <Button
-        size='small'
         variant='tertiary'
+        size='small'
         disabled={pending}
         onClick={() => {
           if (onAction) {
@@ -49,7 +49,7 @@ export const ActionBarButton = ({
         {...rest}
       >
         {pending ? <CircularLoader /> : icon}
-        {children}
+        <span className={styles['action-bar-button-text']}>{children}</span>
       </Button>
       {confirmDialog && (
         <ConfirmDialog

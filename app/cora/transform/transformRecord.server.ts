@@ -35,10 +35,11 @@ import type {
   DataGroup,
   DataListWrapper,
   DataRecordLink,
-  RecordWrapper,
   DataResourceLink,
+  RecordWrapper,
 } from '@/cora/cora-data/types.server';
 
+import { log } from '@/logging/logger.server';
 import type {
   BFFDataRecord,
   BFFDataResourceLink,
@@ -59,7 +60,6 @@ import type {
   Dependencies,
   FormDefinitionMode,
 } from '../bffTypes.server';
-import { log } from '@/logging/logger.server';
 
 /**
  * Transforms records
@@ -91,8 +91,8 @@ export const transformRecord = (
   recordWrapper: RecordWrapper,
   mode: FormDefinitionMode,
 ): BFFDataRecord => {
-  let createdAt;
-  let createdBy;
+  let createdAt: string | undefined;
+  let createdBy: string | undefined;
   const id = extractIdFromRecordInfo(recordWrapper.record.data);
   const recordInfo = extractRecordInfoDataGroup(recordWrapper.record.data);
 

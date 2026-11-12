@@ -2,26 +2,20 @@
   display: flex;
   flex-flow: row;
   justify-content: flex-end;
-  background-color: var(--color-card);
-  padding: var(--gap-s);
+  background-color: var(--color-output-card-background);
   border-radius: var(--border-radius-s);
-  border: 1px solid var(--color-card-dark);
+  border: 1px solid var(--color-output-card-border);
+  margin-left: auto;
+  padding: var(--gap-s);
 
-  @media (width < 900px) {
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: var(--gap-s);
-
-    .action-bar-button a,
-    button {
-      justify-content: flex-start;
+  @media (width < 600px) {
+    .action-bar-button-text {
+      display: none;
     }
   }
 }
 
-.action-bar-button {
-  a,
-  button {
-    white-space: nowrap;
-  }
+.action-bar-button:not(:first-child) {
+  border-left: 1px solid var(--color-thin-border);
+  margin-left: var(--gap-s);
 }

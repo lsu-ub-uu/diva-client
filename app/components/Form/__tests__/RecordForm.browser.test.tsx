@@ -1,3 +1,4 @@
+import { createAlternativePresentationFormDef } from '@/__mocks__/data/form/alternativePresentation';
 import type {
   FormComponentCollVar,
   RecordFormSchema,
@@ -5,7 +6,6 @@ import type {
 import { describe, expect, it } from 'vitest';
 import { render } from 'vitest-browser-react';
 import { RecordFormWithRoutesStub } from './RecordFormTestHelper';
-import { createAlternativePresentationFormDef } from '@/__mocks__/data/form/alternativePresentation';
 
 describe('RecordForm', () => {
   it('expands accordion when validation error ', async () => {

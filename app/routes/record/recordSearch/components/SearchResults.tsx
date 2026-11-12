@@ -1,10 +1,13 @@
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
-import { RecordActionButtons } from '@/components/RecordActionButtons/RecordActionButtons';
-import { CircleDashedIcon, SearchSlashIcon } from '@/icons/icons';
+import { CircleDashedIcon, EllipsisIcon, SearchSlashIcon } from '@/icons/icons';
+import { ChevronDownIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { RecordActionMenu } from '../../ActionBar/RecordActionMenu';
 import type { PerformSearchResult } from '../utils/performSearch.server';
 import { SearchResultItem } from './SearchResultItem';
 import styles from './SearchResults.module.css';
+import { useRouteLoaderData } from 'react-router';
+import type { loader as recordTypeLoader } from '../../recordType';
 
 interface SearchResultsProps {
   searchResults: PerformSearchResult;
@@ -22,6 +25,10 @@ export const SearchResults = ({
   validationErrors,
 }: SearchResultsProps) => {
   const { t } = useTranslation();
+  const recordTypeLoaderData = useRouteLoaderData<typeof recordTypeLoader>(
+    'routes/record/recordType',
+  );
+  const recordTypeUserRights = recordTypeLoaderData?.recordTypeUserRights ?? [];
 
   if (validationErrors.size > 0) {
     return (
@@ -67,7 +74,14 @@ export const SearchResults = ({
             <div className={styles['result-list-item-content']}>
               <SearchResultItem record={record} />
               <div className={styles['record-action-buttons']}>
-                <RecordActionButtons record={record} />
+                <RecordActionMenu
+                  record={record}
+                  recordTypeUserRights={recordTypeUserRights}
+                  menuButtonProps={{ size: 'small' }}
+                >
+                  <EllipsisIcon />
+                  <ChevronDownIcon />
+                </RecordActionMenu>
               </div>
             </div>
           </li>

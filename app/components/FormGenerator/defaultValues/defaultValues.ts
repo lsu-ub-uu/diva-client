@@ -78,11 +78,11 @@ export const createDefaultValuesFromComponent = (
 ) => {
   let defaultValues: {
     [x: string]:
-      | string
-      | number
-      | (Record<string, never> | undefined)[]
-      | undefined
-      | unknown[];
+    | string
+    | number
+    | (Record<string, never> | undefined)[]
+    | undefined
+    | unknown[];
   } = {};
 
   const formDefaultObject = createFormDefaultObject(component, member, user);
@@ -206,11 +206,11 @@ function createDefaultObjectForRepeating(
   component: FormComponentWithData | FormComponentContainer,
   defaultValues: {
     [p: string]:
-      | string
-      | number
-      | (Record<string, never> | undefined)[]
-      | unknown[]
-      | undefined;
+    | string
+    | number
+    | (Record<string, never> | undefined)[]
+    | unknown[]
+    | undefined;
   },
   formDefaultObject:
     | { [p: string]: string; value: string }

@@ -126,7 +126,33 @@ describe('Menu', () => {
 
     expect(onAlphaClick).toHaveBeenCalledTimes(1);
     expect(onBetaClick).not.toHaveBeenCalled();
+    await expect.element(menuButton).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  it('should close menu when closeMenu callback is invoked', async () => {
+    const MenuTestWithCloseOnClick = () => {
+      const { menuProps, triggerProps, closeMenu } = useMenu();
+
+      return (
+        <>
+          <Button {...triggerProps}>Open Menu</Button>
+          <Menu {...menuProps}>
+            <MenuItem text='Alpha'>
+              <Button onClick={closeMenu}>Alpha</Button>
+            </MenuItem>
+          </Menu>
+        </>
+      );
+    };
+    const screen = await render(<MenuTestWithCloseOnClick />);
+    const menuButton = screen.getByRole('button', { name: 'Open Menu' });
     await expect.element(menuButton).toHaveAttribute('aria-expanded', 'false');
+    await userEvent.click(menuButton);
+    await expect.element(menuButton).toHaveAttribute('aria-expanded', 'true');
+    const closeButton = screen.getByRole('button', { name: 'Alpha' });
+    await userEvent.click(closeButton);
+    await expect.element(menuButton).toHaveAttribute('aria-expanded', 'false');
+    await expect.element(closeButton).not.toBeInTheDocument();
   });
 
   it('should navigate menu items with arrow keys and select with Enter', async () => {
@@ -241,27 +267,6 @@ describe('Menu', () => {
     expect(onButtonClick).toHaveBeenCalledTimes(1);
   });
 
-  it('should not trigger click on Enter when active item has no link or button', async () => {
-    const screen = await render(
-      <MenuTest useFilter>
-        <MenuItem text='Alpha'>
-          <span>Alpha</span>
-        </MenuItem>
-      </MenuTest>,
-    );
-
-    const menuButton = screen.getByRole('button', { name: 'Open Menu' });
-    await userEvent.click(menuButton);
-
-    const filterInput = screen.getByPlaceholder('divaClient_filteringText');
-    await filterInput.fill('alpha');
-
-    // Should not throw even with no link or button
-    await userEvent.keyboard('{Enter}');
-
-    await expect.element(menuButton).toHaveAttribute('aria-expanded', 'false');
-  });
-
   it('should not trigger click on Enter when menu is closed', async () => {
     const onAlphaClick = vi.fn();
 
@@ -315,7 +320,7 @@ describe('Menu', () => {
     expect(onBetaClick).not.toHaveBeenCalled();
   });
 
-  it('should close menu when clicking a menu item', async () => {
+  it('should not close menu when clicking a menu item', async () => {
     const screen = await render(
       <MenuTest>
         <MenuItem>
@@ -330,6 +335,6 @@ describe('Menu', () => {
 
     await userEvent.click(screen.getByRole('button', { name: 'Alpha' }));
 
-    await expect.element(menuButton).toHaveAttribute('aria-expanded', 'false');
+    await expect.element(menuButton).toHaveAttribute('aria-expanded', 'true');
   });
 });

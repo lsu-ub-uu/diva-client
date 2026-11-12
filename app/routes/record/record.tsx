@@ -26,12 +26,20 @@ import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import { getRecordTitle } from '@/utils/getRecordTitle';
 import { useTranslation } from 'react-i18next';
-import { isRouteErrorResponse, Link, Outlet } from 'react-router';
+import { type loader as recordTypeLoader } from '../record/recordType';
+
+import {
+  isRouteErrorResponse,
+  Link,
+  Outlet,
+  useRouteLoaderData,
+} from 'react-router';
 import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/record';
 import { RecordActionBar } from './ActionBar/RecordActionBar';
 import css from './record.css?url';
+import { externalCoraApiUrl } from '@/cora/helper.server';
 
 export const loader = async ({ params, context }: Route.LoaderArgs) => {
   const { t, language } = context.get(i18nContext);
@@ -50,8 +58,9 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
     const breadcrumb = getRecordTitle(record, language) ?? record.id;
     const pageTitle =
       getRecordTitle(record, language) || t('divaClient_missingTitleText');
+    const apiUrl = externalCoraApiUrl(`/record/${recordType}/${recordId}`);
 
-    return { record, breadcrumb, pageTitle };
+    return { record, breadcrumb, pageTitle, apiUrl };
   } catch (error) {
     throw createRouteErrorResponse(error);
   }
@@ -105,7 +114,12 @@ export const ErrorBoundary = ({ error, params }: Route.ErrorBoundaryProps) => {
 };
 
 export default function RecordTypeRoute({ loaderData }: Route.ComponentProps) {
-  const { record } = loaderData;
+  const { record, apiUrl } = loaderData;
+
+  const recordTypeLoaderData = useRouteLoaderData<typeof recordTypeLoader>(
+    'routes/record/recordType',
+  );
+  const recordTypeUserRights = recordTypeLoaderData?.recordTypeUserRights ?? [];
 
   function isInTrashBin() {
     const rootGroup = Object.values(record.data)[0];
@@ -122,7 +136,11 @@ export default function RecordTypeRoute({ loaderData }: Route.ComponentProps) {
         )}
         <div className='top-bar grid-col-12'>
           <Breadcrumbs />
-          <RecordActionBar record={record} />
+          <RecordActionBar
+            record={record}
+            recordTypeUserRights={recordTypeUserRights}
+            apiUrl={apiUrl}
+          />
         </div>
       </div>
       <Outlet />

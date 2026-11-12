@@ -1,133 +1,62 @@
+import { Button } from '@/components/Button/Button';
+import type { UserRightActionLink } from '@/data/getUserRightsForRecordType.server';
 import {
-  ArchiveRestoreIcon,
+  ChevronDownIcon,
+  CodeXmlIcon,
+  EllipsisIcon,
   FilePenIcon,
   FileTextIcon,
-  OldRecordIcon,
-  PublishIcon,
-  ShredderIcon,
-  Trash2Icon,
-  UnpublishIcon,
 } from '@/icons/icons';
 import type { BFFDataRecord } from '@/types/record';
 import { useTranslation } from 'react-i18next';
-import { href, Link, useFetcher, useMatches } from 'react-router';
+import { href, Link, useMatches } from 'react-router';
 import { ActionBar } from './ActionBar';
 import { ActionBarButton } from './ActionBarButton';
+import { RecordActionMenu } from './RecordActionMenu';
+import { useUser } from '@/utils/rootLoaderDataUtils';
+import styles from './ActionBar.module.css';
 
 interface ActionBarProps {
   record: BFFDataRecord;
+  recordTypeUserRights: UserRightActionLink[];
   className?: string;
+  apiUrl: string;
 }
-export const RecordActionBar = ({ record, className }: ActionBarProps) => {
+export const RecordActionBar = ({
+  record,
+  className,
+  recordTypeUserRights,
+  apiUrl,
+}: ActionBarProps) => {
   const matches = useMatches();
   const { t } = useTranslation();
-  const fetcher = useFetcher();
+  const user = useUser();
 
   const isOnUpdatePage = matches.at(-1)?.id === 'routes/record/recordUpdate';
   const isOnViewPage =
     matches.at(-1)?.id === 'routes/record/recordView' ||
     matches.at(-1)?.id === 'routes/divaOutput/divaOutputView';
+  const recordUserRights = record.userRights ?? [];
 
-  const rights = record.userRights ?? [];
-  const hasActions =
-    (!isOnViewPage && rights.includes('read')) ||
-    (!isOnUpdatePage && rights.includes('update')) ||
-    rights.includes('publish') ||
-    rights.includes('unpublish') ||
-    rights.includes('trash') ||
-    rights.includes('untrash') ||
-    rights.includes('delete') ||
-    rights.includes('viewOldRecord');
-
-  if (!hasActions) {
-    return null;
+  if (!user) {
+    return (
+      <Button
+        as='a'
+        variant='tertiary'
+        href={apiUrl}
+        target='_blank'
+        rel='noopener noreferrer nofollow'
+        size='small'
+      >
+        <CodeXmlIcon />
+        {t('divaClient_viewInApiText')}
+      </Button>
+    );
   }
 
-  const deleteRecord = () => {
-    fetcher.submit(
-      { redirect: true },
-      {
-        method: 'post',
-        action: `/${record.recordType}/${record.id}/delete`,
-      },
-    );
-  };
-
-  const trashRecord = () => {
-    fetcher.submit(
-      { redirect: true },
-      {
-        method: 'post',
-        action: `/${record.recordType}/${record.id}/trash`,
-      },
-    );
-  };
-
-  const untrashRecord = () => {
-    fetcher.submit(
-      {},
-      {
-        method: 'post',
-        action: href('/:recordType/:recordId/untrash', {
-          recordType: record.recordType,
-          recordId: record.id,
-        }),
-      },
-    );
-  };
-
-  const publishRecord = () => {
-    fetcher.submit(
-      {},
-      {
-        method: 'post',
-        action: href('/:recordType/:recordId/publish', {
-          recordType: record.recordType,
-          recordId: record.id,
-        }),
-      },
-    );
-  };
-
-  const unpublishRecord = () => {
-    fetcher.submit(
-      {},
-      {
-        method: 'post',
-        action: href('/:recordType/:recordId/unpublish', {
-          recordType: record.recordType,
-          recordId: record.id,
-        }),
-      },
-    );
-  };
-
-  const isDeleting =
-    fetcher.state !== 'idle' && fetcher.formAction?.includes('/delete');
-  const isTrashing =
-    fetcher.state !== 'idle' && fetcher.formAction?.includes('/trash');
-  const isUntrashing =
-    fetcher.state !== 'idle' && fetcher.formAction?.includes('/untrash');
-  const isPublishing =
-    fetcher.state !== 'idle' && fetcher.formAction?.includes('/publish');
-  const isUnpublishing =
-    fetcher.state !== 'idle' && fetcher.formAction?.includes('/unpublish');
-
   return (
-    <ActionBar className={className}>
-      {!isOnViewPage && record.userRights?.includes('read') && (
-        <ActionBarButton
-          as={Link}
-          to={href('/:recordType/:recordId', {
-            recordType: record.recordType,
-            recordId: record.id,
-          })}
-          icon={<FileTextIcon />}
-        >
-          {t('divaClient_viewRecordText')}
-        </ActionBarButton>
-      )}
-      {!isOnUpdatePage && record.userRights?.includes('update') && (
+    <ActionBar className={className} data-testid='record-action-bar'>
+      {!isOnUpdatePage && recordUserRights.includes('update') && (
         <ActionBarButton
           as={Link}
           to={href('/:recordType/:recordId/update', {
@@ -139,79 +68,43 @@ export const RecordActionBar = ({ record, className }: ActionBarProps) => {
           {t('divaClient_editRecordText')}
         </ActionBarButton>
       )}
-      {record.userRights?.includes('publish') && (
+
+      {!isOnViewPage && recordUserRights.includes('read') && (
         <ActionBarButton
-          onAction={publishRecord}
-          disabled={isPublishing || isUnpublishing}
-          icon={<PublishIcon />}
-          pending={isPublishing}
+          as={Link}
+          to={href('/:recordType/:recordId', {
+            recordType: record.recordType,
+            recordId: record.id,
+          })}
+          icon={<FileTextIcon />}
         >
-          {t('divaClient_publishRecordText')}
-        </ActionBarButton>
-      )}
-      {record.userRights?.includes('unpublish') && (
-        <ActionBarButton
-          onAction={unpublishRecord}
-          disabled={isPublishing || isUnpublishing}
-          icon={<UnpublishIcon />}
-          pending={isUnpublishing}
-        >
-          {t('divaClient_unpublishRecordText')}
+          {t('divaClient_viewRecordText')}
         </ActionBarButton>
       )}
 
-      {record.userRights?.includes('trash') && (
-        <ActionBarButton
-          onAction={trashRecord}
-          icon={<Trash2Icon />}
-          pending={isTrashing}
-          confirmDialog={{
-            headingText: t('divaClient_confirmTrashHeadingText'),
-            messageText: t('divaClient_confirmTrashText'),
-            confirmButtonText: t('divaClient_trashRecordText'),
-            cancelButtonText: t('divaClient_cancelText'),
-          }}
+      <ActionBarButton
+        as='a'
+        variant='tertiary'
+        href={apiUrl}
+        target='_blank'
+        rel='noopener noreferrer nofollow'
+        icon={<CodeXmlIcon />}
+      >
+        {t('divaClient_viewInApiText')}
+      </ActionBarButton>
+      <div className={styles['action-bar-button']}>
+        <RecordActionMenu
+          record={record}
+          recordTypeUserRights={recordTypeUserRights}
+          excludeActions={['view', 'update']}
         >
-          {t('divaClient_trashRecordText')}
-        </ActionBarButton>
-      )}
-      {record.userRights?.includes('untrash') && (
-        <ActionBarButton
-          onAction={untrashRecord}
-          icon={<ArchiveRestoreIcon />}
-          pending={isUntrashing}
-        >
-          {t('divaClient_untrashButtonText')}
-        </ActionBarButton>
-      )}
-      {record.userRights?.includes('delete') && (
-        <ActionBarButton
-          onAction={deleteRecord}
-          icon={<ShredderIcon />}
-          pending={isDeleting}
-          confirmDialog={{
-            headingText: t('divaClient_confirmDeleteHeadingText'),
-            messageText: t('divaClient_confirmDeleteText'),
-            confirmButtonText: t('divaClient_deleteRecordText'),
-            cancelButtonText: t('divaClient_cancelText'),
-          }}
-        >
-          {t('divaClient_deleteRecordText')}
-        </ActionBarButton>
-      )}
-      {record.userRights?.includes('viewOldRecord') && (
-        <ActionBarButton
-          as={Link}
-          icon={<OldRecordIcon />}
-          to={href('/:recordType/:recordId', {
-            recordType: 'diva-oldRecord',
-            recordId: Object.values(record.data)[0].recordInfo?.oldRecord
-              ?.value,
-          })}
-        >
-          {t('divaClient_viewOldRecordText')}
-        </ActionBarButton>
-      )}
+          <EllipsisIcon />
+          <span className={styles['action-bar-button-text']}>
+            {t('divaClient_moreNavigationText')}
+          </span>
+          <ChevronDownIcon />
+        </RecordActionMenu>
+      </div>
     </ActionBar>
   );
 };

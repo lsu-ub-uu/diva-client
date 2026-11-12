@@ -140,7 +140,6 @@ export const useMenu = () => {
       } else if (button) {
         button.click();
       }
-      menuRef.current?.hidePopover();
     }
   };
 
@@ -182,6 +181,10 @@ export const useMenu = () => {
     triggerId: `${menuId}-trigger`,
   };
 
+  const closeMenu = () => {
+    menuRef.current?.hidePopover();
+  };
+
   const triggerProps: ButtonProps = {
     id: `${menuId}-trigger`,
     'aria-haspopup': 'menu' as const,
@@ -191,5 +194,5 @@ export const useMenu = () => {
     onKeyDown: handleKeyDown,
   };
 
-  return { menuProps, triggerProps };
+  return { menuProps, triggerProps, closeMenu };
 };

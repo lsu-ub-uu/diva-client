@@ -72,6 +72,7 @@ export {
   CircleUserRoundIcon,
   CircleXIcon,
   CodeIcon,
+  CopyPlusIcon,
   CodeXmlIcon,
   CopyIcon,
   DownloadIcon,

@@ -1,0 +1,16 @@
+.menu-trigger {
+  &:focus {
+    outline: 2px solid var(--color-link-selected);
+  }
+}
+
+.record-action-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--gap);
+
+  svg {
+    font-size: 1.2em;
+  }
+}
