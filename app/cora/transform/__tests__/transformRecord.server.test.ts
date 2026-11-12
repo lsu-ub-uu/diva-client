@@ -56,7 +56,7 @@ import type {
 import { transformRecord } from '../transformRecord.server';
 
 describe('transformRecord', () => {
-  it('should transform record for view mode', async () => {
+  it('should transform record for view mode', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId'),
@@ -83,7 +83,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'view',
@@ -121,7 +121,7 @@ describe('transformRecord', () => {
     });
   });
 
-  it('should transform record for update mode', async () => {
+  it('should transform record for update mode', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId', {
@@ -150,7 +150,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'update',
@@ -188,7 +188,7 @@ describe('transformRecord', () => {
     });
   });
 
-  it('should transform record for create mode', async () => {
+  it('should transform record for create mode', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId', {
@@ -217,7 +217,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'create',
@@ -255,7 +255,7 @@ describe('transformRecord', () => {
     });
   });
 
-  it('should add final value attributes to data name', async () => {
+  it('should add final value attributes to data name', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId'),
@@ -314,7 +314,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'view',
@@ -360,7 +360,7 @@ describe('transformRecord', () => {
     });
   });
 
-  it('handle same nameInDate but different final value attributes', async () => {
+  it('handle same nameInDate but different final value attributes', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId'),
@@ -450,7 +450,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'view',
@@ -515,7 +515,7 @@ describe('transformRecord', () => {
     });
   });
 
-  it('matches data against two metadata with same name but different selectable attributes', async () => {
+  it('matches data against two metadata with same name but different selectable attributes', () => {
     const mockDependencies = {
       recordTypePool: listToPool<BFFRecordType>([
         {
@@ -675,7 +675,7 @@ describe('transformRecord', () => {
       },
     };
 
-    const transformed = await transformRecord(mockDependencies, record, 'view');
+    const transformed = transformRecord(mockDependencies, record, 'view');
 
     expect(transformed.data).toEqual({
       root: {
@@ -713,7 +713,7 @@ describe('transformRecord', () => {
     });
   });
 
-  it('should transform a text var', async () => {
+  it('should transform a text var', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId'),
@@ -740,7 +740,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'view',
@@ -749,7 +749,7 @@ describe('transformRecord', () => {
     expect(transformData.data.root.text1.value).toEqual('some value');
   });
 
-  it('should transform a num var', async () => {
+  it('should transform a num var', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId'),
@@ -773,7 +773,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'view',
@@ -782,7 +782,7 @@ describe('transformRecord', () => {
     expect(transformData.data.root.num1.value).toEqual(42);
   });
 
-  it('should transform a coll var', async () => {
+  it('should transform a coll var', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId'),
@@ -809,7 +809,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'view',
@@ -818,7 +818,7 @@ describe('transformRecord', () => {
     expect(transformData.data.root.collVar1.value).toEqual('option1');
   });
 
-  it('should transform a resourceLink', async () => {
+  it('should transform a resourceLink', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId'),
@@ -854,7 +854,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'view',
@@ -868,7 +868,7 @@ describe('transformRecord', () => {
     });
   });
 
-  it('should transform a recordLink', async () => {
+  it('should transform a recordLink', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId'),
@@ -906,7 +906,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'view',
@@ -920,7 +920,7 @@ describe('transformRecord', () => {
     });
   });
 
-  it('should transform a recordLink with read rights', async () => {
+  it('should transform a recordLink with read rights', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId'),
@@ -966,7 +966,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'view',
@@ -980,7 +980,7 @@ describe('transformRecord', () => {
     });
   });
 
-  it('should transform a anyTypeRecordLink', async () => {
+  it('should transform a anyTypeRecordLink', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId'),
@@ -1018,7 +1018,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'view',
@@ -1032,7 +1032,7 @@ describe('transformRecord', () => {
     });
   });
 
-  it('should handle unknown type', async () => {
+  it('should handle unknown type', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId'),
@@ -1066,7 +1066,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'view',
@@ -1078,7 +1078,7 @@ describe('transformRecord', () => {
     });
   });
 
-  it('should ignore data not matching metadata', async () => {
+  it('should ignore data not matching metadata', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId'),
@@ -1106,7 +1106,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'view',
@@ -1144,7 +1144,7 @@ describe('transformRecord', () => {
     });
   });
 
-  it('should handle nested groups', async () => {
+  it('should handle nested groups', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId'),
@@ -1175,7 +1175,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'view',
@@ -1217,7 +1217,7 @@ describe('transformRecord', () => {
     });
   });
 
-  it('should mark field as required or optional', async () => {
+  it('should mark field as required or optional', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId'),
@@ -1249,7 +1249,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'view',
@@ -1287,7 +1287,7 @@ describe('transformRecord', () => {
     });
   });
 
-  it('should handle repeating variable', async () => {
+  it('should handle repeating variable', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId'),
@@ -1320,7 +1320,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'view',
@@ -1358,7 +1358,7 @@ describe('transformRecord', () => {
     });
   });
 
-  it('should handle repeating group', async () => {
+  it('should handle repeating group', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId'),
@@ -1398,7 +1398,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'view',
@@ -1447,7 +1447,7 @@ describe('transformRecord', () => {
     });
   });
 
-  it('should mark final value', async () => {
+  it('should mark final value', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId'),
@@ -1476,7 +1476,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'view',
@@ -1514,7 +1514,7 @@ describe('transformRecord', () => {
     });
   });
 
-  it('should use final value from metadata over data', async () => {
+  it('should use final value from metadata over data', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId'),
@@ -1543,7 +1543,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'view',
@@ -1585,7 +1585,7 @@ describe('transformRecord', () => {
     });
   });
 
-  it('should handle attributes on root group', async () => {
+  it('should handle attributes on root group', () => {
     const mockDependencies = {
       validationTypePool: listToPool([
         createValidationType('someValidationTypeId'),
@@ -1619,7 +1619,7 @@ describe('transformRecord', () => {
       },
     } as RecordWrapper;
 
-    const transformData = await transformRecord(
+    const transformData = transformRecord(
       mockDependencies,
       recordWrapper,
       'view',
@@ -1660,7 +1660,7 @@ describe('transformRecord', () => {
   });
 
   describe('decorated', () => {
-    it('should handle linked record in data', async () => {
+    it('should handle linked record in data', () => {
       const mockDependencies = {
         validationTypePool: listToPool([
           createValidationType('someValidationTypeId'),
@@ -1724,7 +1724,7 @@ describe('transformRecord', () => {
         },
       } as RecordWrapper;
 
-      const transformData = await transformRecord(
+      const transformData = transformRecord(
         mockDependencies,
         recordWrapper,
         'view',
@@ -1827,7 +1827,7 @@ describe('transformRecord', () => {
       ]),
     } as Dependencies;
 
-    it('builds display name from organisation with no parent', async () => {
+    it('builds display name from organisation with no parent', () => {
       const recordWrapper: RecordWrapper = {
         record: {
           actionLinks: {},
@@ -1876,11 +1876,7 @@ describe('transformRecord', () => {
         },
       };
 
-      const result = await transformRecord(
-        dependenciesMock,
-        recordWrapper,
-        'view',
-      );
+      const result = transformRecord(dependenciesMock, recordWrapper, 'view');
 
       expect(result.data.parent.someOrganisationRecordLink).toStrictEqual({
         value: 'organisation:4',
@@ -1895,7 +1891,7 @@ describe('transformRecord', () => {
       });
     });
 
-    it('builds display name from organisation with three parents', async () => {
+    it('builds display name from organisation with three parents', () => {
       const recordWrapper: RecordWrapper = {
         record: {
           actionLinks: {},
@@ -1944,11 +1940,7 @@ describe('transformRecord', () => {
         },
       };
 
-      const result = await transformRecord(
-        dependenciesMock,
-        recordWrapper,
-        'view',
-      );
+      const result = transformRecord(dependenciesMock, recordWrapper, 'view');
 
       expect(result.data.parent.someOrganisationRecordLink).toStrictEqual({
         value: 'organisation:1',
@@ -1963,7 +1955,7 @@ describe('transformRecord', () => {
       });
     });
 
-    it('handles organisation that does not exist in pool', async () => {
+    it('handles organisation that does not exist in pool', () => {
       const recordWrapper: RecordWrapper = {
         record: {
           actionLinks: {},
@@ -2015,11 +2007,7 @@ describe('transformRecord', () => {
         },
       };
 
-      const result = await transformRecord(
-        dependenciesMock,
-        recordWrapper,
-        'view',
-      );
+      const result = transformRecord(dependenciesMock, recordWrapper, 'view');
 
       expect(result.data.parent.someOrganisationRecordLink).toStrictEqual({
         value: 'someNonExistingOrganisationId',
@@ -2073,7 +2061,7 @@ describe('transformRecord', () => {
           },
           expected: false,
         },
-      ])('$description', async ({ oldRecord, expected }) => {
+      ])('$description', ({ oldRecord, expected }) => {
         const dependencies = {
           validationTypePool: listToPool([
             createValidationType('someValidationTypeId', {
@@ -2117,7 +2105,7 @@ describe('transformRecord', () => {
           },
         };
 
-        const result = await transformRecord(dependencies, record, 'update');
+        const result = transformRecord(dependencies, record, 'update');
 
         if (expected) {
           expect(result.userRights).toContain('viewOldRecord');
@@ -2128,7 +2116,7 @@ describe('transformRecord', () => {
     });
 
     describe('trash/untrash rights', () => {
-      it('includes trash right when recordType has useTrashBin set to true and data has an update actionLink', async () => {
+      it('includes trash right when recordType has useTrashBin set to true and data has an update actionLink', () => {
         const dependencies = {
           validationTypePool: listToPool<BFFValidationType>([
             {
@@ -2238,12 +2226,12 @@ describe('transformRecord', () => {
           },
         };
 
-        const result = await transformRecord(dependencies, record, 'update');
+        const result = transformRecord(dependencies, record, 'update');
         expect(result.userRights).toContain('trash');
         expect(result.userRights).not.toContain('untrash');
       });
 
-      it('does not include trash right when inTrashBin is not present in recordInfo and data has an update actionLink', async () => {
+      it('does not include trash right when inTrashBin is not present in recordInfo and data has an update actionLink', () => {
         const dependencies = {
           validationTypePool: listToPool<BFFValidationType>([
             {
@@ -2350,11 +2338,11 @@ describe('transformRecord', () => {
           },
         };
 
-        const result = await transformRecord(dependencies, record, 'update');
+        const result = transformRecord(dependencies, record, 'update');
         expect(result.userRights).not.toContain('trash');
       });
 
-      it('does not include trash right when recordType has useTrashBin set to true and data does not have an update actionLink', async () => {
+      it('does not include trash right when recordType has useTrashBin set to true and data does not have an update actionLink', () => {
         const dependencies = {
           validationTypePool: listToPool<BFFValidationType>([
             {
@@ -2462,11 +2450,11 @@ describe('transformRecord', () => {
           },
         };
 
-        const result = await transformRecord(dependencies, record, 'update');
+        const result = transformRecord(dependencies, record, 'update');
         expect(result.userRights).not.toContain('trash');
       });
 
-      it('includes untrash right when recordType has useTrashBin set to true and data has an update actionLink and record is in trash', async () => {
+      it('includes untrash right when recordType has useTrashBin set to true and data has an update actionLink and record is in trash', () => {
         const dependencies = {
           validationTypePool: listToPool<BFFValidationType>([
             {
@@ -2576,14 +2564,14 @@ describe('transformRecord', () => {
           },
         };
 
-        const result = await transformRecord(dependencies, record, 'update');
+        const result = transformRecord(dependencies, record, 'update');
         expect(result.userRights).toContain('untrash');
         expect(result.userRights).not.toContain('trash');
       });
     });
 
     describe('publish / unpublish right', () => {
-      it('does not include publish right when user does not have update action link', async () => {
+      it('does not include publish right when user does not have update action link', () => {
         const dependencies = {
           validationTypePool: listToPool<BFFValidationType>([
             {
@@ -2693,11 +2681,11 @@ describe('transformRecord', () => {
           },
         };
 
-        const result = await transformRecord(dependencies, record, 'update');
+        const result = transformRecord(dependencies, record, 'update');
         expect(result.userRights).not.toContain('publish');
       });
 
-      it('does not include publish right when record does not have visibility', async () => {
+      it('does not include publish right when record does not have visibility', () => {
         const dependencies = {
           validationTypePool: listToPool<BFFValidationType>([
             {
@@ -2802,11 +2790,11 @@ describe('transformRecord', () => {
           },
         };
 
-        const result = await transformRecord(dependencies, record, 'update');
+        const result = transformRecord(dependencies, record, 'update');
         expect(result.userRights).not.toContain('publish');
       });
 
-      it('does not include publish right when visibility is published', async () => {
+      it('does not include publish right when visibility is published', () => {
         const dependencies = {
           validationTypePool: listToPool<BFFValidationType>([
             {
@@ -2917,11 +2905,11 @@ describe('transformRecord', () => {
           },
         };
 
-        const result = await transformRecord(dependencies, record, 'update');
+        const result = transformRecord(dependencies, record, 'update');
         expect(result.userRights).not.toContain('publish');
       });
 
-      it('does include publish right when user does have update action link and visibility is unpublished', async () => {
+      it('does include publish right when user does have update action link and visibility is unpublished', () => {
         const dependencies = {
           validationTypePool: listToPool<BFFValidationType>([
             {
@@ -3032,11 +3020,11 @@ describe('transformRecord', () => {
           },
         };
 
-        const result = await transformRecord(dependencies, record, 'update');
+        const result = transformRecord(dependencies, record, 'update');
         expect(result.userRights).toContain('publish');
       });
 
-      it('does not include publish right when record is in trash bin', async () => {
+      it('does not include publish right when record is in trash bin', () => {
         const dependencies = {
           validationTypePool: listToPool<BFFValidationType>([
             {
@@ -3153,10 +3141,10 @@ describe('transformRecord', () => {
           },
         };
 
-        const result = await transformRecord(dependencies, record, 'update');
+        const result = transformRecord(dependencies, record, 'update');
         expect(result.userRights).not.toContain('publish');
       });
-      it('does not include unpublish right when user does not have update action link', async () => {
+      it('does not include unpublish right when user does not have update action link', () => {
         const dependencies = {
           validationTypePool: listToPool<BFFValidationType>([
             {
@@ -3266,11 +3254,11 @@ describe('transformRecord', () => {
           },
         };
 
-        const result = await transformRecord(dependencies, record, 'update');
+        const result = transformRecord(dependencies, record, 'update');
         expect(result.userRights).not.toContain('unpublish');
       });
 
-      it('does not include unpublish right when record does not have visibility', async () => {
+      it('does not include unpublish right when record does not have visibility', () => {
         const dependencies = {
           validationTypePool: listToPool<BFFValidationType>([
             {
@@ -3375,11 +3363,11 @@ describe('transformRecord', () => {
           },
         };
 
-        const result = await transformRecord(dependencies, record, 'update');
+        const result = transformRecord(dependencies, record, 'update');
         expect(result.userRights).not.toContain('unpublish');
       });
 
-      it('does not include unpublish right when visibility is unpublished', async () => {
+      it('does not include unpublish right when visibility is unpublished', () => {
         const dependencies = {
           validationTypePool: listToPool<BFFValidationType>([
             {
@@ -3490,11 +3478,11 @@ describe('transformRecord', () => {
           },
         };
 
-        const result = await transformRecord(dependencies, record, 'update');
+        const result = transformRecord(dependencies, record, 'update');
         expect(result.userRights).not.toContain('unpublish');
       });
 
-      it('does include unpublish right when user does have update action link and visibility is published', async () => {
+      it('does include unpublish right when user does have update action link and visibility is published', () => {
         const dependencies = {
           validationTypePool: listToPool<BFFValidationType>([
             {
@@ -3605,13 +3593,13 @@ describe('transformRecord', () => {
           },
         };
 
-        const result = await transformRecord(dependencies, record, 'update');
+        const result = transformRecord(dependencies, record, 'update');
         expect(result.userRights).toContain('unpublish');
       });
     });
   });
 
-  it('matches data against two metadata with same name but different selectable attributes', async () => {
+  it('matches data against two metadata with same name but different selectable attributes', () => {
     const mockDependencies = {
       recordTypePool: listToPool<BFFRecordType>([
         {
@@ -3771,7 +3759,7 @@ describe('transformRecord', () => {
       },
     };
 
-    const transformed = await transformRecord(mockDependencies, record, 'view');
+    const transformed = transformRecord(mockDependencies, record, 'view');
 
     expect(transformed.data).toEqual({
       root: {

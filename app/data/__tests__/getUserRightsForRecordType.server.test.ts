@@ -8,10 +8,7 @@ import type {
 import { getRecordDataById } from '@/cora/getRecordDataById.server';
 import type { HttpResponse } from '@/cora/httpClient.server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import {
-  getUserRightsForRecordType,
-  USER_RIGHT_ACTION_LINKS,
-} from '../getUserRightsForRecordType.server';
+import { getUserRightsForRecordType } from '../getUserRightsForRecordType.server';
 
 vi.mock('@/cora/getRecordDataById.server');
 
@@ -30,7 +27,7 @@ describe('getUserRightsForRecordType', () => {
     vi.clearAllMocks();
   });
 
-  it.each(USER_RIGHT_ACTION_LINKS)(
+  it.each(['create', 'index', 'search', 'list', 'batch_index', 'validate'])(
     'returns %s when its action link exists and ignores unsupported links',
     async (actionLinkKey) => {
       const auth = { data: { token: 'test-token' } } as Auth;

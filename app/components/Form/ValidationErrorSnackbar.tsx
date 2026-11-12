@@ -30,12 +30,7 @@ export const ValidationErrorSnackbar = () => {
 
   if (errors !== prevErrors) {
     if (!isEmpty(errors)) {
-      console.error(
-        JSON.stringify(errors, (key, value) =>
-          key === 'ref' ? undefined : value,
-        ),
-        'Validation errors',
-      );
+      console.error(errors, 'Validation errors');
     }
     setPrevErrors(errors);
     setSnackbarOpen(!isEmpty(errors));
