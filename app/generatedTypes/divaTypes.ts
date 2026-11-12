@@ -482,27 +482,6 @@ export interface DivaOrganisation {
   organisation: OrganisationUpdateGroup;
 }
 
-export interface RecordInfoOrganisationUpdateGroup {
-  id: { value: string; __text?: { sv: string; en: string } };
-  type: { value: 'diva-organisation'; __text?: { sv: string; en: string } };
-  validationType: { value: string; __text?: { sv: string; en: string } };
-  dataDivider: { value: 'divaData'; __text?: { sv: string; en: string } };
-  createdBy: { value: string; __text?: { sv: string; en: string } };
-  tsCreated: { value: string; __text?: { sv: string; en: string } };
-  updated: UpdatedDivaGroup[];
-  permissionUnit: { value: string; __text?: { sv: string; en: string } };
-  inTrashBin: {
-    value: TrueFalseCollection;
-    __text?: { sv: string; en: string };
-    __valueText?: { sv: string; en: string };
-  };
-  oldId?: { value: string; __text?: { sv: string; en: string } };
-  __text?: { sv: string; en: string };
-}
-
-export type OrganisationTypeCollection =
-  'topOrganisation' | 'partOfOrganisation';
-
 export type LanguageSweEngCollection = 'swe' | 'eng';
 
 export interface NameCorporateGroup {
@@ -806,7 +785,7 @@ export interface RelatedOrganisationParentGroup {
     displayName?: { sv: string; en: string };
     __text?: { sv: string; en: string };
   };
-  _type: 'parent';
+  _type: 'parentOrg';
   __text?: { sv: string; en: string };
 }
 
@@ -823,22 +802,37 @@ export interface RelatedOrganisationEarlierGroup {
   __text?: { sv: string; en: string };
 }
 
-export interface OrganisationUpdateGroup {
-  recordInfo: RecordInfoOrganisationUpdateGroup;
-  genre_type_organisationType?: {
-    value: OrganisationTypeCollection;
-    _type: 'organisationType';
+export type OrganisationTypeCollection =
+  'topOrganisation' | 'partOfOrganisation';
+
+export interface RecordInfoOrganisationUpdateGroup {
+  id: { value: string; __text?: { sv: string; en: string } };
+  type: { value: 'diva-organisation'; __text?: { sv: string; en: string } };
+  validationType: { value: string; __text?: { sv: string; en: string } };
+  dataDivider: { value: 'divaData'; __text?: { sv: string; en: string } };
+  createdBy: { value: string; __text?: { sv: string; en: string } };
+  tsCreated: { value: string; __text?: { sv: string; en: string } };
+  updated: UpdatedDivaGroup[];
+  permissionUnit: { value: string; __text?: { sv: string; en: string } };
+  inTrashBin: {
+    value: TrueFalseCollection;
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
+  oldId?: { value: string; __text?: { sv: string; en: string } };
+  __text?: { sv: string; en: string };
+}
+
+export interface OrganisationUpdateGroup {
   authority?: AuthorityCorporateLangGroup[];
   variant?: VariantCorporateLangGroup[];
   startDate?: StartDateGroup;
   endDate?: EndDateGroup;
   address?: AddressGroup;
-  identifier_type_localId?: {
+  location?: LocationGroup;
+  note_type_internal?: {
     value: string;
-    _type: 'localId';
+    _type: 'internal';
     __text?: { sv: string; en: string };
   };
   identifier_type_organisationNumber?: {
@@ -851,14 +845,20 @@ export interface OrganisationUpdateGroup {
     _type: 'ror';
     __text?: { sv: string; en: string };
   };
-  location?: LocationGroup;
-  note_type_internal?: {
+  identifier_type_localId?: {
     value: string;
-    _type: 'internal';
+    _type: 'localId';
     __text?: { sv: string; en: string };
   };
-  related_type_parent?: RelatedOrganisationParentGroup[];
+  related_type_parentOrg?: RelatedOrganisationParentGroup[];
   related_type_earlier?: RelatedOrganisationEarlierGroup[];
+  genre_type_organisationType?: {
+    value: OrganisationTypeCollection;
+    _type: 'organisationType';
+    __text?: { sv: string; en: string };
+    __valueText?: { sv: string; en: string };
+  };
+  recordInfo: RecordInfoOrganisationUpdateGroup;
   __text?: { sv: string; en: string };
 }
 
