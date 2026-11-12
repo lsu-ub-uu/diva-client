@@ -55,7 +55,7 @@ export const RecordActionBar = ({
   }
 
   return (
-    <ActionBar className={className}>
+    <ActionBar className={className} data-testid='record-action-bar'>
       {!isOnUpdatePage && recordUserRights.includes('update') && (
         <ActionBarButton
           as={Link}

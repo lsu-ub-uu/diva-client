@@ -54,106 +54,103 @@ import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
+import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
 
 export const loader = async ({
   request,
   context,
   params,
 }: Route.LoaderArgs) => {
-  const { t } = context.get(i18nContext);
-  const { auth, notification } = context.get(sessionContext);
-  const url = new URL(request.url);
-  const dependencies = await getDependencies();
-  const member = getMemberFromHostname(request, dependencies);
-  const user = auth && createUser(auth);
-  const recordType = params.recordType;
-
-  let validationTypeId = url.searchParams.get('validationType');
-  const duplicateFromRecordId = url.searchParams.get('duplicateFrom');
-
-  let recordToDuplicate: BFFDataRecordData | undefined;
-  if (duplicateFromRecordId) {
-    recordToDuplicate = await getRecordByRecordTypeAndRecordId({
-      dependencies,
-      recordType,
-      recordId: duplicateFromRecordId,
-      authToken: auth?.data.token,
-      mode: 'update',
-    });
-  }
-
-  if (!validationTypeId) {
-    if (!auth) {
-      throw data(null, { status: 401 });
-    }
-    const validationTypes = getValidationTypes(recordType, dependencies);
-    if (validationTypes && validationTypes.length === 1) {
-      validationTypeId = validationTypes[0].value;
-    } else {
-      const title = t('divaClient_createRecordText', {
-        rootGroupTitle: t(
-          dependencies.recordTypePool.get(recordType).textId,
-        ).toLowerCase(),
-      });
-      return {
-        formDefinition: undefined,
-        previewFormDefinition: undefined,
-        defaultValues: undefined,
-        notification,
-        title: title,
-        breadcrumb: title,
-        validationTypes,
-      };
-    }
-  }
-
-  let formDefinition;
-  let previewFormDefinition;
   try {
-    formDefinition = await getFormDefinitionByValidationTypeId(
+    const { t } = context.get(i18nContext);
+    const { auth, notification } = context.get(sessionContext);
+    const url = new URL(request.url);
+    const dependencies = await getDependencies();
+    const member = getMemberFromHostname(request, dependencies);
+    const user = auth && createUser(auth);
+    const recordType = params.recordType;
+
+    let validationTypeId = url.searchParams.get('validationType');
+    const duplicateFromRecordId = url.searchParams.get('duplicateFrom');
+
+    let recordToDuplicate: BFFDataRecordData | undefined;
+    if (duplicateFromRecordId) {
+      recordToDuplicate = await getRecordByRecordTypeAndRecordId({
+        dependencies,
+        recordType,
+        recordId: duplicateFromRecordId,
+        authToken: auth?.data.token,
+        mode: 'update',
+      });
+    }
+
+    if (!validationTypeId) {
+      if (!auth) {
+        throw data(null, { status: 401 });
+      }
+      const validationTypes = getValidationTypes(recordType, dependencies);
+      if (validationTypes && validationTypes.length === 1) {
+        validationTypeId = validationTypes[0].value;
+      } else {
+        const title = t('divaClient_createRecordText', {
+          rootGroupTitle: t(
+            dependencies.recordTypePool.get(recordType).textId,
+          ).toLowerCase(),
+        });
+        return {
+          formDefinition: undefined,
+          previewFormDefinition: undefined,
+          defaultValues: undefined,
+          notification,
+          title: title,
+          breadcrumb: title,
+          validationTypes,
+        };
+      }
+    }
+
+    const formDefinition = getFormDefinitionByValidationTypeId(
       dependencies,
       validationTypeId,
       'create',
     );
 
-    previewFormDefinition = await getFormDefinitionByValidationTypeId(
+    const previewFormDefinition = getFormDefinitionByValidationTypeId(
       dependencies,
       validationTypeId,
       'view',
     );
+
+    const defaultValues = createDefaultValuesFromFormSchema(
+      formDefinition,
+      recordToDuplicate
+        ? cleanRecordForDuplicate(recordToDuplicate?.data)
+        : undefined,
+      member,
+      user,
+    );
+
+    const rootGroupTitleTextId =
+      formDefinition.form.tooltip?.title ?? formDefinition.validationTypeId;
+
+    const title = t('divaClient_createRecordText', {
+      rootGroupTitle: t(rootGroupTitleTextId).toLowerCase(),
+    });
+    const breadcrumb = title;
+
+    return {
+      formDefinition,
+      previewFormDefinition,
+      defaultValues,
+      notification,
+      title,
+      breadcrumb,
+      validationTypes: null,
+    };
   } catch (error) {
-    if (error instanceof NotFoundError) {
-      throw data(error.message, { status: error.status });
-    }
-    throw error;
+    logError(error);
+    throw createRouteErrorResponse(error);
   }
-
-  const defaultValues = createDefaultValuesFromFormSchema(
-    formDefinition,
-    recordToDuplicate
-      ? cleanRecordForDuplicate(recordToDuplicate?.data)
-      : undefined,
-    member,
-    user,
-  );
-
-  const rootGroupTitleTextId =
-    formDefinition.form.tooltip?.title ?? formDefinition.validationTypeId;
-
-  const title = t('divaClient_createRecordText', {
-    rootGroupTitle: t(rootGroupTitleTextId).toLowerCase(),
-  });
-  const breadcrumb = title;
-
-  return {
-    formDefinition,
-    previewFormDefinition,
-    defaultValues,
-    notification,
-    title,
-    breadcrumb,
-    validationTypes: null,
-  };
 };
 
 const cleanRecordForDuplicate = (recordData: RecordData) => {
