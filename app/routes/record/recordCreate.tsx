@@ -36,8 +36,8 @@ import { getFormDefinitionByValidationTypeId } from '@/data/getFormDefinitionByV
 import { getRecordByRecordTypeAndRecordId } from '@/data/getRecordByRecordTypeAndRecordId.server';
 import { getValidationTypes } from '@/data/getValidationTypes.server';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
-import { NotFoundError } from '@/errorHandling/NotFoundError';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
+import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import { logError } from '@/logging/logger.server';
 import type { BFFDataRecordData } from '@/types/record';
@@ -54,7 +54,6 @@ import { getDependencies } from 'server/dependencies/depencencies';
 import { i18nContext } from 'server/i18n';
 import type { Route } from '../record/+types/recordCreate';
 import css from './record.css?url';
-import { createRouteErrorResponse } from '@/errorHandling/createRouteErrorResponse.server';
 
 export const loader = async ({
   request,
