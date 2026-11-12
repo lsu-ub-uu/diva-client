@@ -1,5 +1,5 @@
 import type { BFFDataRecord } from '@/types/record';
-import { createRoutesStub } from 'react-router';
+import { createRoutesStub, type ActionFunction } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 import { useUser } from '@/utils/rootLoaderDataUtils';
 import { render } from 'vitest-browser-react';
@@ -164,6 +164,65 @@ describe('RecordActionBar', () => {
       .element(screen.getByRole('link', { name: 'divaClient_editRecordText' }))
       .not.toBeInTheDocument();
   });
+
+  it('links to the old record', async () => {
+    const screen = await renderRecordActionBar(createRecord(['viewOldRecord']));
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'divaClient_moreNavigationText' }),
+    );
+
+    await expect
+      .element(
+        screen.getByRole('link', { name: 'divaClient_viewOldRecordText' }),
+      )
+      .toHaveAttribute('href', '/diva-oldRecord/123');
+  });
+
+  it.each([
+    ['delete', 'divaClient_deleteRecordText', true],
+    ['trash', 'divaClient_trashRecordText', true],
+    ['untrash', 'divaClient_untrashRecordText', false],
+    ['publish', 'divaClient_publishRecordText', false],
+    ['unpublish', 'divaClient_unpublishRecordText', false],
+  ] as const)(
+    'posts the %s action to its record route',
+    async (action, label, confirmDialog) => {
+      const actionSpy = vi.fn<ActionFunction>(() => null);
+      const screen = await renderRecordActionBar(
+        createRecord([action]),
+        '/',
+        [],
+        true,
+        actionSpy,
+      );
+
+      await userEvent.click(
+        screen.getByRole('button', { name: 'divaClient_moreNavigationText' }),
+      );
+      await userEvent.click(screen.getByRole('button', { name: label }));
+
+      if (confirmDialog) {
+        await userEvent.click(
+          screen.getByRole('dialog').getByRole('button', { name: label }),
+        );
+      }
+
+      await expect
+        .poll(() => actionSpy)
+        .toHaveBeenCalledExactlyOnceWith(
+          expect.objectContaining({
+            request: expect.any(Request),
+          }),
+        );
+      const { request } = actionSpy.mock.calls[0][0];
+      expect(request.method).toBe('POST');
+      expect(new URL(request.url).pathname).toBe(`/diva-person/1234/${action}`);
+      expect((await request.formData()).get('redirect')).toBe(
+        String(confirmDialog),
+      );
+    },
+  );
 
   it('renders the update link instead of the view link on the view page', async () => {
     const screen = await renderRecordActionBar(
@@ -356,6 +415,7 @@ const renderRecordActionBar = async (
   initialEntry = '/',
   recordTypeUserRights: 'create'[] = [],
   loggedIn = true,
+  action: ActionFunction = () => null,
 ) => {
   vi.mocked(useUser).mockReturnValue(loggedIn ? ({} as User) : undefined);
   const Component = () => (
@@ -366,6 +426,10 @@ const renderRecordActionBar = async (
     />
   );
   const RoutesStub = createRoutesStub([
+    {
+      path: '/:recordType/:recordId/:action',
+      action,
+    },
     {
       id: 'routes/record/recordView',
       path: '/:recordType/:recordId',

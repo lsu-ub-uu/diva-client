@@ -108,7 +108,10 @@ export const RecordActionMenu = ({
         children: t('divaClient_deleteRecordText'),
         type: 'button',
         icon: <ShredderIcon />,
-        action: `/${record.recordType}/${record.id}/delete`,
+        action: href('/:recordType/:recordId/delete', {
+          recordType: record.recordType,
+          recordId: record.id,
+        }),
         redirect: true,
         confirmDialog: {
           headingText: t('divaClient_confirmDeleteHeadingText'),
@@ -125,7 +128,10 @@ export const RecordActionMenu = ({
         children: t('divaClient_trashRecordText'),
         type: 'button',
         icon: <Trash2Icon />,
-        action: `/${record.recordType}/${record.id}/trash`,
+        action: href('/:recordType/:recordId/trash', {
+          recordType: record.recordType,
+          recordId: record.id,
+        }),
         redirect: true,
         confirmDialog: {
           headingText: t('divaClient_confirmTrashHeadingText'),
@@ -142,7 +148,10 @@ export const RecordActionMenu = ({
         children: t('divaClient_untrashRecordText'),
         type: 'button',
         icon: <ArchiveRestoreIcon />,
-        action: `/${record.recordType}/${record.id}/untrash`,
+        action: href('/:recordType/:recordId/untrash', {
+          recordType: record.recordType,
+          recordId: record.id,
+        }),
       });
     }
 
@@ -152,7 +161,10 @@ export const RecordActionMenu = ({
         children: t('divaClient_publishRecordText'),
         type: 'button',
         icon: <PublishIcon />,
-        action: `/${record.recordType}/${record.id}/publish`,
+        action: href('/:recordType/:recordId/publish', {
+          recordType: record.recordType,
+          recordId: record.id,
+        }),
       });
     }
     if (recordUserRights.includes('unpublish')) {
@@ -161,7 +173,10 @@ export const RecordActionMenu = ({
         children: t('divaClient_unpublishRecordText'),
         type: 'button',
         icon: <PublishIcon />,
-        action: `/${record.recordType}/${record.id}/unpublish`,
+        action: href('/:recordType/:recordId/unpublish', {
+          recordType: record.recordType,
+          recordId: record.id,
+        }),
       });
     }
 
