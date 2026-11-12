@@ -5,7 +5,6 @@ export default [
 
   /* Generic record pages */
   route(':recordType', 'routes/record/recordType.tsx', [
-    // hämtar recordTypeUserRights
     index('routes/record/recordSearch/recordSearch.tsx'),
     route('create', 'routes/record/recordCreate.tsx'),
     route(':recordId', 'routes/record/record.tsx', [
