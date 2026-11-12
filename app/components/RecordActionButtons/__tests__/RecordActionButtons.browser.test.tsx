@@ -568,7 +568,7 @@ describe('RecordActionButtons', () => {
 
       await expect
         .element(
-          screen.getByRole('button', { name: 'divaClient_untrashButtonText' }),
+          screen.getByRole('button', { name: 'divaClient_untrashRecordText' }),
         )
         .toBeVisible();
     });
@@ -598,7 +598,7 @@ describe('RecordActionButtons', () => {
       const screen = await render(<RoutesStub />);
 
       await screen
-        .getByRole('button', { name: 'divaClient_untrashButtonText' })
+        .getByRole('button', { name: 'divaClient_untrashRecordText' })
         .click();
 
       await expect.poll(() => untrashActionCalled).toBe(true);
@@ -625,7 +625,7 @@ describe('RecordActionButtons', () => {
 
       const screen = await render(<RoutesStub />);
       const untrashButton = screen.getByRole('button', {
-        name: 'divaClient_untrashButtonText',
+        name: 'divaClient_untrashRecordText',
       });
 
       expect(untrashButton.element().innerHTML).toContain(

@@ -33,7 +33,7 @@ export const TrashAlert = ({ recordType, recordId }: TrashAlertProps) => {
       icon={<Trash2Icon />}
       action={
         <Button variant='secondary' onClick={untrash}>
-          {t('divaClient_untrashButtonText')}
+          {t('divaClient_untrashRecordText')}
           {submitting ? <CircularLoader /> : <ArchiveRestoreIcon />}
         </Button>
       }

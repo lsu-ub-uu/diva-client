@@ -1,3 +1,9 @@
+.menu-trigger {
+  &:focus {
+    outline: 2px solid var(--color-link-selected);
+  }
+}
+
 .record-action-menu-item {
   display: flex;
   align-items: center;

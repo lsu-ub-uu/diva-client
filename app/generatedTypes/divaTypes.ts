@@ -3622,7 +3622,7 @@ export type BinaryTypeCollection =
   'generic' | 'image' | 'sound' | 'video' | 'document' | 'text' | 'compressed';
 
 export type BinaryStatusCollection =
-  'created' | 'uploaded' | 'reconvert' | 'processing' | 'done' | 'failed';
+  'created' | 'uploaded' | 'processing' | 'done' | 'failed';
 
 export interface RecordInfoBinaryGroup {
   id: { value: string; __text?: { sv: string; en: string } };

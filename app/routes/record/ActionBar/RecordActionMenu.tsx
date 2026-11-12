@@ -20,6 +20,7 @@ import type { BFFDataRecord } from '@/types/record';
 import { useTranslation } from 'react-i18next';
 import { href, Link, useFetcher } from 'react-router';
 import styles from './RecordActionMenu.module.css';
+import clsx from 'clsx';
 
 interface RecordMenuActionBase {
   id: string;
@@ -190,7 +191,8 @@ export const RecordActionMenu = ({
     <>
       <Button
         variant='tertiary'
-        className={className}
+        size='small'
+        className={clsx(className, styles['menu-trigger'])}
         {...menuButtonProps}
         {...triggerProps}
       >

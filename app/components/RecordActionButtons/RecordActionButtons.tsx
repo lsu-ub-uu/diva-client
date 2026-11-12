@@ -233,7 +233,7 @@ export const RecordActionButtons = ({ record }: RecordActionButtonProps) => {
           <IconButton
             size='small'
             key={`${record.id}_rab_${userRight}`}
-            tooltip={t('divaClient_untrashButtonText')}
+            tooltip={t('divaClient_untrashRecordText')}
             onClick={untrashRecord}
           >
             {isUntrashing ? <CircularLoader /> : <ArchiveRestoreIcon />}

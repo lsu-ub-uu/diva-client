@@ -202,7 +202,6 @@ describe('RecordActionBar', () => {
         .toBeInTheDocument();
     },
   );
-
   it('does not show the view link when the user lacks read right', async () => {
     const screen = await renderRecordActionBar(
       createRecord(['update', 'delete']),

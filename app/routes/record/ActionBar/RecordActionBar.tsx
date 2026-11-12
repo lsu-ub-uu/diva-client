@@ -92,18 +92,19 @@ export const RecordActionBar = ({
       >
         {t('divaClient_viewInApiText')}
       </ActionBarButton>
-      <RecordActionMenu
-        record={record}
-        recordTypeUserRights={recordTypeUserRights}
-        excludeActions={['view', 'update']}
-        className={styles['action-bar-button']}
-      >
-        <EllipsisIcon />
-        <span className={styles['action-bar-button-text']}>
-          {t('divaClient_moreNavigationText')}
-        </span>
-        <ChevronDownIcon />
-      </RecordActionMenu>
+      <div className={styles['action-bar-button']}>
+        <RecordActionMenu
+          record={record}
+          recordTypeUserRights={recordTypeUserRights}
+          excludeActions={['view', 'update']}
+        >
+          <EllipsisIcon />
+          <span className={styles['action-bar-button-text']}>
+            {t('divaClient_moreNavigationText')}
+          </span>
+          <ChevronDownIcon />
+        </RecordActionMenu>
+      </div>
     </ActionBar>
   );
 };

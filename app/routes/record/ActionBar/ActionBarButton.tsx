@@ -28,10 +28,10 @@ export const ActionBarButton = ({
 }: ActionBarButtonProps) => {
   const { showConfirmDialog, confirmDialogRef } = useConfirmDialog();
   return (
-    <>
+    <div className={styles['action-bar-button']}>
       <Button
-        className={styles['action-bar-button']}
         variant='tertiary'
+        size='small'
         disabled={pending}
         onClick={() => {
           if (onAction) {
@@ -69,6 +69,6 @@ export const ActionBarButton = ({
           }
         />
       )}
-    </>
+    </div>
   );
 };

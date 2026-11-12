@@ -16,14 +16,6 @@
 }
 
 .action-bar-button:not(:first-child) {
-  &::before {
-    content: '';
-    display: block;
-    width: 1px;
-    background-color: var(--color-thin-border);
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-  }
+  border-left: 1px solid var(--color-thin-border);
+  margin-left: var(--gap-s);
 }

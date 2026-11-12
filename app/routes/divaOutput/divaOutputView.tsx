@@ -1,5 +1,4 @@
 import { sessionContext } from '@/auth/sessionMiddleware.server';
-import { IconButton } from '@/components/IconButton/IconButton';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { TrashAlert } from '@/components/TrashAlert/TrashAlert';
 import { externalCoraApiUrl } from '@/cora/helper.server';
@@ -10,7 +9,6 @@ import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { getMetaTitleFromError } from '@/errorHandling/getMetaTitleFromError';
 import { UnhandledErrorPage } from '@/errorHandling/UnhandledErrorPage';
 import type { DivaOutput } from '@/generatedTypes/divaTypes';
-import { CodeXmlIcon } from '@/icons/icons';
 import { OutputView } from '@/routes/divaOutput/components/OutputView';
 import type { BFFDataRecord } from '@/types/record';
 import { getFullTitleForOutput } from '@/utils/getRecordTitle';
@@ -96,8 +94,6 @@ export const meta = ({ loaderData, error }: Route.MetaArgs) => {
 export const links = () => [{ rel: 'stylesheet', href: css }];
 
 export default function DivaOutputView({ loaderData }: Route.ComponentProps) {
-  const { t } = useTranslation();
-
   const record = loaderData.record;
   const apiUrl = loaderData.apiUrl;
   const isInTrashBin =
