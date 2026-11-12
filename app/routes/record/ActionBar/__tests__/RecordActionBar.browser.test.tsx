@@ -371,7 +371,7 @@ describe('RecordActionBar', () => {
       .element(screen.getByRole('link', { name: 'divaClient_copyAsNewText' }))
       .toHaveAttribute(
         'href',
-        '/diva-person/create?duplicateFrom=1234&validationType=diva-person',
+        '/diva-person/create?copyFrom=1234&validationType=diva-person',
       );
   });
 

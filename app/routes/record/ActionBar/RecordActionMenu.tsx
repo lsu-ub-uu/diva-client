@@ -96,7 +96,7 @@ export const RecordActionMenu = ({
           pathname: href('/:recordType/create', {
             recordType: record.recordType,
           }),
-          search: `?${new URLSearchParams({ duplicateFrom: record.id, validationType: record.validationType })}`,
+          search: `?${new URLSearchParams({ copyFrom: record.id, validationType: record.validationType })}`,
         },
         icon: <CopyPlusIcon />,
       });
@@ -226,11 +226,13 @@ export const RecordActionMenu = ({
   );
 };
 
+interface RecordActionMenuLinkItemProps {
+  action: RecordMenuLinkAction;
+}
+
 const RecordActionMenuLinkItem = ({
   action,
-}: {
-  action: RecordMenuLinkAction;
-}) => {
+}: RecordActionMenuLinkItemProps) => {
   const { to, icon, children } = action;
   return (
     <MenuItem>
@@ -242,11 +244,13 @@ const RecordActionMenuLinkItem = ({
   );
 };
 
+interface RecordActionMenuButtonItemProps {
+  buttonAction: RecordMenuButtonAction;
+}
+
 const RecordActionMenuButtonItem = ({
   buttonAction,
-}: {
-  buttonAction: RecordMenuButtonAction;
-}) => {
+}: RecordActionMenuButtonItemProps) => {
   const {
     redirect = false,
     action,

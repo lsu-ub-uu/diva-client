@@ -71,14 +71,14 @@ export const loader = async ({
     const recordType = params.recordType;
 
     let validationTypeId = url.searchParams.get('validationType');
-    const duplicateFromRecordId = url.searchParams.get('duplicateFrom');
+    const copyFromRecordId = url.searchParams.get('copyFrom');
 
-    let recordToDuplicate: BFFDataRecordData | undefined;
-    if (duplicateFromRecordId) {
-      recordToDuplicate = await getRecordByRecordTypeAndRecordId({
+    let recordToCopy: BFFDataRecordData | undefined;
+    if (copyFromRecordId) {
+      recordToCopy = await getRecordByRecordTypeAndRecordId({
         dependencies,
         recordType,
-        recordId: duplicateFromRecordId,
+        recordId: copyFromRecordId,
         authToken: auth?.data.token,
         mode: 'update',
       });
@@ -123,9 +123,7 @@ export const loader = async ({
 
     const defaultValues = createDefaultValuesFromFormSchema(
       formDefinition,
-      recordToDuplicate
-        ? cleanRecordForDuplicate(recordToDuplicate?.data)
-        : undefined,
+      recordToCopy ? cleanRecordForCopy(recordToCopy?.data) : undefined,
       member,
       user,
     );
@@ -153,7 +151,7 @@ export const loader = async ({
   }
 };
 
-const cleanRecordForDuplicate = (recordData: RecordData) => {
+const cleanRecordForCopy = (recordData: RecordData) => {
   return Object.fromEntries(
     Object.entries(recordData).map(([rootName, rootData]) => [
       rootName,
