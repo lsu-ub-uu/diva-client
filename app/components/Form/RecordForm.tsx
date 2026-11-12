@@ -30,31 +30,19 @@ import { FloatingActionButton } from '@/components/FloatingActionButton/Floating
 import { FloatingActionButtonContainer } from '@/components/FloatingActionButton/FloatingActionButtonContainer';
 import type { BFFDataRecordData } from '@/types/record';
 import { SaveIcon } from '@/icons/icons';
-import {
-  type FormEvent,
-  type KeyboardEvent,
-  useCallback,
-  useEffect,
-  useRef,
-} from 'react';
+import { type KeyboardEvent, useCallback, useEffect, useRef } from 'react';
 import { CircularLoader } from '../Loader/CircularLoader';
 import styles from './Form.module.css';
 import { FormNavigationBlocker } from './FormNavigationBlocker';
 import { useHotkey } from '@/utils/useHotkey';
 
 export interface RecordFormProps {
-  id?: string;
-  action?: string;
-  allowNavigation?: boolean;
   formSchema: RecordFormSchema;
   defaultValues: Record<string, any>;
   onChange?: (data: BFFDataRecordData) => void;
 }
 
 export const RecordForm = ({
-  id,
-  action,
-  allowNavigation = false,
   defaultValues,
   formSchema,
   onChange,
@@ -97,21 +85,6 @@ export const RecordForm = ({
 
   useHotkey('alt', 'KeyS', handleAltS);
 
-  const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
-    const form = event.currentTarget;
-    const originalAction = form.action;
-    const submitter = (event.nativeEvent as SubmitEvent).submitter;
-    if (
-      submitter instanceof HTMLButtonElement &&
-      submitter.hasAttribute('formaction')
-    ) {
-      form.action = submitter.formAction;
-    }
-    const result = handleSubmit(event);
-    form.action = originalAction;
-    return result;
-  };
-
   const handleKeyDown = (event: KeyboardEvent<HTMLFormElement>) => {
     if (
       event.key === 'Enter' &&
@@ -140,17 +113,13 @@ export const RecordForm = ({
 
   return (
     <>
-      <FormNavigationBlocker
-        isDirty={!allowNavigation && Object.keys(dirtyFields).length > 0}
-      />
+      <FormNavigationBlocker isDirty={Object.keys(dirtyFields).length > 0} />
 
       <Form
-        id={id}
-        action={action}
         ref={formRef}
         method='POST'
         className={styles['form']}
-        onSubmit={handleFormSubmit}
+        onSubmit={handleSubmit}
         onKeyDown={handleKeyDown}
       >
         <RemixFormProvider {...methods}>
