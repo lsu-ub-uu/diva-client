@@ -4,7 +4,6 @@ import { Menu, useMenu } from '@/components/Menu/Menu';
 import { MenuItem } from '@/components/Menu/MenuItem';
 import type { Navigation } from '@/data/getNavigation.server';
 import {
-  ChevronDownIcon,
   CourseIcon,
   DesignSystemIcon,
   EllipsisIcon,

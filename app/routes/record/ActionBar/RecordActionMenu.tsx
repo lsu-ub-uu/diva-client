@@ -9,14 +9,13 @@ import { Menu, useMenu } from '@/components/Menu/Menu';
 import { MenuItem } from '@/components/Menu/MenuItem';
 import type { UserRightActionLink } from '@/data/getUserRightsForRecordType.server';
 import {
-  UntrashIcon,
-  ChevronDownIcon,
   CopyToNowIcon,
-  EllipsisIcon,
-  ViewIcon,
-  PublishIcon,
   DeletePermanentlyIcon,
+  EllipsisIcon,
+  PublishIcon,
   TrashIcon,
+  UntrashIcon,
+  ViewIcon,
 } from '@/icons/icons';
 import type { BFFDataRecord } from '@/types/record';
 import clsx from 'clsx';
