@@ -92,7 +92,6 @@ export const TopNavigation = ({ navigation }: TopNavigationProps) => {
               <span className={styles['label']}>
                 {t('divaClient_moreNavigationText')}
               </span>
-              <ChevronDownIcon className={styles['menu-navigation-chevron']} />
             </Button>
             <Menu alignment='center' {...menuProps}>
               {navigation.otherNavigationItems.map((navItem) => (

@@ -76,10 +76,6 @@
 
 .menu-navigation-button[data-open] {
   background-color: var(--color-card-dark);
-
-  .menu-navigation-chevron {
-    transform: rotate(180deg);
-  }
 }
 
 .menu-navigation-link {

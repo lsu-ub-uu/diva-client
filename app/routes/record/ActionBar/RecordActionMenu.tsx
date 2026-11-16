@@ -205,7 +205,6 @@ export const RecordActionMenu = ({
           <span className={styles['action-bar-button-text']}>
             {t('divaClient_moreNavigationText')}
           </span>
-          <ChevronDownIcon />
         </Button>
       )}
 
