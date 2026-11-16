@@ -9,7 +9,7 @@ import type { LoginDefinition } from '@/data/loginDefinition/loginDefinition.ser
 import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import { clsx } from 'clsx';
-import { RefreshCwIcon } from '@/icons/icons';
+import { RefreshDependenciesIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import { Form, href, Link, useLocation } from 'react-router';
 import { MemberBar } from '../MemberBar/MemberBar';
@@ -72,7 +72,7 @@ export const Header = ({
               >
                 <input type='hidden' name='returnTo' value={returnTo} />
                 <IconButton type='submit' tooltip='Refresh definitions'>
-                  <RefreshCwIcon />
+                  <RefreshDependenciesIcon />
                 </IconButton>
               </Form>
             )}

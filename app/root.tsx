@@ -22,7 +22,7 @@ import { getLoginUnits } from '@/data/getLoginUnits.server';
 import { getNavigation } from '@/data/getNavigation.server';
 import { ErrorPage, getIconByHTTPStatus } from '@/errorHandling/ErrorPage';
 import { useChangeLanguage } from '@/i18n/useChangeLanguage';
-import { ServerCrashIcon } from '@/icons/icons';
+import { UnexpectedErrorIcon } from '@/icons/icons';
 import { type ReactNode, useEffect } from 'react';
 import {
   data,
@@ -201,7 +201,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     return (
       <RootErrorPage>
         <ErrorPage
-          icon={<ServerCrashIcon />}
+          icon={<UnexpectedErrorIcon />}
           titleText='Okänt fel'
           bodyText='Ett okänt fel inträffade. Försök igen senare'
           links={<a href='/'>Gå till startsidan</a>}
@@ -213,7 +213,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   return (
     <RootErrorPage>
       <ErrorPage
-        icon={<ServerCrashIcon />}
+        icon={<UnexpectedErrorIcon />}
         titleText='Okänt fel'
         bodyText='Ett okänt fel inträffade. Försök igen senare'
         links={<a href='/'>Gå till startsidan</a>}

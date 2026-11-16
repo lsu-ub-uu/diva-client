@@ -2,7 +2,7 @@ import { type HTMLProps } from 'react';
 import { Button } from '../Button/Button';
 
 import clsx from 'clsx';
-import { XIcon } from '@/icons/icons';
+import { CloseIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import styles from './Popover.module.css';
 import { IconButton } from '../IconButton/IconButton';
@@ -44,7 +44,7 @@ export const Popover = ({
               size='small'
               tooltip={t('divaClient_closeText')}
             >
-              <XIcon />
+              <CloseIcon />
             </IconButton>
           )}
         </div>

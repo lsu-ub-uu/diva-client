@@ -21,12 +21,12 @@ import styles from './ErrorPage.module.css';
 
 import { TechnicalInfoAccordion } from '@/errorHandling/TechnicalInfoAccordion';
 import {
-  BanIcon,
-  FrownIcon,
-  LockIcon,
-  SearchSlashIcon,
-  ServerCrashIcon,
-  SwordsIcon,
+  BadRequestIcon,
+  ForbiddenIcon,
+  NotFoundIcon,
+  UnexpectedErrorIcon,
+  ConflictIcon,
+  UnauthorizedIcon,
 } from '@/icons/icons';
 
 interface RouteErrorPageProps {
@@ -58,17 +58,17 @@ export const ErrorPage = ({
 export const getIconByHTTPStatus = (status: number) => {
   switch (status) {
     case 400:
-      return <FrownIcon />;
+      return <BadRequestIcon />;
     case 401:
-      return <LockIcon />;
+      return <UnauthorizedIcon />;
     case 403:
-      return <BanIcon />;
+      return <ForbiddenIcon />;
     case 404:
-      return <SearchSlashIcon />;
+      return <NotFoundIcon />;
     case 409:
-      return <SwordsIcon />;
+      return <ConflictIcon />;
     case 500:
     default:
-      return <ServerCrashIcon />;
+      return <UnexpectedErrorIcon />;
   }
 };

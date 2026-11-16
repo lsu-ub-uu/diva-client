@@ -21,7 +21,7 @@ import styles from './Fieldset.module.css';
 import { FieldInfo } from '@/components/FieldInfo/FieldInfo';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
-import { TriangleAlertIcon } from '@/icons/icons';
+import { WarningIcon } from '@/icons/icons';
 
 interface FieldsetProps {
   className?: string;
@@ -88,10 +88,7 @@ export const Fieldset = ({
         <div className={styles['input']}>
           {children}
           {!hideErrorIcon && (
-            <TriangleAlertIcon
-              className={styles['error-icon']}
-              aria-hidden='true'
-            />
+            <WarningIcon className={styles['error-icon']} aria-hidden='true' />
           )}
         </div>
         {errorMessage && (

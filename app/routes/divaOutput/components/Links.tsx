@@ -1,6 +1,6 @@
 import type { DivaOutputGroup } from '@/generatedTypes/divaTypes';
 import { Location } from './Location';
-import { ExternalLinkIcon, ShoppingCartIcon } from '@/icons/icons';
+import { ExternalLinkIcon, OrderLinkIcon } from '@/icons/icons';
 import { Term } from './Term';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/i18n/useLanguage';
@@ -31,7 +31,7 @@ export const Links = ({ output }: LinkProps) => {
               <Location
                 key={index}
                 location={location}
-                icon={<ShoppingCartIcon />}
+                icon={<OrderLinkIcon />}
               />
             ))}
             variant='block'

@@ -1,13 +1,13 @@
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
-import { CircleDashedIcon, EllipsisIcon, SearchSlashIcon } from '@/icons/icons';
-import { ChevronDownIcon } from 'lucide-react';
+import { IconButton } from '@/components/IconButton/IconButton';
+import { EditIcon, NoResultsIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
+import { href, Link, useRouteLoaderData } from 'react-router';
 import { RecordActionMenu } from '../../ActionBar/RecordActionMenu';
+import type { loader as recordTypeLoader } from '../../recordType';
 import type { PerformSearchResult } from '../utils/performSearch.server';
 import { SearchResultItem } from './SearchResultItem';
 import styles from './SearchResults.module.css';
-import { useRouteLoaderData } from 'react-router';
-import type { loader as recordTypeLoader } from '../../recordType';
 
 interface SearchResultsProps {
   searchResults: PerformSearchResult;
@@ -50,14 +50,14 @@ export const SearchResults = ({
   return (
     <div className={styles['search-result']}>
       {!userHasSearched && searchResults.totalNo === 0 && (
-        <Alert severity='info' icon={<CircleDashedIcon />}>
+        <Alert severity='info' icon={<NoResultsIcon />}>
           <AlertTitle>{t('divaClient_noPostResultsTitleText')}</AlertTitle>
           {t('divaClient_noPostResultsBodyText')}
         </Alert>
       )}
 
       {userHasSearched && searchResults.data.length === 0 && (
-        <Alert severity='info' icon={<SearchSlashIcon />}>
+        <Alert severity='info' icon={<NoResultsIcon />}>
           <AlertTitle>{t('divaClient_noSearchResultsTitleText')}</AlertTitle>
           {t('divaClient_noSearchResultsBodyText')}
         </Alert>
@@ -74,14 +74,24 @@ export const SearchResults = ({
             <div className={styles['result-list-item-content']}>
               <SearchResultItem record={record} />
               <div className={styles['record-action-buttons']}>
+                {record.userRights && record.userRights.includes('update') && (
+                  <IconButton
+                    as={Link}
+                    to={href('/:recordType/:recordId/update', {
+                      recordType: record.recordType,
+                      recordId: record.id,
+                    })}
+                    size='small'
+                    tooltip={t('divaClient_editRecordText')}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                )}
                 <RecordActionMenu
                   record={record}
                   recordTypeUserRights={recordTypeUserRights}
-                  menuButtonProps={{ size: 'small' }}
-                >
-                  <EllipsisIcon />
-                  <ChevronDownIcon />
-                </RecordActionMenu>
+                  variant='resultList'
+                />
               </div>
             </div>
           </li>

@@ -3,7 +3,7 @@ import {
   ArrowLeftRightIcon,
   ChevronDownIcon,
   ChevronUpIcon,
-  TriangleAlertIcon,
+  WarningIcon,
   ValueIcon,
 } from '@/icons/icons';
 import { use, type HTMLProps } from 'react';
@@ -53,7 +53,7 @@ export const CardExpandButton = ({
       {children}
       {!boxed && getIcon()}
       <ValueIcon aria-hidden='true' className={styles['value-icon']} />
-      <TriangleAlertIcon className={styles['error-icon']} aria-hidden='true' />
+      <WarningIcon className={styles['error-icon']} aria-hidden='true' />
     </button>
   );
 };

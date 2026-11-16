@@ -1,5 +1,5 @@
 import type { BFFMetadata } from '@/cora/bffTypes.server';
-import { SearchIcon, TriangleAlertIcon, XIcon } from '@/icons/icons';
+import { SearchIcon, WarningIcon, CloseIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import styles from './MainSearchInput.module.css';
 import { useEffect, useRef } from 'react';
@@ -64,7 +64,7 @@ export const MainSearchInput = ({
               type='button'
               onClick={onClearMainQuery}
             >
-              <XIcon />
+              <CloseIcon />
             </IconButton>
           )}
           <IconButton
@@ -82,7 +82,7 @@ export const MainSearchInput = ({
 
 const searchIcon = (searching: boolean, validationError?: string) => {
   if (validationError) {
-    return <TriangleAlertIcon />;
+    return <WarningIcon />;
   } else {
     return searching ? <CircularLoader /> : <SearchIcon />;
   }

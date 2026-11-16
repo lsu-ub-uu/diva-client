@@ -1,26 +1,28 @@
-import { Button, type ButtonProps } from '@/components/Button/Button';
+import { Button } from '@/components/Button/Button';
 import {
   ConfirmDialog,
   useConfirmDialog,
 } from '@/components/ConfirmDialog/ConfirmDialog';
+import { IconButton } from '@/components/IconButton/IconButton';
 import { CircularLoader } from '@/components/Loader/CircularLoader';
 import { Menu, useMenu } from '@/components/Menu/Menu';
 import { MenuItem } from '@/components/Menu/MenuItem';
 import type { UserRightActionLink } from '@/data/getUserRightsForRecordType.server';
 import {
-  ArchiveRestoreIcon,
-  CopyPlusIcon,
-  FilePenIcon,
-  FileTextIcon,
+  UntrashIcon,
+  ChevronDownIcon,
+  CopyToNowIcon,
+  EllipsisIcon,
+  ViewIcon,
   PublishIcon,
-  ShredderIcon,
-  Trash2Icon,
+  DeletePermanentlyIcon,
+  TrashIcon,
 } from '@/icons/icons';
 import type { BFFDataRecord } from '@/types/record';
+import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { href, Link, useFetcher } from 'react-router';
 import styles from './RecordActionMenu.module.css';
-import clsx from 'clsx';
 
 interface RecordMenuActionBase {
   id: string;
@@ -48,24 +50,20 @@ export interface RecordMenuButtonAction extends RecordMenuActionBase {
 export type RecordMenuAction = RecordMenuLinkAction | RecordMenuButtonAction;
 
 interface RecordActionMenuProps {
-  children: React.ReactNode;
   className?: string;
-  menuButtonProps?: ButtonProps;
   record: BFFDataRecord;
   recordTypeUserRights: UserRightActionLink[];
-  excludeActions?: string[];
+  variant: 'actionBar' | 'resultList';
 }
 
 const isLinkAction = (item: RecordMenuAction): item is RecordMenuLinkAction =>
   item.type === 'link';
 
 export const RecordActionMenu = ({
-  children,
   className,
   record,
   recordTypeUserRights,
-  excludeActions = [],
-  menuButtonProps = {},
+  variant,
 }: RecordActionMenuProps) => {
   const { t } = useTranslation();
   const { menuProps, triggerProps } = useMenu();
@@ -73,19 +71,6 @@ export const RecordActionMenu = ({
 
   const getMenuActions = (): RecordMenuAction[] => {
     const actions: RecordMenuAction[] = [];
-
-    if (recordUserRights.includes('update')) {
-      actions.push({
-        id: 'update',
-        children: t('divaClient_editRecordText'),
-        type: 'link',
-        to: href('/:recordType/:recordId/update', {
-          recordType: record.recordType,
-          recordId: record.id,
-        }),
-        icon: <FilePenIcon />,
-      });
-    }
 
     if (recordTypeUserRights.includes('create')) {
       actions.push({
@@ -98,7 +83,7 @@ export const RecordActionMenu = ({
           }),
           search: `?${new URLSearchParams({ copyFrom: record.id, validationType: record.validationType })}`,
         },
-        icon: <CopyPlusIcon />,
+        icon: <CopyToNowIcon />,
       });
     }
 
@@ -107,7 +92,7 @@ export const RecordActionMenu = ({
         id: 'delete',
         children: t('divaClient_deleteRecordText'),
         type: 'button',
-        icon: <ShredderIcon />,
+        icon: <DeletePermanentlyIcon />,
         action: href('/:recordType/:recordId/delete', {
           recordType: record.recordType,
           recordId: record.id,
@@ -127,7 +112,7 @@ export const RecordActionMenu = ({
         id: 'trash',
         children: t('divaClient_trashRecordText'),
         type: 'button',
-        icon: <Trash2Icon />,
+        icon: <TrashIcon />,
         action: href('/:recordType/:recordId/trash', {
           recordType: record.recordType,
           recordId: record.id,
@@ -147,7 +132,7 @@ export const RecordActionMenu = ({
         id: 'untrash',
         children: t('divaClient_untrashRecordText'),
         type: 'button',
-        icon: <ArchiveRestoreIcon />,
+        icon: <UntrashIcon />,
         action: href('/:recordType/:recordId/untrash', {
           recordType: record.recordType,
           recordId: record.id,
@@ -189,11 +174,11 @@ export const RecordActionMenu = ({
           recordType: 'diva-oldRecord',
           recordId: Object.values(record.data)[0].recordInfo?.oldRecord?.value,
         }),
-        icon: <FileTextIcon />,
+        icon: <ViewIcon />,
       });
     }
 
-    return actions.filter((action) => !excludeActions.includes(action.id));
+    return actions;
   };
 
   const menuActions = getMenuActions();
@@ -204,15 +189,26 @@ export const RecordActionMenu = ({
 
   return (
     <>
-      <Button
-        variant='tertiary'
-        size='small'
-        className={clsx(className, styles['menu-trigger'])}
-        {...menuButtonProps}
-        {...triggerProps}
-      >
-        {children}
-      </Button>
+      {variant === 'resultList' && (
+        <IconButton
+          size='small'
+          tooltip={t('divaClient_moreNavigationText')}
+          className={clsx(className, styles['menu-trigger'])}
+          {...triggerProps}
+        >
+          <EllipsisIcon />
+        </IconButton>
+      )}
+      {variant === 'actionBar' && (
+        <Button variant='tertiary' size='small' {...triggerProps}>
+          <EllipsisIcon />
+          <span className={styles['action-bar-button-text']}>
+            {t('divaClient_moreNavigationText')}
+          </span>
+          <ChevronDownIcon />
+        </Button>
+      )}
+
       <Menu {...menuProps}>
         {menuActions.map((action) =>
           isLinkAction(action) ? (

@@ -18,7 +18,7 @@
 
 import { IconButton } from '@/components/IconButton/IconButton';
 import type { UserPreferences } from '@/userPreferences/userPreferencesCookie.server';
-import { MoonIcon, SunIcon } from '@/icons/icons';
+import { DarkModeIcon, LightModeIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import { useFetcher } from 'react-router';
 import styles from './ColorSchemeSwitcher.module.css';
@@ -50,7 +50,7 @@ export const ColorSchemeSwitcher = ({
             : t('divaClient_switchToDarkModeText')
         }
       >
-        {colorScheme === 'dark' ? <SunIcon /> : <MoonIcon />}
+        {colorScheme === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
       </IconButton>
     </fetcher.Form>
   );

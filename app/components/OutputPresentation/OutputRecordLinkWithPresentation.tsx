@@ -1,5 +1,9 @@
 import type { DataGroup } from '@/cora/cora-data/types.server';
-import { LinkIcon, PublishFileIcon, UnpublishFileIcon } from '@/icons/icons';
+import {
+  RecordLinkIcon,
+  PublishFileIcon,
+  UnpublishFileIcon,
+} from '@/icons/icons';
 import type { BFFUserRight } from '@/types/record';
 import type { ReactNode } from 'react';
 import { useEffect } from 'react';
@@ -73,7 +77,7 @@ export const OutputRecordLinkWithPresentation = ({
               recordId: linkedRecordId,
             })}
           >
-            <LinkIcon />
+            <RecordLinkIcon />
           </IconButton>
         )}
         {actionButtons}

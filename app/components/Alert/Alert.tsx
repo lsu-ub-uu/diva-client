@@ -18,12 +18,7 @@
  */
 
 import clsx from 'clsx';
-import {
-  CircleCheckBigIcon,
-  CircleXIcon,
-  InfoIcon,
-  TriangleAlertIcon,
-} from '@/icons/icons';
+import { SuccessIcon, ErrorIcon, InfoIcon, WarningIcon } from '@/icons/icons';
 import type { ReactNode } from 'react';
 import styles from './Alert.module.css';
 
@@ -52,15 +47,15 @@ interface GetIconProps {
 const GetIcons = ({ severity }: GetIconProps) => {
   switch (severity) {
     case 'success':
-      return <CircleCheckBigIcon />;
+      return <SuccessIcon />;
     case 'info':
     case 'neutral':
       return <InfoIcon />;
     case 'error':
-      return <CircleXIcon />;
+      return <ErrorIcon />;
     case 'warning':
     default:
-      return <TriangleAlertIcon />;
+      return <WarningIcon />;
   }
 };
 

@@ -1,9 +1,9 @@
-import { ArchiveRestoreIcon, Trash2Icon } from '@/icons/icons';
+import { TrashIcon, UntrashIcon } from '@/icons/icons';
+import { useTranslation } from 'react-i18next';
+import { href, useFetcher } from 'react-router';
 import { Alert, AlertTitle } from '../Alert/Alert';
 import { Button } from '../Button/Button';
-import { href, useFetcher } from 'react-router';
 import { CircularLoader } from '../Loader/CircularLoader';
-import { useTranslation } from 'react-i18next';
 
 interface TrashAlertProps {
   recordType: string;
@@ -30,11 +30,11 @@ export const TrashAlert = ({ recordType, recordId }: TrashAlertProps) => {
   return (
     <Alert
       severity='neutral'
-      icon={<Trash2Icon />}
+      icon={<TrashIcon />}
       action={
         <Button variant='secondary' onClick={untrash}>
           {t('divaClient_untrashRecordText')}
-          {submitting ? <CircularLoader /> : <ArchiveRestoreIcon />}
+          {submitting ? <CircularLoader /> : <UntrashIcon />}
         </Button>
       }
     >

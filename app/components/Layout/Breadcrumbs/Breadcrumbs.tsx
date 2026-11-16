@@ -16,7 +16,7 @@
  *     You should have received a copy of the GNU General Public License
  */
 
-import { HouseIcon } from '@/icons/icons';
+import { HomeIcon } from '@/icons/icons';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { href, NavLink, type UIMatch, useMatches } from 'react-router';
@@ -58,7 +58,7 @@ export const Breadcrumbs = () => {
             aria-label={t('divaClient_breadcrumbStartText')}
             onClick={scrollToTop}
           >
-            <HouseIcon />
+            <HomeIcon />
           </NavLink>
         </li>
 

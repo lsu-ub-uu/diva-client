@@ -11,7 +11,7 @@ import {
 } from 'react';
 import { Input } from '../Input/Input';
 import styles from './Autocomplete.module.css';
-import { TextSearchIcon } from '@/icons/icons';
+import { AutocompleteIcon } from '@/icons/icons';
 import { CircularLoader } from '../Loader/CircularLoader';
 import { FieldContext } from '../Input/Fieldset';
 
@@ -195,7 +195,7 @@ export const Autocomplete = ({
         />
         <div className={styles['autocomplete-input-icon-wrapper']}>
           <div className={styles['autocomplete-input-icon']}>
-            {loading ? <CircularLoader /> : <TextSearchIcon />}
+            {loading ? <CircularLoader /> : <AutocompleteIcon />}
           </div>
         </div>
       </div>

@@ -8,8 +8,8 @@ import {
   ArrowLeftRightIcon,
   ChevronDownIcon,
   ChevronUpIcon,
-  Maximize2Icon,
-  Minimize2Icon,
+  ExpandIcon,
+  CollapseIcon,
 } from '@/icons/icons';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -173,13 +173,9 @@ const getExpandIcon = (
     return <ArrowLeftRightIcon />;
   }
   if (presentationSize === 'firstSmaller') {
-    return showingAlternativePresentation ? (
-      <Minimize2Icon />
-    ) : (
-      <Maximize2Icon />
-    );
+    return showingAlternativePresentation ? <CollapseIcon /> : <ExpandIcon />;
   }
-  return showingAlternativePresentation ? <Maximize2Icon /> : <Minimize2Icon />;
+  return showingAlternativePresentation ? <ExpandIcon /> : <CollapseIcon />;
 };
 
 const getExpandButtonText = (

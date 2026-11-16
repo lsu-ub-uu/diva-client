@@ -3,27 +3,27 @@ import { NavigationLink } from '@/components/Layout/Header/TopNavigation/Navigat
 import { Menu, useMenu } from '@/components/Menu/Menu';
 import { MenuItem } from '@/components/Menu/MenuItem';
 import type { Navigation } from '@/data/getNavigation.server';
+import {
+  ChevronDownIcon,
+  CourseIcon,
+  DesignSystemIcon,
+  EllipsisIcon,
+  FunderIcon,
+  JournalIcon,
+  MemberIcon,
+  OrganisationIcon,
+  ClientContentIcon,
+  ProgrammeIcon,
+  ProjectIcon,
+  PublicationIcon,
+  PublishIcon,
+  SeriesIcon,
+  SubjectIcon,
+  LabelIcon,
+  PersonIcon,
+} from '@/icons/icons';
 import { useIsDevMode } from '@/utils/useIsDevMode';
 import clsx from 'clsx';
-import {
-  BookOpenIcon,
-  BuildingIcon,
-  ChartGanttIcon,
-  ChevronDownIcon,
-  EllipsisIcon,
-  FlaskRoundIcon,
-  GraduationCapIcon,
-  HandCoinsIcon,
-  LibraryIcon,
-  MonitorCogIcon,
-  NewspaperIcon,
-  NotebookTabsIcon,
-  PaletteIcon,
-  PanelsTopLeftIcon,
-  PublishIcon,
-  TagIcon,
-  UsersIcon,
-} from '@/icons/icons';
 import { type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { href, NavLink, useLocation } from 'react-router';
@@ -39,20 +39,20 @@ export interface TopNavigationProps {
 }
 
 export const icons: Record<string, ReactNode> = {
-  'diva-output': <BookOpenIcon />,
-  'diva-person': <UsersIcon />,
-  'diva-project': <ChartGanttIcon />,
-  'diva-course': <NotebookTabsIcon />,
-  'diva-organisation': <BuildingIcon />,
-  'diva-journal': <NewspaperIcon />,
-  'diva-subject': <FlaskRoundIcon />,
-  'diva-programme': <GraduationCapIcon />,
-  'diva-series': <LibraryIcon />,
-  'diva-localLabel': <TagIcon />,
+  'diva-output': <PublicationIcon />,
+  'diva-person': <PersonIcon />,
+  'diva-project': <ProjectIcon />,
+  'diva-course': <CourseIcon />,
+  'diva-organisation': <OrganisationIcon />,
+  'diva-journal': <JournalIcon />,
+  'diva-subject': <SubjectIcon />,
+  'diva-programme': <ProgrammeIcon />,
+  'diva-series': <SeriesIcon />,
+  'diva-localLabel': <LabelIcon />,
   'diva-publisher': <PublishIcon />,
-  'diva-funder': <HandCoinsIcon />,
-  'diva-member': <MonitorCogIcon />,
-  'diva-clientContent': <PanelsTopLeftIcon />,
+  'diva-funder': <FunderIcon />,
+  'diva-member': <MemberIcon />,
+  'diva-clientContent': <ClientContentIcon />,
 };
 
 export const TopNavigation = ({ navigation }: TopNavigationProps) => {
@@ -115,7 +115,7 @@ export const TopNavigation = ({ navigation }: TopNavigationProps) => {
                       className={styles['menu-navigation-link']}
                       onClick={closeMenu}
                     >
-                      <PaletteIcon />
+                      <DesignSystemIcon />
                       Design system
                     </NavLink>
                   </MenuItem>

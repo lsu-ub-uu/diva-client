@@ -1,7 +1,7 @@
 import { Alert, type AlertProps } from '@/components/Alert/Alert';
 import { type ReactNode, useEffect, useRef } from 'react';
 
-import { XIcon } from '@/icons/icons';
+import { CloseIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from '../IconButton/IconButton';
 import styles from './Snackbar.module.css';
@@ -59,7 +59,7 @@ export const Snackbar = ({
             tooltip={t('divaClient_closeText')}
             onClick={onClose}
           >
-            <XIcon />
+            <CloseIcon />
           </IconButton>
         </div>
       </Alert>

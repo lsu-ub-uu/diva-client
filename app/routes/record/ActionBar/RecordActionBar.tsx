@@ -1,20 +1,14 @@
 import { Button } from '@/components/Button/Button';
 import type { UserRightActionLink } from '@/data/getUserRightsForRecordType.server';
-import {
-  ChevronDownIcon,
-  CodeXmlIcon,
-  EllipsisIcon,
-  FilePenIcon,
-  FileTextIcon,
-} from '@/icons/icons';
+import { ApiIcon, EditIcon, ViewIcon } from '@/icons/icons';
 import type { BFFDataRecord } from '@/types/record';
+import { useUser } from '@/utils/rootLoaderDataUtils';
 import { useTranslation } from 'react-i18next';
 import { href, Link, useMatches } from 'react-router';
 import { ActionBar } from './ActionBar';
+import styles from './ActionBar.module.css';
 import { ActionBarButton } from './ActionBarButton';
 import { RecordActionMenu } from './RecordActionMenu';
-import { useUser } from '@/utils/rootLoaderDataUtils';
-import styles from './ActionBar.module.css';
 
 interface ActionBarProps {
   record: BFFDataRecord;
@@ -48,7 +42,7 @@ export const RecordActionBar = ({
         rel='noopener noreferrer nofollow'
         size='small'
       >
-        <CodeXmlIcon />
+        <ApiIcon />
         {t('divaClient_viewInApiText')}
       </Button>
     );
@@ -63,7 +57,7 @@ export const RecordActionBar = ({
             recordType: record.recordType,
             recordId: record.id,
           })}
-          icon={<FilePenIcon />}
+          icon={<EditIcon />}
         >
           {t('divaClient_editRecordText')}
         </ActionBarButton>
@@ -76,7 +70,7 @@ export const RecordActionBar = ({
             recordType: record.recordType,
             recordId: record.id,
           })}
-          icon={<FileTextIcon />}
+          icon={<ViewIcon />}
         >
           {t('divaClient_viewRecordText')}
         </ActionBarButton>
@@ -88,7 +82,7 @@ export const RecordActionBar = ({
         href={apiUrl}
         target='_blank'
         rel='noopener noreferrer nofollow'
-        icon={<CodeXmlIcon />}
+        icon={<ApiIcon />}
       >
         {t('divaClient_viewInApiText')}
       </ActionBarButton>
@@ -96,14 +90,8 @@ export const RecordActionBar = ({
         <RecordActionMenu
           record={record}
           recordTypeUserRights={recordTypeUserRights}
-          excludeActions={['view', 'update']}
-        >
-          <EllipsisIcon />
-          <span className={styles['action-bar-button-text']}>
-            {t('divaClient_moreNavigationText')}
-          </span>
-          <ChevronDownIcon />
-        </RecordActionMenu>
+          variant='actionBar'
+        />
       </div>
     </ActionBar>
   );

@@ -18,7 +18,7 @@
  */
 
 import { IconButton } from '@/components/IconButton/IconButton';
-import { ArrowDownIcon, ArrowUpIcon, XIcon } from '@/icons/icons';
+import { ArrowDownIcon, ArrowUpIcon, CloseIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import styles from './ActionButtonGroup.module.css';
 import clsx from 'clsx';
@@ -72,7 +72,7 @@ export const ActionButtonGroup = (props: ActionButtonGroupProps) => {
           onClick={props.deleteButtonAction}
           data-action-button='delete'
         >
-          <XIcon />
+          <CloseIcon />
         </IconButton>
       )}
       {!props.hideMoveButtons && (

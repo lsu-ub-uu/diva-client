@@ -1,7 +1,7 @@
 import { IconButton } from '@/components/IconButton/IconButton';
 import type { FilterDefinition } from '@/routes/record/recordSearch/utils/createFilterDefinition.server';
 import { useDebouncedCallback } from '@/utils/useDebouncedCallback';
-import { FunnelIcon, XIcon } from '@/icons/icons';
+import { FunnelIcon, CloseIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import { Form, useSubmit } from 'react-router';
 import type { ActiveFilter } from '../../utils/createActiveFilters.server';
@@ -60,7 +60,7 @@ export const Filters = ({
             tooltip={t('divaClient_closeFiltersText')}
             className='filter-dialog-close-button'
           >
-            <XIcon />
+            <CloseIcon />
           </IconButton>
         </div>
         <Form method='GET' onChange={handleFilterChange} ref={formRef} replace>

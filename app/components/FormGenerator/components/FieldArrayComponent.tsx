@@ -30,7 +30,7 @@ import { useTranslation } from 'react-i18next';
 import { createDefaultValuesFromComponent } from '../defaultValues/defaultValues';
 import { FormGeneratorContext } from '../FormGeneratorContext';
 import { ActionButtonGroup } from './ActionButtonGroup';
-import { CirclePlusIcon } from '@/icons/icons';
+import { AddIcon } from '@/icons/icons';
 
 interface FieldArrayComponentProps {
   control?: Control<any>;
@@ -141,7 +141,7 @@ export const FieldArrayComponent = ({
               }
               tooltipPosition='top'
             >
-              <CirclePlusIcon /> {t(component.addText ?? component.label)}
+              <AddIcon /> {t(component.addText ?? component.label)}
             </Button>
           </div>
         )}

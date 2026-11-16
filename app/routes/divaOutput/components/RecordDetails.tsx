@@ -2,10 +2,10 @@ import type { DivaOutputGroup } from '@/generatedTypes/divaTypes';
 import { useLanguage } from '@/i18n/useLanguage';
 import { useUser } from '@/utils/rootLoaderDataUtils';
 import {
-  CheckCircleIcon,
   ChevronDownIcon,
-  FileExclamationPointIcon,
+  ClassicQualityIcon,
   InfoIcon,
+  SuccessIcon,
 } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import { formatTimestamp } from '../utils/format';
@@ -101,11 +101,9 @@ const Timestamp = ({ timestamp }: { timestamp?: string }) => {
 const getDataQualityIcon = (dataQuality?: string) => {
   switch (dataQuality) {
     case '2026':
-      return <CheckCircleIcon color='var(--color-alert-success-icon)' />;
+      return <SuccessIcon color='var(--color-alert-success-icon)' />;
     case 'classic':
-      return (
-        <FileExclamationPointIcon color='var(--color-alert-warning-icon)' />
-      );
+      return <ClassicQualityIcon color='var(--color-alert-warning-icon)' />;
     default:
       return null;
   }

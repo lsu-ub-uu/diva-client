@@ -1,13 +1,13 @@
 import { Button } from '@/components/Button/Button';
+import { IconButton } from '@/components/IconButton/IconButton';
+import { AddIcon, CloseIcon } from '@/icons/icons';
 import { use, type ReactNode } from 'react';
 import { Controller, type Control } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { createDefaultValuesFromComponent } from '../defaultValues/defaultValues';
 import { FormGeneratorContext } from '../FormGeneratorContext';
-import type { FormComponentWithData } from '../types';
-import { PlusCircleIcon, XIcon } from '@/icons/icons';
-import { IconButton } from '@/components/IconButton/IconButton';
 import { getEnhancement } from '../formGeneratorUtils/formGeneratorUtils';
+import type { FormComponentWithData } from '../types';
 
 interface OptionalComponentProps {
   anchorId?: string;
@@ -51,7 +51,7 @@ export const OptionalComponent = ({
                     onClick={() => field.onChange(null)}
                     data-action-button='delete'
                   >
-                    <XIcon />
+                    <CloseIcon />
                   </IconButton>
                 ),
               )}
@@ -85,7 +85,7 @@ export const OptionalComponent = ({
               }
               tooltipPosition='top'
             >
-              <PlusCircleIcon /> {t(component.addText ?? component.label)}
+              <AddIcon /> {t(component.addText ?? component.label)}
             </Button>
           </div>
         );

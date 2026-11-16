@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import type { ActiveFilter } from '../utils/createActiveFilters.server';
 import { Button } from '@/components/Button/Button';
-import { CodeIcon, FunnelIcon, FunnelXIcon } from '@/icons/icons';
+import { ApiIcon, FunnelIcon, FunnelXIcon } from '@/icons/icons';
 import type { BFFSearchResult } from '@/types/record';
 
 interface SearchResultButtonsProps {
@@ -30,7 +30,7 @@ export const SearchResultButtons = ({
           target='_blank'
           rel='noopener noreferrer nofollow'
         >
-          <CodeIcon />
+          <ApiIcon />
           {t('divaClient_viewInApiText')}
         </Button>
       )}

@@ -40,11 +40,11 @@ import {
   ChessKnightIcon,
   InfoIcon,
   MehIcon,
-  ShoppingCartIcon,
+  OrderLinkIcon,
   SquirrelIcon,
-  Trash2Icon,
+  TrashIcon,
   UndoIcon,
-  XIcon,
+  CloseIcon,
 } from '@/icons/icons';
 import { useState } from 'react';
 import css from './design-system.css?url';
@@ -475,10 +475,7 @@ export default function DesignSystem() {
             <IconButton disabled tooltip='Icon button disabled'>
               <BombIcon />
             </IconButton>
-            <FloatingActionButton
-              text='FAB button'
-              icon={<ShoppingCartIcon />}
-            />
+            <FloatingActionButton text='FAB button' icon={<OrderLinkIcon />} />
             <FloatingActionButton
               text='FAB primary'
               variant='primary'
@@ -664,7 +661,7 @@ export default function DesignSystem() {
                   }
                   actionButtonGroup={
                     <IconButton tooltip='Close'>
-                      <XIcon />
+                      <CloseIcon />
                     </IconButton>
                   }
                 >
@@ -672,7 +669,7 @@ export default function DesignSystem() {
                     level='h3'
                     info={
                       <IconButton tooltip='Close' size='small'>
-                        <XIcon />
+                        <CloseIcon />
                       </IconButton>
                     }
                   >
@@ -711,7 +708,7 @@ export default function DesignSystem() {
               Text
             </Alert>
 
-            <Alert severity='neutral' icon={<Trash2Icon />}>
+            <Alert severity='neutral' icon={<TrashIcon />}>
               <AlertTitle>Custom Icon title</AlertTitle>
               Text
             </Alert>
@@ -725,7 +722,7 @@ export default function DesignSystem() {
             </Alert>
             <Alert
               severity='neutral'
-              icon={<Trash2Icon />}
+              icon={<TrashIcon />}
               action={
                 <Button variant='secondary'>
                   Undo
@@ -805,7 +802,7 @@ const ClickableCardDemo = () => {
         }
         actionButtonGroup={
           <IconButton tooltip='Close'>
-            <XIcon />
+            <CloseIcon />
           </IconButton>
         }
       >
