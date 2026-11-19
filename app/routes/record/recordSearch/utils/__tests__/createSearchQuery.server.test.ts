@@ -247,7 +247,7 @@ describe('createSearchQuery', () => {
         {
           id: 'testFilter',
           name: 'testFilter',
-          textId: 'testFilterTextId',
+          labelTextId: 'testFilterTextId',
           placeholderTextId: 'testFilterPlaceholderTextId',
           repeat: {
             repeatMin: 0,

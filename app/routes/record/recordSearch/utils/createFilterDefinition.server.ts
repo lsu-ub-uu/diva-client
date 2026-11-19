@@ -4,6 +4,9 @@ import type {
   BFFMetadataCollectionVariable,
   BFFMetadataItemCollection,
   BFFMetadataTextVariable,
+  BFFPresentationChildReference,
+  BFFPresentation,
+  BFFPresentationOfSingleMetadata,
   Dependencies,
 } from '@/cora/bffTypes.server';
 import type { Repeat } from '@/data/formDefinition/createPresentation/createPresentationComponent';
@@ -17,9 +20,9 @@ export type FilterDefinition =
 export interface BaseFilter {
   id: string;
   name: string;
-  textId: string;
-  placeholderTextId: string;
-  repeat: Repeat;
+  labelTextId: string | undefined;
+  placeholderTextId: string | undefined;
+  repeat: Repeat,
 }
 
 export interface TextFilter extends BaseFilter {
@@ -70,22 +73,36 @@ const hiddenSearchTerms = [
 ];
 
 export const createFilters = (
+  filterPresentationRefs: BFFPresentationChildReference[],
   filterMetadataRefs: BFFMetadataChildReference[],
   dependencies: Dependencies,
 ): FilterDefinition[] => {
-  return filterMetadataRefs
-    .map((ref) => createFilter(ref, dependencies))
+  return filterPresentationRefs
+    .map((presentationRef) => createFilter(presentationRef, filterMetadataRefs, dependencies))
     .filter(Boolean) as FilterDefinition[];
 };
 
-const createFilter = (
-  filterMetadataRef: BFFMetadataChildReference,
-  depencencies: Dependencies,
+export const createFilter = (
+  filterPresentationRef: BFFPresentationChildReference,
+  filterMetadataRefs: BFFMetadataChildReference[],
+  dependencies: Dependencies,
 ): FilterDefinition | undefined => {
-  const metadata = depencencies.metadataPool.get(
+  const presentation = dependencies.presentationPool.get(
+    filterPresentationRef.refGroups[0].childId
+  )
+
+  if (!isValidFilterPresentation(presentation)) {
+    return undefined
+  }
+
+  const filterMetadataRef = findMatchingMetadataRef(presentation, filterMetadataRefs, dependencies)
+  if (!filterMetadataRef) {
+    return undefined;
+  }
+
+  const metadata = dependencies.metadataPool.get(
     filterMetadataRef.childId,
   ) as BFFMetadataBase;
-
   if (hiddenSearchTerms.includes(metadata.nameInData)) {
     return undefined;
   }
@@ -93,8 +110,8 @@ const createFilter = (
   const commonValues = {
     id: metadata.id,
     name: metadata.nameInData,
-    textId: metadata.textId,
-    placeholderTextId: metadata.defTextId,
+    labelTextId: metadata.textId,
+    placeholderTextId: presentation.emptyTextId,
     repeat: {
       repeatMin: Number.parseInt(filterMetadataRef.repeatMin),
       repeatMax:
@@ -129,15 +146,16 @@ const createFilter = (
 
   if (metadata.type === 'collectionVariable') {
     const collectionVariable = metadata as BFFMetadataCollectionVariable;
-    const collection = depencencies.metadataPool.get(
+    const collection = dependencies.metadataPool.get(
       collectionVariable.refCollection,
     ) as BFFMetadataItemCollection;
     const options = collection.collectionItemReferences.map((itemRef) => {
-      const item = depencencies.metadataPool.get(
+      const item = dependencies.metadataPool.get(
         itemRef.refCollectionItemId,
       ) as BFFMetadataBase;
       return { text: item.textId, value: item.nameInData };
     });
+
     return {
       ...commonValues,
       type: 'collection',
@@ -147,3 +165,15 @@ const createFilter = (
 
   return undefined;
 };
+
+const findMatchingMetadataRef = (filterPresentation: BFFPresentationOfSingleMetadata, filterMetadataRefs: BFFMetadataChildReference[], dependencies: Dependencies) => {
+
+  return filterMetadataRefs.find(metadataRef => {
+    const metadata = dependencies.metadataPool.get(metadataRef.childId);
+    return filterPresentation.presentationOf === metadata.id
+  })
+}
+
+const isValidFilterPresentation = (presentation: BFFPresentation): presentation is BFFPresentationOfSingleMetadata => {
+  return presentation.type === 'pVar' || presentation.type === 'pNumVar' || presentation.type === 'pCollVar';
+} 

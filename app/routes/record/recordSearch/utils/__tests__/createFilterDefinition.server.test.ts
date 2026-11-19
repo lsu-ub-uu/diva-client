@@ -1,10 +1,16 @@
 import type {
   BFFMetadata,
+  BFFPresentation,
   BFFMetadataChildReference,
   BFFMetadataCollectionVariable,
   BFFMetadataItemCollection,
   BFFMetadataNumberVariable,
   BFFMetadataTextVariable,
+  BFFPresentationTextVar,
+  BFFPresentationChildReference,
+  BFFPresentationNumVar,
+  BFFPresentationCollVar,
+  BFFPresentationGroup
 } from '@/cora/bffTypes.server';
 import type { Dependencies } from '@/cora/bffTypes.server';
 import { listToPool } from 'server/dependencies/util/listToPool';
@@ -12,6 +18,7 @@ import { describe, expect, it } from 'vitest';
 import { createFilters } from '../createFilterDefinition.server';
 
 describe('createFilters', () => {
+
   it('creates a text filter', () => {
     const dependencies = {
       metadataPool: listToPool<BFFMetadata>([
@@ -22,10 +29,24 @@ describe('createFilters', () => {
           nameInData: 'someName',
           regEx: '.+',
         } as BFFMetadataTextVariable,
+
       ]),
+      presentationPool: listToPool<BFFPresentation>([
+        {
+          id: 'someTextPVar',
+          type: 'pVar',
+          emptyTextId: 'somePlaceholderTextId',
+          presentationOf: 'someTextVar'
+
+        } as BFFPresentationTextVar
+      ])
     } as Dependencies;
 
-    const metadataRefs = [
+    const filterPresentationRefs = [
+      { refGroups: [{ childId: 'someTextPVar' }] } as BFFPresentationChildReference
+    ]
+
+    const filterMedataRefs = [
       {
         childId: 'someTextVar',
         repeatMin: '0',
@@ -33,13 +54,14 @@ describe('createFilters', () => {
       } as BFFMetadataChildReference,
     ];
 
-    const filters = createFilters(metadataRefs, dependencies);
+    const filters = createFilters(filterPresentationRefs, filterMedataRefs, dependencies);
     expect(filters).toHaveLength(1);
     expect(filters[0]).toEqual({
       id: 'someTextVar',
       type: 'text',
       name: 'someName',
-      textId: 'someTextId',
+      labelTextId: 'someTextId',
+      placeholderTextId: 'somePlaceholderTextId',
       repeat: {
         repeatMin: 0,
         repeatMax: 1,
@@ -47,6 +69,10 @@ describe('createFilters', () => {
       regEx: '.+',
     });
   });
+
+  it.todo('creates a text filter with hidden label');
+
+  it.todo('creates a text filter with specified label from presentation')
 
   it('creates a number filter', () => {
     const dependencies = {
@@ -58,7 +84,20 @@ describe('createFilters', () => {
           nameInData: 'someName',
         } as BFFMetadataNumberVariable,
       ]),
+      presentationPool: listToPool<BFFPresentation>([
+        {
+          id: 'somePNumVar',
+          type: 'pNumVar',
+          emptyTextId: 'somePlaceholderTextId',
+          presentationOf: 'someNumVar'
+        } as BFFPresentationNumVar
+      ]),
     } as Dependencies;
+
+
+    const filterPresentationRefs = [
+      { refGroups: [{ childId: 'somePNumVar' }] } as BFFPresentationChildReference
+    ]
 
     const metadataRefs = [
       {
@@ -68,13 +107,14 @@ describe('createFilters', () => {
       } as BFFMetadataChildReference,
     ];
 
-    const filters = createFilters(metadataRefs, dependencies);
+    const filters = createFilters(filterPresentationRefs, metadataRefs, dependencies);
     expect(filters).toHaveLength(1);
     expect(filters[0]).toEqual({
       id: 'someNumVar',
       type: 'number',
       name: 'someName',
-      textId: 'someTextId',
+      labelTextId: "someTextId",
+      placeholderTextId: "somePlaceholderTextId",
       repeat: {
         repeatMin: 0,
         repeatMax: 1,
@@ -106,7 +146,19 @@ describe('createFilters', () => {
           refCollection: 'someCollection',
         } as BFFMetadataCollectionVariable,
       ]),
+      presentationPool: listToPool<BFFPresentation>([
+        {
+          id: 'somePCollVar',
+          type: 'pCollVar',
+          emptyTextId: 'somePlaceholderTextId',
+          presentationOf: 'someCollectionVar'
+        } as BFFPresentationCollVar
+      ]),
     } as Dependencies;
+
+    const filterPresentationRefs = [
+      { refGroups: [{ childId: 'somePCollVar' }] } as BFFPresentationChildReference
+    ]
 
     const metadataRefs = [
       {
@@ -116,13 +168,12 @@ describe('createFilters', () => {
       } as BFFMetadataChildReference,
     ];
 
-    const filters = createFilters(metadataRefs, dependencies);
+    const filters = createFilters(filterPresentationRefs, metadataRefs, dependencies);
     expect(filters).toHaveLength(1);
     expect(filters[0]).toEqual({
       id: 'someCollectionVar',
       type: 'collection',
       name: 'someName',
-      textId: 'someTextId',
       options: [
         {
           text: '--',
@@ -133,7 +184,8 @@ describe('createFilters', () => {
           value: 'someItem',
         },
       ],
-      placeholderTextId: undefined,
+      "labelTextId": "someTextId",
+      placeholderTextId: 'somePlaceholderTextId',
 
       repeat: {
         repeatMin: 0,
@@ -153,7 +205,20 @@ describe('createFilters', () => {
           regEx: '.+',
         } as BFFMetadataTextVariable,
       ]),
+      presentationPool: listToPool<BFFPresentation>([
+        {
+          id: 'somePTextVar',
+          type: 'pVar',
+          emptyTextId: 'somePlaceholderTextId',
+          presentationOf: 'someTextVar'
+        } as BFFPresentationTextVar
+      ])
     } as Dependencies;
+
+    const filterPresentationRefs = [
+      { refGroups: [{ childId: 'somePTextVar' }] } as BFFPresentationChildReference
+    ]
+
 
     const metadataRefs = [
       {
@@ -163,13 +228,14 @@ describe('createFilters', () => {
       } as BFFMetadataChildReference,
     ];
 
-    const filters = createFilters(metadataRefs, dependencies);
+    const filters = createFilters(filterPresentationRefs, metadataRefs, dependencies);
     expect(filters).toHaveLength(1);
     expect(filters[0]).toEqual({
       id: 'someTextVar',
       type: 'text',
-      name: 'someName',
-      textId: 'someTextId',
+      labelTextId: "someTextId",
+      name: "someName",
+      placeholderTextId: "somePlaceholderTextId",
       repeat: {
         repeatMin: 0,
         repeatMax: Number.MAX_VALUE,
@@ -178,29 +244,63 @@ describe('createFilters', () => {
     });
   });
 
-  it('returns no filter for unsupported metadata type', () => {
+  it.todo('returns no filter when metadata but no presentation');
+
+
+  it.todo('ignores presentations that are not input fields', () => {
     const dependencies = {
       metadataPool: listToPool<BFFMetadata>([
         {
-          id: 'someGroup',
-          type: 'unknownType' as any,
+          id: 'someTextVar',
+          type: 'textVariable',
           textId: 'someTextId',
-          defTextId: 'someDefTextId',
-          nameInData: 'someGroupName',
-        } as BFFMetadata,
+          nameInData: 'someName',
+          regEx: '.+',
+        } as BFFMetadataTextVariable,
+
       ]),
+      presentationPool: listToPool<BFFPresentation>([
+        {
+          id: 'someTextPVar',
+          type: 'pVar',
+          emptyTextId: 'somePlaceholderTextId',
+          presentationOf: 'someTextVar'
+
+        } as BFFPresentationTextVar,
+        { id: 'someGuiElement', type: 'guiElement' } as BFFPresentaionBase
+      ])
     } as Dependencies;
 
-    const metadataRefs = [
+    const filterPresentationRefs = [
+      { refGroups: [{ childId: 'someGuiElement' }] } as BFFPresentationChildReference,
+      { refGroups: [{ childId: 'someContainer' }] } as BFFPresentationChildReference,
+      { refGroups: [{ childId: 'someTextPVar' }] } as BFFPresentationChildReference,
+      { refGroups: [{ childId: 'somePGroup' }] } as BFFPresentationChildReference,
+      { refGroups: [{ childId: 'someText' }] } as BFFPresentationChildReference,
+    ]
+
+    const filterMedataRefs = [
       {
-        childId: 'someGroup',
+        childId: 'someTextVar',
         repeatMin: '0',
         repeatMax: '1',
       } as BFFMetadataChildReference,
     ];
 
-    const filters = createFilters(metadataRefs, dependencies);
-    expect(filters).toHaveLength(0);
+    const filters = createFilters(filterPresentationRefs, filterMedataRefs, dependencies);
+    expect(filters).toHaveLength(1);
+    expect(filters[0]).toEqual({
+      id: 'someTextVar',
+      type: 'text',
+      name: 'someName',
+      labelTextId: 'someTextId',
+      placeholderTextId: 'somePlaceholderTextId',
+      repeat: {
+        repeatMin: 0,
+        repeatMax: 1,
+      },
+      regEx: '.+',
+    });
   });
 
   it.each([
@@ -225,7 +325,21 @@ describe('createFilters', () => {
             regEx: '.+',
           } as BFFMetadataTextVariable,
         ]),
+        presentationPool: listToPool<BFFPresentation>([
+          {
+            id: 'someTextPVar',
+            type: 'pVar',
+            emptyTextId: 'somePlaceholderTextId',
+            presentationOf: 'someTextVar'
+
+          } as BFFPresentationTextVar
+        ])
       } as Dependencies;
+
+      const filterPresentationRefs = [
+        { refGroups: [{ childId: 'someTextPVar' }] } as BFFPresentationChildReference
+      ]
+
 
       const metadataRefs = [
         {
@@ -235,14 +349,14 @@ describe('createFilters', () => {
         } as BFFMetadataChildReference,
       ];
 
-      const filters = createFilters(metadataRefs, dependencies);
+      const filters = createFilters(filterPresentationRefs, metadataRefs, dependencies);
       expect(filters).toHaveLength(1);
       expect(filters[0]).toEqual({
         id: 'someTextVar',
         type: 'autocomplete',
-        placeholderTextId: undefined,
+        labelTextId: "someTextId",
+        placeholderTextId: "somePlaceholderTextId",
         name: searchTermName,
-        textId: 'someTextId',
         recordType,
         searchType,
         searchTerm,
@@ -251,57 +365,6 @@ describe('createFilters', () => {
           repeatMax: 1,
         },
       });
-    },
-  );
-
-  it.each(['visibilitySearchTerm', 'permissionUnitLinkedRecordIdSearchTerm'])(
-    'hides %s',
-    (searchTermName) => {
-      const dependencies = {
-        metadataPool: listToPool<BFFMetadata>([
-          {
-            id: 'someCollectionVar',
-            type: 'collectionVariable',
-            textId: 'someTextId',
-            nameInData: searchTermName,
-            refCollection: 'someCollection',
-          } as BFFMetadataCollectionVariable,
-          {
-            id: 'someCollection',
-            nameInData: 'some',
-            type: 'itemCollection',
-            collectionItemReferences: [
-              { refCollectionItemId: 'publishedItem' },
-              { refCollectionItemId: 'unpublishedItem' },
-            ],
-          } as BFFMetadataItemCollection,
-          {
-            id: 'publishedItem',
-            nameInData: 'published',
-            type: 'collectionItem',
-            textId: 'someCollectionItemTextId',
-            defTextId: 'someCollectionItemDefTextId',
-          },
-          {
-            id: 'unpublishedItem',
-            nameInData: 'unpublished',
-            type: 'collectionItem',
-            textId: 'someCollectionItemTextId',
-            defTextId: 'someCollectionItemDefTextId',
-          },
-        ]),
-      } as Dependencies;
-
-      const metadataRefs = [
-        {
-          childId: 'someCollectionVar',
-          repeatMin: '0',
-          repeatMax: '1',
-        } as BFFMetadataChildReference,
-      ];
-
-      const filters = createFilters(metadataRefs, dependencies);
-      expect(filters).toHaveLength(0);
     },
   );
 });

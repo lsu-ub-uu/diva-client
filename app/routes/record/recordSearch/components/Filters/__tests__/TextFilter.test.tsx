@@ -10,7 +10,7 @@ describe('TextFilter', () => {
       type: 'text',
       id: 'someTextFilterId',
       name: 'someTextFilterName',
-      textId: 'textFilterText',
+      labelTextId: 'textFilterText',
       placeholderTextId: 'textFilterPlaceholderText',
       repeat: {
         repeatMin: 0,
@@ -31,7 +31,7 @@ describe('TextFilter', () => {
       type: 'text',
       id: 'someTextFilterId',
       name: 'someTextFilterName',
-      textId: 'textFilterText',
+      labelTextId: 'textFilterText',
       placeholderTextId: 'textFilterPlaceholderText',
       repeat: {
         repeatMin: 0,
@@ -52,7 +52,7 @@ describe('TextFilter', () => {
       type: 'text',
       id: 'someTextFilterId',
       name: 'someTextFilterName',
-      textId: 'textFilterText',
+      labelTextId: 'textFilterText',
       placeholderTextId: 'textFilterPlaceholderText',
       repeat: {
         repeatMin: 0,
@@ -81,7 +81,7 @@ describe('TextFilter', () => {
       type: 'text',
       id: 'someTextFilterId',
       name: 'someTextFilterName',
-      textId: 'textFilterText',
+      labelTextId: 'textFilterText',
       placeholderTextId: 'textFilterPlaceholderText',
       repeat: {
         repeatMin: 0,
@@ -113,7 +113,7 @@ describe('TextFilter', () => {
       type: 'text',
       id: 'someTextFilterId',
       name: 'someTextFilterName',
-      textId: 'textFilterText',
+      labelTextId: 'textFilterText',
       placeholderTextId: 'textFilterPlaceholderText',
       repeat: {
         repeatMin: 0,

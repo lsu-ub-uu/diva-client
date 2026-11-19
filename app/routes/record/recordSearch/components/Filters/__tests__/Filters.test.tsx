@@ -19,7 +19,7 @@ describe('Filters', () => {
       {
         id: 'filter1',
         name: 'Filter 1',
-        textId: 'Filter1Text',
+        labelTextId: 'Filter1Text',
         type: 'text',
         placeholderTextId: 'Filter1Placeholder',
         repeat: { repeatMin: 0, repeatMax: 1 },

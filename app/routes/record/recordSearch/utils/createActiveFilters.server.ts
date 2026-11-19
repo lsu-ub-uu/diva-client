@@ -43,18 +43,18 @@ const createActiveFilter = async (
   return {
     name: filter.name,
     value: value,
-    textId: filter.textId,
+    textId: filter.labelTextId,
     valueTextId:
       filter.type === 'collection'
         ? filter.options.find((o) => o.value === value)?.text
         : filter.type === 'autocomplete'
           ? await getValueTextForAutocompleteFilter(
-              value,
-              filter,
-              auth,
-              dependencies,
-              language,
-            )
+            value,
+            filter,
+            auth,
+            dependencies,
+            language,
+          )
           : value,
   };
 };

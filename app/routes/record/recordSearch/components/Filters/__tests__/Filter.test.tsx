@@ -48,7 +48,7 @@ describe('Filter', () => {
       type: 'text',
       id: 'text-id',
       name: 'textName',
-      textId: 'textTextId',
+      labelTextId: 'textTextId',
       placeholderTextId: 'textPlaceholderTextId',
       repeat: {
         repeatMin: 0,
@@ -67,7 +67,7 @@ describe('Filter', () => {
       type: 'number',
       id: 'number-id',
       name: 'numberName',
-      textId: 'numberTextId',
+      labelTextId: 'numberTextId',
       placeholderTextId: 'numberPlaceholderTextId',
       repeat: {
         repeatMin: 0,
@@ -85,7 +85,7 @@ describe('Filter', () => {
       type: 'collection',
       id: 'collection-id',
       name: 'collectionName',
-      textId: 'collectionTextId',
+      labelTextId: 'collectionTextId',
       placeholderTextId: 'collectionPlaceholderTextId',
       repeat: {
         repeatMin: 0,
@@ -111,7 +111,7 @@ describe('Filter', () => {
       type: 'collection',
       id: 'collection-id',
       name: 'collectionName',
-      textId: 'collectionTextId',
+      labelTextId: 'collectionTextId',
       placeholderTextId: 'collectionPlaceholderTextId',
       repeat: {
         repeatMin: 0,
@@ -133,7 +133,7 @@ describe('Filter', () => {
       type: 'autocomplete',
       id: 'autocomplete-id',
       name: 'autocompleteName',
-      textId: 'autocompleteTextId',
+      labelTextId: 'autocompleteTextId',
       placeholderTextId: 'autocompletePlaceholderTextId',
       repeat: {
         repeatMin: 0,

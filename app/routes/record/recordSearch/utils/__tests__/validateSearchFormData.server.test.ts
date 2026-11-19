@@ -61,7 +61,7 @@ describe('validateSearchFormData', () => {
       filters: [
         {
           name: 'testFilter',
-          textId: 'testFilterText',
+          labelTextId: 'testFilterText',
           placeholderTextId: 'testFilterPlaceholder',
           type: 'text',
           repeat: { repeatMin: 0, repeatMax: 1 },
@@ -97,7 +97,7 @@ describe('validateSearchFormData', () => {
       filters: [
         {
           name: 'testFilter',
-          textId: 'testFilterText',
+          labelTextId: 'testFilterText',
           placeholderTextId: 'testFilterPlaceholder',
           type: 'text',
           repeat: { repeatMin: 0, repeatMax: 1 },
@@ -132,7 +132,7 @@ describe('validateSearchFormData', () => {
       filters: [
         {
           name: 'testFilter',
-          textId: 'testFilterText',
+          labelTextId: 'testFilterText',
           placeholderTextId: 'testFilterPlaceholder',
           type: 'text',
           repeat: { repeatMin: 0, repeatMax: 1 },

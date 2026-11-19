@@ -78,7 +78,7 @@ export const AutocompleteFilter = ({
 
   return (
     <Fieldset
-      label={t(filter.textId)}
+      label={t(filter.labelTextId)}
       size='small'
       errorMessage={validationError && t(validationError)}
     >
@@ -94,7 +94,7 @@ export const AutocompleteFilter = ({
         invalid={!!validationError}
         displayValue={currentValueText}
         placeholder={t('divaClient_recordLinkAutocompletePlaceholderText', {
-          recordType: t(filter.textId).toLowerCase(),
+          recordType: t(filter.labelTextId).toLowerCase(),
         })}
       />
       <input type='hidden' name={filter.name} value={value} />

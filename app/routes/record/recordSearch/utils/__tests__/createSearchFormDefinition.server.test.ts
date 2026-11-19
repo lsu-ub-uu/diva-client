@@ -88,7 +88,7 @@ describe('createSearchFormDefinition', () => {
       mainSearchTerm: {
         id: 'mainSearchVar',
         type: 'textVariable',
-        textId: 'someTextId',
+        labelTextId: 'someTextId',
         defTextId: 'someTextId1',
         nameInData: 'mainSearchVar',
         regEx: '.+',
@@ -98,7 +98,7 @@ describe('createSearchFormDefinition', () => {
           type: 'text',
           id: 'anotherSearchVar',
           name: 'anotherSearchVar',
-          textId: 'someTextId',
+          labelTextId: 'someTextId',
           placeholderTextId: 'someTextId2',
           repeat: {
             repeatMin: 0,
