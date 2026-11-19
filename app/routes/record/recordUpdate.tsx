@@ -36,7 +36,12 @@ import { createUser } from '@/auth/createUser';
 import { sessionContext } from '@/auth/sessionMiddleware.server';
 import { Alert, AlertTitle } from '@/components/Alert/Alert';
 import { OutputPresentation } from '@/components/OutputPresentation/OutputPresentation';
+import type { RecordWrapper } from '@/cora/cora-data/types.server';
+import { getRecordDataById } from '@/cora/getRecordDataById.server';
+import { HttpError } from '@/cora/httpClient.server';
 import { transformToRaw } from '@/cora/transform/transformToRaw';
+import { updateRecordDataById } from '@/cora/updateRecordDataById.server';
+import { convertClassicValidationType } from '@/data/convertClassicValidationType.server';
 import { logError } from '@/logging/logger.server';
 import { cleanFormData } from '@/utils/cleanFormData';
 import { getMemberFromHostname } from '@/utils/getMemberFromHostname';
@@ -108,6 +113,40 @@ export const action = async ({
   const { auth, flashNotification } = context.get(sessionContext);
 
   const formData = await request.formData();
+  if (formData.get('intent') === 'convertClassicValidationType') {
+    try {
+      if (recordTypeId !== 'diva-output' || !auth) {
+        throw new HttpError(403, '');
+      }
+
+      const response = await getRecordDataById<RecordWrapper>(
+        recordTypeId,
+        recordId,
+        auth.data.token,
+      );
+
+      const updatedRecord = convertClassicValidationType(
+        response.data.record.data,
+      );
+      await updateRecordDataById<RecordWrapper>(
+        recordId,
+        updatedRecord,
+        recordTypeId,
+        auth.data.token,
+      );
+      flashNotification({
+        severity: 'success',
+        summary: t('divaClient_recordSuccessfullyConvertedText', {
+          defaultValue: 'Record converted to 2026.',
+        }),
+      });
+    } catch (error) {
+      logError(error, 'Error while converting classic output');
+      flashNotification(createNotificationFromHttpError(t, error));
+    }
+    return null;
+  }
+
   const dependencies = await getDependencies();
 
   const { validationType } = await getRecordByRecordTypeAndRecordId({

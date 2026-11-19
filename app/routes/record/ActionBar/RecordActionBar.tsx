@@ -1,10 +1,16 @@
 import { Button } from '@/components/Button/Button';
 import type { UserRightActionLink } from '@/data/getUserRightsForRecordType.server';
-import { ApiIcon, EditIcon, ViewIcon } from '@/icons/icons';
+import {
+  ApiIcon,
+  EditIcon,
+  RefreshDependenciesIcon,
+  ViewIcon,
+  ClassicQualityIcon,
+} from '@/icons/icons';
 import type { BFFDataRecord } from '@/types/record';
 import { useUser } from '@/utils/rootLoaderDataUtils';
 import { useTranslation } from 'react-i18next';
-import { href, Link, useMatches } from 'react-router';
+import { href, Link, useFetcher, useMatches } from 'react-router';
 import { ActionBar } from './ActionBar';
 import styles from './ActionBar.module.css';
 import { ActionBarButton } from './ActionBarButton';
@@ -25,6 +31,7 @@ export const RecordActionBar = ({
   const matches = useMatches();
   const { t } = useTranslation();
   const user = useUser();
+  const convertFetcher = useFetcher();
 
   const isOnUpdatePage = matches.at(-1)?.id === 'routes/record/recordUpdate';
   const isOnViewPage =
@@ -50,6 +57,53 @@ export const RecordActionBar = ({
 
   return (
     <ActionBar className={className} data-testid='record-action-bar'>
+      {record.recordType === 'diva-output' &&
+        recordUserRights.includes('update') &&
+        record.validationType.startsWith('classic_') && (
+          <ActionBarButton
+            icon={<ClassicQualityIcon />}
+            pending={convertFetcher.state !== 'idle'}
+            onAction={() =>
+              convertFetcher.submit(
+                { intent: 'convertClassicValidationType' },
+                {
+                  method: 'post',
+                  action: href('/:recordType/:recordId/update', {
+                    recordType: record.recordType,
+                    recordId: record.id,
+                  }),
+                },
+              )
+            }
+            confirmDialog={
+              isOnUpdatePage
+                ? {
+                    headingText: t(
+                      'divaClient_confirmConvertClassicHeadingText',
+                      {
+                        defaultValue: 'Convert saved record?',
+                      },
+                    ),
+                    messageText: t('divaClient_confirmConvertClassicText', {
+                      defaultValue:
+                        'This converts the saved record. Unsaved changes may be lost.',
+                    }),
+                    confirmButtonText: t(
+                      'divaClient_convertClassicValidationTypeText',
+                      {
+                        defaultValue: 'Convert to 2026',
+                      },
+                    ),
+                    cancelButtonText: t('divaClient_cancelText'),
+                  }
+                : undefined
+            }
+          >
+            {t('divaClient_convertClassicValidationTypeText', {
+              defaultValue: 'Convert to 2026',
+            })}
+          </ActionBarButton>
+        )}
       {!isOnUpdatePage && recordUserRights.includes('update') && (
         <ActionBarButton
           as={Link}

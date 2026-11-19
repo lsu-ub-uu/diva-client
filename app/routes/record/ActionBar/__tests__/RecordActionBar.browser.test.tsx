@@ -10,6 +10,92 @@ import type { User } from '@/auth/createUser';
 vi.mock('@/utils/rootLoaderDataUtils');
 
 describe('RecordActionBar', () => {
+  it('shows and submits conversion for an editable classic output', async () => {
+    const actionSpy = vi.fn<ActionFunction>(() => null);
+    const record = {
+      ...createRecord(['update']),
+      recordType: 'diva-output',
+      validationType: 'classic_report',
+    };
+    const screen = await renderRecordActionBar(
+      record,
+      '/diva-output/1234',
+      [],
+      true,
+      actionSpy,
+    );
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Convert to 2026' }),
+    );
+
+    await expect.poll(() => actionSpy).toHaveBeenCalledOnce();
+    const { request } = actionSpy.mock.calls[0][0];
+    expect(request.method).toBe('POST');
+    expect(new URL(request.url).pathname).toBe('/diva-output/1234/update');
+    expect((await request.formData()).get('intent')).toBe(
+      'convertClassicValidationType',
+    );
+  });
+
+  it.each([
+    ['diva-output', 'classic_report', []],
+    ['diva-output', 'report', ['update']],
+    ['diva-person', 'classic_report', ['update']],
+  ] as const)(
+    'does not show conversion for %s / %s without the required conditions',
+    async (recordType, validationType, rights) => {
+      const record = {
+        ...createRecord([...rights]),
+        recordType,
+        validationType,
+      };
+      const screen = await renderRecordActionBar(record);
+
+      await expect
+        .element(screen.getByRole('button', { name: 'Convert to 2026' }))
+        .not.toBeInTheDocument();
+    },
+  );
+
+  it('requires confirmation on the output edit page', async () => {
+    const actionSpy = vi.fn<ActionFunction>(() => null);
+    const record = {
+      ...createRecord(['update']),
+      recordType: 'diva-output',
+      validationType: 'classic_report',
+    };
+    const screen = await renderRecordActionBar(
+      record,
+      '/diva-output/1234/update',
+      [],
+      true,
+      actionSpy,
+    );
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Convert to 2026' }),
+    );
+    await expect.element(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(actionSpy).not.toHaveBeenCalled();
+    await userEvent.click(
+      screen
+        .getByRole('dialog')
+        .getByRole('button', { name: 'divaClient_cancelText' }),
+    );
+    expect(actionSpy).not.toHaveBeenCalled();
+    await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument();
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Convert to 2026' }),
+    );
+    await userEvent.click(
+      screen
+        .getByRole('dialog')
+        .getByRole('button', { name: 'Convert to 2026' }),
+    );
+    await expect.poll(() => actionSpy).toHaveBeenCalledOnce();
+  });
+
   it('shows only view in api link and no  menu if not logged in', async () => {
     const record = {
       id: '1234',
@@ -439,6 +525,7 @@ const renderRecordActionBar = async (
       id: 'routes/record/recordUpdate',
       path: '/:recordType/:recordId/update',
       Component,
+      action,
     },
     {
       id: 'routes/divaOutput/divaOutputView',
