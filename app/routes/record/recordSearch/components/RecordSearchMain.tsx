@@ -1,7 +1,7 @@
-import type { BFFMetadata } from '@/cora/bffTypes.server';
 import type { BFFSearchResult } from '@/types/record';
 import { Form } from 'react-router';
 import type { ActiveFilter } from '../utils/createActiveFilters.server';
+import type { FilterDefinition } from '../utils/createFilterDefinition.server';
 import { ActiveFilters } from './ActiveFilters';
 import { MainSearchInput } from './MainSearchInput';
 import { Pagination } from './Pagination';
@@ -12,7 +12,7 @@ import { SearchResults } from './SearchResults';
 interface RecordSearchMainProps {
   query: string;
   onQueryChange: (form: HTMLFormElement) => void;
-  mainSearchTerm: BFFMetadata;
+  mainSearchTerm: FilterDefinition;
   searching: boolean;
   onClearMainQuery: () => void;
   searchResults: BFFSearchResult;
@@ -55,7 +55,7 @@ export const RecordSearchMain = ({
           mainSearchTerm={mainSearchTerm}
           searching={searching}
           onClearMainQuery={onClearMainQuery}
-          validationError={validationErrors.get(mainSearchTerm.nameInData)}
+          validationError={validationErrors.get(mainSearchTerm.name)}
         />
         <SearchHiddenInputs
           rows={rows}

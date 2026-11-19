@@ -2,11 +2,16 @@ import { vi, describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MainSearchInput } from '../MainSearchInput';
-import type { BFFMetadata } from '@/cora/bffTypes.server';
+import type { TextFilter } from '../../utils/createFilterDefinition.server';
 
-const mainSearchTerm = {
-  textId: 'mainSearchText',
-  defTextId: 'mainSearchPlaceholder',
+const mainSearchTerm: TextFilter = {
+  id: 'mainSearchTerm',
+  name: 'mainSearchTerm',
+  labelTextId: 'mainSearchText',
+  placeholderTextId: 'mainSearchPlaceholder',
+  repeat: { repeatMin: 0, repeatMax: 1 },
+  type: 'text',
+  regEx: '.+',
 };
 
 describe('MainSearchInput', () => {
@@ -14,7 +19,7 @@ describe('MainSearchInput', () => {
     render(
       <MainSearchInput
         query='test query'
-        mainSearchTerm={mainSearchTerm as BFFMetadata}
+        mainSearchTerm={mainSearchTerm}
         searching={false}
         onClearMainQuery={vi.fn()}
       />,
@@ -26,7 +31,7 @@ describe('MainSearchInput', () => {
     render(
       <MainSearchInput
         query=''
-        mainSearchTerm={mainSearchTerm as BFFMetadata}
+        mainSearchTerm={mainSearchTerm}
         searching={false}
         onClearMainQuery={vi.fn()}
       />,
@@ -42,7 +47,7 @@ describe('MainSearchInput', () => {
     render(
       <MainSearchInput
         query='something'
-        mainSearchTerm={mainSearchTerm as BFFMetadata}
+        mainSearchTerm={mainSearchTerm}
         searching={false}
         onClearMainQuery={onClear}
       />,
@@ -56,7 +61,7 @@ describe('MainSearchInput', () => {
     const { rerender } = render(
       <MainSearchInput
         query='first'
-        mainSearchTerm={mainSearchTerm as BFFMetadata}
+        mainSearchTerm={mainSearchTerm}
         searching={false}
         onClearMainQuery={vi.fn()}
       />,
@@ -65,7 +70,7 @@ describe('MainSearchInput', () => {
     rerender(
       <MainSearchInput
         query='second'
-        mainSearchTerm={mainSearchTerm as BFFMetadata}
+        mainSearchTerm={mainSearchTerm}
         searching={false}
         onClearMainQuery={vi.fn()}
       />,
@@ -78,7 +83,7 @@ describe('MainSearchInput', () => {
     render(
       <MainSearchInput
         query=''
-        mainSearchTerm={mainSearchTerm as any}
+        mainSearchTerm={mainSearchTerm}
         searching={false}
         onClearMainQuery={vi.fn()}
       />,
@@ -92,7 +97,7 @@ describe('MainSearchInput', () => {
     render(
       <MainSearchInput
         query='test'
-        mainSearchTerm={mainSearchTerm as BFFMetadata}
+        mainSearchTerm={mainSearchTerm}
         searching={false}
         onClearMainQuery={vi.fn()}
       />,
@@ -108,7 +113,7 @@ describe('MainSearchInput', () => {
     render(
       <MainSearchInput
         query='test'
-        mainSearchTerm={mainSearchTerm as BFFMetadata}
+        mainSearchTerm={mainSearchTerm}
         searching={true}
         onClearMainQuery={vi.fn()}
       />,
@@ -120,7 +125,7 @@ describe('MainSearchInput', () => {
     render(
       <MainSearchInput
         query='test'
-        mainSearchTerm={mainSearchTerm as BFFMetadata}
+        mainSearchTerm={mainSearchTerm}
         searching={false}
         onClearMainQuery={vi.fn()}
         validationError='search.error'

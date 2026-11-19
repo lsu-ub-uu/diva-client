@@ -1,16 +1,23 @@
 import { describe, expect, it } from 'vitest';
 import { validateSearchFormData } from '../validateSearchFormData.server';
 import type { SearchFormDefinition } from '../createSearchFormDefinition.server';
-import type { BFFMetadataTextVariable } from '@/cora/bffTypes.server';
+import type { TextFilter } from '../createFilterDefinition.server';
+
+const createMainSearchTerm = (): TextFilter => ({
+  id: 'mainSearchTerm',
+  name: 'mainSearchTerm',
+  labelTextId: 'mainSearchTermTextId',
+  placeholderTextId: undefined,
+  repeat: { repeatMin: 0, repeatMax: 1 },
+  type: 'text',
+  regEx: '^[A-z]+$',
+});
 
 describe('validateSearchFormData', () => {
   it('returns validation error when q does not match regex', () => {
     const searchFormDefinition: SearchFormDefinition = {
       searchRootName: 'testSearch',
-      mainSearchTerm: {
-        nameInData: 'mainSearchTerm',
-        regEx: '^[A-z]+$',
-      } as BFFMetadataTextVariable,
+      mainSearchTerm: createMainSearchTerm(),
       filters: [],
     };
 
@@ -24,10 +31,7 @@ describe('validateSearchFormData', () => {
   it('returns no validation error when q matches regex', () => {
     const searchFormDefinition: SearchFormDefinition = {
       searchRootName: 'testSearch',
-      mainSearchTerm: {
-        nameInData: 'mainSearchTerm',
-        regEx: '^[A-z]+$',
-      } as BFFMetadataTextVariable,
+      mainSearchTerm: createMainSearchTerm(),
       filters: [],
     };
 
@@ -39,10 +43,7 @@ describe('validateSearchFormData', () => {
   it('does not return error if q is empty', () => {
     const searchFormDefinition: SearchFormDefinition = {
       searchRootName: 'testSearch',
-      mainSearchTerm: {
-        nameInData: 'mainSearchTerm',
-        regEx: '^[A-z]+$',
-      } as BFFMetadataTextVariable,
+      mainSearchTerm: createMainSearchTerm(),
       filters: [],
     };
 
@@ -54,10 +55,7 @@ describe('validateSearchFormData', () => {
   it('returns error when filter value does not match regex', () => {
     const searchFormDefinition: SearchFormDefinition = {
       searchRootName: 'testSearch',
-      mainSearchTerm: {
-        nameInData: 'mainSearchTerm',
-        regEx: '^[A-z]+$',
-      } as BFFMetadataTextVariable,
+      mainSearchTerm: createMainSearchTerm(),
       filters: [
         {
           name: 'testFilter',
@@ -90,10 +88,7 @@ describe('validateSearchFormData', () => {
   it('does not return error when filter value matches regex', () => {
     const searchFormDefinition: SearchFormDefinition = {
       searchRootName: 'testSearch',
-      mainSearchTerm: {
-        nameInData: 'mainSearchTerm',
-        regEx: '^[A-z]+$',
-      } as BFFMetadataTextVariable,
+      mainSearchTerm: createMainSearchTerm(),
       filters: [
         {
           name: 'testFilter',
@@ -125,10 +120,7 @@ describe('validateSearchFormData', () => {
   it('does not return error if filter is empty', () => {
     const searchFormDefinition: SearchFormDefinition = {
       searchRootName: 'testSearch',
-      mainSearchTerm: {
-        nameInData: 'mainSearchTerm',
-        regEx: '^[A-z]+$',
-      } as BFFMetadataTextVariable,
+      mainSearchTerm: createMainSearchTerm(),
       filters: [
         {
           name: 'testFilter',

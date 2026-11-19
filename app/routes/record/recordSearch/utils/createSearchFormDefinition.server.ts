@@ -1,22 +1,17 @@
 import type {
-  BFFBase,
   BFFMetadataGroup,
-  BFFMetadataTextVariable,
   BFFPresentationGroup,
-  BFFPresentationTextVar,
   BFFSearch,
+  Dependencies
 } from '@/cora/bffTypes.server';
 import {
-  createFilter,
   createFilters,
-  type FilterDefinition,
-  type TextFilter,
+  type FilterDefinition
 } from './createFilterDefinition.server';
-import type { Dependencies } from '@/cora/bffTypes.server';
 
 export interface SearchFormDefinition {
   searchRootName: string;
-  mainSearchTerm: TextFilter;
+  mainSearchTerm: FilterDefinition;
   filters: FilterDefinition[];
 }
 
@@ -44,31 +39,12 @@ export const createSearchFormDefinition = (
   ) as BFFPresentationGroup;
 
 
-  const mainSearchTermPVar = includePartPGroup.children.find(pChildRef => {
-    const pChild = dependencies.presentationPool.get(pChildRef.refGroups[0].childId);
-    return pChild.type === "pVar";
-  })
 
-  const mainSearchTermMetadataChildRef = includeGroup.children.find(childRef => {
-    const child = dependencies.metadataPool.get(childRef.childId);
-    return mainSearchTermPVar
-  })
-
-
-  const mainSearchTermChildRef = includePartGroup.children[0];
-  const mainSearchTermMetadata = dependencies.metadataPool.get(
-    mainSearchTermChildRef.childId,
-  ) as BFFMetadataTextVariable;
-  const mainSearchTermPresentation = includePartPGroup.children.find(pChildRef => {
-    const pChild = dependencies.presentationPool.get(pChildRef.refGroups[0].childId);
-    return "presentationOf" in pChild && pChild.presentationOf === mainSearchTermMetadataChildRef.id
-  })
-
-  const filterSearchTermRefs = includePartGroup.children.slice(1);
+  const filterDefinition = createFilters(includePartPGroup.children, includePartGroup.children, dependencies);
 
   return {
     searchRootName: searchMetadata.nameInData,
-    mainSearchTerm: createFilter(mainSearchTer),
-    filters: createFilters(filterSearchTermRefs, dependencies),
+    mainSearchTerm: filterDefinition[0],
+    filters: filterDefinition.slice(1),
   };
 };

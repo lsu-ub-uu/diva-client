@@ -9,7 +9,7 @@ describe('createSearchQuery', () => {
   it('creates a basic query', () => {
     const searchFormDefinition = {
       searchRootName: 'testSearch',
-      mainSearchTerm: { nameInData: 'mainSearchTerm' },
+      mainSearchTerm: { name: 'mainSearchTerm' },
     } as SearchFormDefinition;
     const q = 'test query';
     const member = undefined;
@@ -44,7 +44,7 @@ describe('createSearchQuery', () => {
   it('creates a search query with different start and rows', () => {
     const searchFormDefinition = {
       searchRootName: 'testSearch',
-      mainSearchTerm: { nameInData: 'mainSearchTerm' },
+      mainSearchTerm: { name: 'mainSearchTerm' },
     } as SearchFormDefinition;
     const q = 'test query';
     const member = undefined;
@@ -79,7 +79,7 @@ describe('createSearchQuery', () => {
   it('Searches for ** when q is empty', () => {
     const searchFormDefinition = {
       searchRootName: 'testSearch',
-      mainSearchTerm: { nameInData: 'mainSearchTerm' },
+      mainSearchTerm: { name: 'mainSearchTerm' },
     } as SearchFormDefinition;
     const q = '';
     const member = undefined;
@@ -114,7 +114,7 @@ describe('createSearchQuery', () => {
   it('searches within member permission unit', () => {
     const searchFormDefinition = {
       searchRootName: 'testSearch',
-      mainSearchTerm: { nameInData: 'mainSearchTerm' },
+      mainSearchTerm: { name: 'mainSearchTerm' },
     } as SearchFormDefinition;
     const q = 'test query';
     const member = {
@@ -153,7 +153,7 @@ describe('createSearchQuery', () => {
   it('searches for active filters', () => {
     const searchFormDefinition = {
       searchRootName: 'testSearch',
-      mainSearchTerm: { nameInData: 'mainSearchTerm' },
+      mainSearchTerm: { name: 'mainSearchTerm' },
       filters: [] as FilterDefinition[],
     } as SearchFormDefinition;
     const q = 'test query';
@@ -194,7 +194,7 @@ describe('createSearchQuery', () => {
   it('is possible to override visibilitySearchTerm and permissionUnitLinkedRecordIdSearchTerm', () => {
     const searchFormDefinition = {
       searchRootName: 'testSearch',
-      mainSearchTerm: { nameInData: 'mainSearchTerm' },
+      mainSearchTerm: { name: 'mainSearchTerm' },
       filters: [] as FilterDefinition[],
     } as SearchFormDefinition;
     const q = 'test query';
@@ -241,7 +241,7 @@ describe('createSearchQuery', () => {
     const searchFormDefinition = {
       searchRootName: 'testSearch',
       mainSearchTerm: {
-        nameInData: 'mainSearchTerm',
+        name: 'mainSearchTerm',
       },
       filters: [
         {

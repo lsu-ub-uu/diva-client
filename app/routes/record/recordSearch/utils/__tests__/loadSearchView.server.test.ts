@@ -1,6 +1,9 @@
 import type {
   BFFMetadataGroup,
   BFFMetadataTextVariable,
+  BFFPresentation,
+  BFFPresentationGroup,
+  BFFPresentationTextVar,
   BFFRecordType,
   BFFSearch,
   Dependencies,
@@ -60,7 +63,7 @@ describe('loadSearchView', () => {
     } = searchView!;
 
     expect(searchFormDefinition.searchRootName).toBe('searchRoot');
-    expect(searchFormDefinition.mainSearchTerm.nameInData).toBe(
+    expect(searchFormDefinition.mainSearchTerm.name).toBe(
       'mainSearchTerm',
     );
     expect(searchFormDefinition.filters.length).toBe(2);
@@ -131,7 +134,7 @@ describe('loadSearchView', () => {
     } = searchView!;
 
     expect(searchFormDefinition.searchRootName).toBe('searchRoot');
-    expect(searchFormDefinition.mainSearchTerm.nameInData).toBe(
+    expect(searchFormDefinition.mainSearchTerm.name).toBe(
       'mainSearchTerm',
     );
     expect(searchFormDefinition.filters.length).toBe(2);
@@ -206,7 +209,7 @@ describe('loadSearchView', () => {
     } = searchView!;
 
     expect(searchFormDefinition.searchRootName).toBe('searchRoot');
-    expect(searchFormDefinition.mainSearchTerm.nameInData).toBe(
+    expect(searchFormDefinition.mainSearchTerm.name).toBe(
       'mainSearchTerm',
     );
 
@@ -283,6 +286,7 @@ const createMockDependencies = (
       {
         id: 'someSearchId',
         metadataId: 'someSearchRootGroupId',
+        presentationId: 'someSearchPresentationId',
         searchGroup,
       } as BFFSearch,
     ]),
@@ -323,6 +327,68 @@ const createMockDependencies = (
         type: 'textVariable',
         textId: 'filter2TextId',
       } as BFFMetadataTextVariable,
+    ]),
+    presentationPool: listToPool<BFFPresentation>([
+      {
+        id: 'someSearchPresentationId',
+        type: 'pGroup',
+        presentationOf: 'someSearchRootGroupId',
+        mode: 'input',
+        children: [
+          {
+            refGroups: [{ childId: 'someIncludePresentationId', type: 'presentation' }],
+          },
+        ],
+      } as BFFPresentationGroup,
+      {
+        id: 'someIncludePresentationId',
+        type: 'pGroup',
+        presentationOf: 'someIncludeGroupId',
+        mode: 'input',
+        children: [
+          {
+            refGroups: [{ childId: 'someIncludePartPresentationId', type: 'presentation' }],
+          },
+        ],
+      } as BFFPresentationGroup,
+      {
+        id: 'someIncludePartPresentationId',
+        type: 'pGroup',
+        presentationOf: 'someIncludePartGroupId',
+        mode: 'input',
+        children: [
+          {
+            refGroups: [{ childId: 'someMainSearchTermPresentationId', type: 'presentation' }],
+          },
+          {
+            refGroups: [{ childId: 'someFilter1PresentationId', type: 'presentation' }],
+          },
+          {
+            refGroups: [{ childId: 'someFilter2PresentationId', type: 'presentation' }],
+          },
+        ],
+      } as BFFPresentationGroup,
+      {
+        id: 'someMainSearchTermPresentationId',
+        type: 'pVar',
+        presentationOf: 'someMainSearchTermId',
+        mode: 'input',
+        inputType: 'input',
+      } as BFFPresentationTextVar,
+      {
+        id: 'someFilter1PresentationId',
+        type: 'pVar',
+        presentationOf: 'someFilter1Id',
+        mode: 'input',
+        inputType: 'input',
+      } as BFFPresentationTextVar,
+      {
+        id: 'someFilter2PresentationId',
+        type: 'pVar',
+        presentationOf: 'someFilter2Id',
+        mode: 'input',
+        inputType: 'input',
+      } as BFFPresentationTextVar,
     ]),
   } as Dependencies;
 };

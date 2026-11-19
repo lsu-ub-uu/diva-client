@@ -7,11 +7,12 @@ export const validateSearchFormData = (
   searchFormDefinition: SearchFormDefinition,
 ): Map<string, string> => {
   const errors: Map<string, string> = new Map();
-  if (!validateRegex(q, searchFormDefinition.mainSearchTerm.regEx)) {
-    errors.set(
-      searchFormDefinition.mainSearchTerm.nameInData,
-      'divaClient_invalidSearchTermText',
-    );
+  const mainSearchTerm = searchFormDefinition.mainSearchTerm;
+  if (
+    mainSearchTerm.type === 'text' &&
+    !validateRegex(q, mainSearchTerm.regEx)
+  ) {
+    errors.set(mainSearchTerm.name, 'divaClient_invalidSearchTermText');
   }
   if (activeFilters.length > 0) {
     activeFilters.forEach((filter) => {

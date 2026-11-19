@@ -2,6 +2,9 @@ import type {
   BFFMetadata,
   BFFMetadataGroup,
   BFFMetadataTextVariable,
+  BFFPresentation,
+  BFFPresentationGroup,
+  BFFPresentationTextVar,
   BFFSearch,
   Dependencies,
 } from '@/cora/bffTypes.server';
@@ -74,11 +77,66 @@ describe('createSearchFormDefinition', () => {
           regEx: '.+',
         } as BFFMetadataTextVariable,
       ]),
+      presentationPool: listToPool<BFFPresentation>([
+        {
+          id: 'testSearchPGroup',
+          type: 'pGroup',
+          presentationOf: 'testSearchGroup',
+          mode: 'input',
+          children: [
+            {
+              refGroups: [{ childId: 'testSearchIncludePresentation', type: 'presentation' }],
+            },
+          ],
+        } as BFFPresentationGroup,
+        {
+          id: 'testSearchIncludePresentation',
+          type: 'pGroup',
+          presentationOf: 'testSearchIncludeGroup',
+          mode: 'input',
+          children: [
+            {
+              refGroups: [{ childId: 'testSearchIncludePartPresentation', type: 'presentation' }],
+            },
+          ],
+        } as BFFPresentationGroup,
+        {
+          id: 'testSearchIncludePartPresentation',
+          type: 'pGroup',
+          presentationOf: 'testSearchIncludePartGroup',
+          mode: 'input',
+          children: [
+            {
+              refGroups: [{ childId: 'mainSearchPresentation', type: 'presentation' }],
+            },
+            {
+              refGroups: [{ childId: 'anotherSearchPresentation', type: 'presentation' }],
+            },
+          ],
+        } as BFFPresentationGroup,
+        {
+          id: 'mainSearchPresentation',
+          type: 'pVar',
+          presentationOf: 'mainSearchVar',
+          mode: 'input',
+          inputType: 'input',
+          emptyTextId: 'someTextId1',
+        } as BFFPresentationTextVar,
+        {
+          id: 'anotherSearchPresentation',
+          type: 'pVar',
+          presentationOf: 'anotherSearchVar',
+          mode: 'input',
+          inputType: 'input',
+          emptyTextId: 'someTextId2',
+        } as BFFPresentationTextVar,
+      ]),
     } as Dependencies;
 
     const search = {
       id: 'testSearch',
       metadataId: 'testSearchGroup',
+      presentationId: 'testSearchPGroup',
     } as BFFSearch;
 
     const definition = createSearchFormDefinition(search, mockDependencies);
@@ -87,10 +145,14 @@ describe('createSearchFormDefinition', () => {
       searchRootName: 'testSearch',
       mainSearchTerm: {
         id: 'mainSearchVar',
-        type: 'textVariable',
+        type: 'text',
+        name: 'mainSearchVar',
         labelTextId: 'someTextId',
-        defTextId: 'someTextId1',
-        nameInData: 'mainSearchVar',
+        placeholderTextId: 'someTextId1',
+        repeat: {
+          repeatMin: 0,
+          repeatMax: 1,
+        },
         regEx: '.+',
       },
       filters: [

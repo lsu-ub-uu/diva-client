@@ -20,7 +20,7 @@ export type FilterDefinition =
 export interface BaseFilter {
   id: string;
   name: string;
-  labelTextId: string | undefined;
+  labelTextId: string;
   placeholderTextId: string | undefined;
   repeat: Repeat,
 }

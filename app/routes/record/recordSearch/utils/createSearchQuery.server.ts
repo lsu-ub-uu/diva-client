@@ -20,7 +20,7 @@ export const createSearchQuery = (
               ? `permissionUnit_${member?.memberPermissionUnit}`
               : '',
           },
-          [searchFormDefinition.mainSearchTerm.nameInData]: {
+          [searchFormDefinition.mainSearchTerm.name]: {
             value: q || '**',
           },
           ...activeFilters.reduce((acc, filter) => {
