@@ -18,13 +18,14 @@ export interface ActiveFilter {
 export const createActiveFilters = async (
   searchFormDefinition: SearchFormDefinition,
   searchParams: URLSearchParams,
+  defaultFilters: Record<string, string>,
   dependencies: Dependencies,
   auth: Auth | undefined,
   language: 'sv' | 'en',
 ) => {
   return await Promise.all(
     searchFormDefinition.filters.map((filter) =>
-      createActiveFilter(filter, searchParams, dependencies, auth, language),
+      createActiveFilter(filter, searchParams, defaultFilters, dependencies, auth, language),
     ),
   ).then((results) => results.filter(Boolean) as ActiveFilter[]);
 };
@@ -32,11 +33,12 @@ export const createActiveFilters = async (
 const createActiveFilter = async (
   filter: FilterDefinition,
   searchParams: URLSearchParams,
+  defaultFilters: Record<string, string>,
   dependencies: Dependencies,
   auth: Auth | undefined,
   language: 'sv' | 'en',
 ): Promise<ActiveFilter | undefined> => {
-  const value = searchParams.get(filter.name);
+  const value = searchParams.get(filter.name) ?? defaultFilters[filter.name];
   if (!value || value.trim() === '') {
     return undefined;
   }

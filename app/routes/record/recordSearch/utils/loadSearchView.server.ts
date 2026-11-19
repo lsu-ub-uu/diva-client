@@ -65,10 +65,11 @@ export const loadSearchView = async ({
   const q = searchParams.get('q') ?? '';
   const start = Number(searchParams.get('start')) || 1;
   const rows = Number(searchParams.get('rows')) || 20;
-
+  const defaultFilters: Record<string, string> = {};
   const activeFilters = await createActiveFilters(
     searchFormDefinition,
     searchParams,
+    defaultFilters,
     dependencies,
     auth,
     language,
@@ -83,7 +84,7 @@ export const loadSearchView = async ({
   const searchQuery = createSearchQuery(
     searchFormDefinition,
     q,
-    member,
+    defaultFilters,
     activeFilters,
     start,
     rows,

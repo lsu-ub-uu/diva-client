@@ -5,21 +5,19 @@ import type { ActiveFilter } from './createActiveFilters.server';
 export const createSearchQuery = (
   searchFormDefinition: SearchFormDefinition,
   q: string,
-  member: BFFMember | undefined,
+  defaultFilters: Record<string, string>,
   activeFilters: ActiveFilter[],
   start: number,
   rows: number,
 ) => {
+
   return {
     [searchFormDefinition.searchRootName]: {
       include: {
         includePart: {
-          /* visibilitySearchTerm: { value: 'published' },
-          permissionUnitLinkedRecordIdSearchTerm: {
-            value: member?.memberPermissionUnit
-              ? `permissionUnit_${member?.memberPermissionUnit}`
-              : '',
-          }, */
+          ...Object.fromEntries(
+            Object.entries(defaultFilters).map(([key, value]) => [key, { value }])
+          ),
           [searchFormDefinition.mainSearchTerm.name]: {
             value: q || '**',
           },
@@ -41,3 +39,15 @@ export const createSearchQuery = (
     },
   };
 };
+
+
+
+/* 
+visibilitySearchTerm: { value: 'published' },
+          permissionUnitLinkedRecordIdSearchTerm: {
+            value: member?.memberPermissionUnit
+              ? `permissionUnit_${member?.memberPermissionUnit}`
+              : '',
+          },
+
+*/
