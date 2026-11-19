@@ -30,8 +30,6 @@ describe('createSearchQuery', () => {
       testSearch: {
         include: {
           includePart: {
-            visibilitySearchTerm: { value: 'published' },
-            permissionUnitLinkedRecordIdSearchTerm: { value: '' },
             mainSearchTerm: { value: 'test query' },
           },
         },
@@ -65,8 +63,6 @@ describe('createSearchQuery', () => {
       testSearch: {
         include: {
           includePart: {
-            visibilitySearchTerm: { value: 'published' },
-            permissionUnitLinkedRecordIdSearchTerm: { value: '' },
             mainSearchTerm: { value: 'test query' },
           },
         },
@@ -100,8 +96,6 @@ describe('createSearchQuery', () => {
       testSearch: {
         include: {
           includePart: {
-            visibilitySearchTerm: { value: 'published' },
-            permissionUnitLinkedRecordIdSearchTerm: { value: '' },
             mainSearchTerm: { value: '**' },
           },
         },
@@ -137,10 +131,6 @@ describe('createSearchQuery', () => {
       testSearch: {
         include: {
           includePart: {
-            visibilitySearchTerm: { value: 'published' },
-            permissionUnitLinkedRecordIdSearchTerm: {
-              value: 'permissionUnit_memberPermissionUnit',
-            },
             mainSearchTerm: { value: 'test query' },
           },
         },
@@ -178,57 +168,9 @@ describe('createSearchQuery', () => {
       testSearch: {
         include: {
           includePart: {
-            visibilitySearchTerm: { value: 'published' },
-            permissionUnitLinkedRecordIdSearchTerm: { value: '' },
             mainSearchTerm: { value: 'test query' },
             filter1: { value: 'value1' },
             filter2: { value: 'value2' },
-          },
-        },
-        start: { value: '0' },
-        rows: { value: '10' },
-      },
-    });
-  });
-
-  it('is possible to override visibilitySearchTerm and permissionUnitLinkedRecordIdSearchTerm', () => {
-    const searchFormDefinition = {
-      searchRootName: 'testSearch',
-      mainSearchTerm: { name: 'mainSearchTerm' },
-      filters: [] as FilterDefinition[],
-    } as SearchFormDefinition;
-    const q = 'test query';
-    const member = {
-      memberPermissionUnit: 'memberPermissionUnit',
-    } as BFFMember;
-    const activeFilters = [
-      { name: 'visibilitySearchTerm', value: 'unpublished' },
-      {
-        name: 'permissionUnitLinkedRecordIdSearchTerm',
-        value: 'permissionUnit_test',
-      },
-    ] as ActiveFilter[];
-    const start = 0;
-    const rows = 10;
-
-    const query = createSearchQuery(
-      searchFormDefinition,
-      q,
-      member,
-      activeFilters,
-      start,
-      rows,
-    );
-
-    expect(query).toEqual({
-      testSearch: {
-        include: {
-          includePart: {
-            visibilitySearchTerm: { value: 'unpublished' },
-            permissionUnitLinkedRecordIdSearchTerm: {
-              value: 'permissionUnit_test',
-            },
-            mainSearchTerm: { value: 'test query' },
           },
         },
         start: { value: '0' },
@@ -280,8 +222,6 @@ describe('createSearchQuery', () => {
       testSearch: {
         include: {
           includePart: {
-            visibilitySearchTerm: { value: 'published' },
-            permissionUnitLinkedRecordIdSearchTerm: { value: '' },
             mainSearchTerm: { value: 'test query' },
             testFilter: [{ value: 'testValue' }],
           },

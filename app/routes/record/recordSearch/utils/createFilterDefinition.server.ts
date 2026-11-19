@@ -67,11 +67,6 @@ const autocompleteSearchTerms: Record<
   },
 };
 
-const hiddenSearchTerms = [
-  'visibilitySearchTerm',
-  'permissionUnitLinkedRecordIdSearchTerm',
-];
-
 export const createFilters = (
   filterPresentationRefs: BFFPresentationChildReference[],
   filterMetadataRefs: BFFMetadataChildReference[],
@@ -103,9 +98,6 @@ export const createFilter = (
   const metadata = dependencies.metadataPool.get(
     filterMetadataRef.childId,
   ) as BFFMetadataBase;
-  if (hiddenSearchTerms.includes(metadata.nameInData)) {
-    return undefined;
-  }
 
   const commonValues = {
     id: metadata.id,

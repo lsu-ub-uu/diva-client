@@ -92,20 +92,20 @@ export const loadSearchView = async ({
   const searchResults: PerformSearchResult =
     validationErrors.size === 0
       ? await performSearch({
-          dependencies,
-          searchId: search.id,
-          searchQuery,
-          auth,
-          decorated: recordType.id === 'diva-output',
-          t,
-        })
+        dependencies,
+        searchId: search.id,
+        searchQuery,
+        auth,
+        decorated: recordType.id === 'diva-output',
+        t,
+      })
       : {
-          data: [],
-          fromNo: 0,
-          toNo: 0,
-          totalNo: 0,
-          containDataOfType: 'mixed',
-        };
+        data: [],
+        fromNo: 0,
+        toNo: 0,
+        totalNo: 0,
+        containDataOfType: 'mixed',
+      };
 
   const apiUrl =
     searchQuery &&

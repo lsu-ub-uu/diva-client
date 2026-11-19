@@ -14,12 +14,12 @@ export const createSearchQuery = (
     [searchFormDefinition.searchRootName]: {
       include: {
         includePart: {
-          visibilitySearchTerm: { value: 'published' },
+          /* visibilitySearchTerm: { value: 'published' },
           permissionUnitLinkedRecordIdSearchTerm: {
             value: member?.memberPermissionUnit
               ? `permissionUnit_${member?.memberPermissionUnit}`
               : '',
-          },
+          }, */
           [searchFormDefinition.mainSearchTerm.name]: {
             value: q || '**',
           },
