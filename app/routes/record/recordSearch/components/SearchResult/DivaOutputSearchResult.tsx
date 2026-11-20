@@ -9,6 +9,9 @@ import { RelatedBook } from './RelatedBook/RelatedBook';
 import { InfoBox } from './InfoBox/InfoBox';
 import { useTranslation } from 'react-i18next';
 import { getTitleFromTitleInfo } from '@/utils/getRecordTitle';
+import { getDataQualityIcon } from '@/routes/divaOutput/components/RecordDetails';
+import { useLanguage } from '@/i18n/useLanguage';
+import { clsx } from 'clsx';
 
 interface DivaOutputSearchResultProps {
   searchResult: BFFDataRecord;
@@ -17,7 +20,9 @@ export const DivaOutputSearchResult = ({
   searchResult,
 }: DivaOutputSearchResultProps) => {
   const { t } = useTranslation();
+  const language = useLanguage();
   const output = searchResult.data.output as DivaOutputGroup;
+
   return (
     <div className={styles['layout']}>
       <div>
@@ -36,6 +41,12 @@ export const DivaOutputSearchResult = ({
         <InfoBox output={output} />
         <RelatedBook relatedBook={output.relatedItem_type_book} />
         <Related related={output.related} />
+      </div>
+      <div className={styles['data-quality-container']}>
+        <span className={clsx('icon-text', styles['data-quality'])}>
+          {getDataQualityIcon(output.dataQuality?.value)}{' '}
+          {output.dataQuality?.__valueText?.[language]}
+        </span>
       </div>
       <Attachments attachments={output.attachments} />
     </div>

@@ -98,7 +98,7 @@ const Timestamp = ({ timestamp }: { timestamp?: string }) => {
   return <span>{formatTimestamp(timestamp, language)}</span>;
 };
 
-const getDataQualityIcon = (dataQuality?: string) => {
+export const getDataQualityIcon = (dataQuality?: string) => {
   switch (dataQuality) {
     case '2026':
       return <SuccessIcon color='var(--color-alert-success-icon)' />;

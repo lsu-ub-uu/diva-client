@@ -15,3 +15,24 @@
     line-height: var(--item-title-line-height);
   }
 }
+
+.data-quality-container {
+  display: flex;
+  align-items: center;
+
+  .data-quality {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-s);
+    padding: var(--gap-s) calc(var(--gap) * 2);
+    border-radius: 99999999px;
+
+    svg {
+      stroke: white;
+      margin-left: 0;
+    }
+
+    color: white;
+    background-color: green;
+  }
+}

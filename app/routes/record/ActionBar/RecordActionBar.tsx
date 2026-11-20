@@ -1,12 +1,6 @@
 import { Button } from '@/components/Button/Button';
 import type { UserRightActionLink } from '@/data/getUserRightsForRecordType.server';
-import {
-  ApiIcon,
-  EditIcon,
-  RefreshDependenciesIcon,
-  ViewIcon,
-  ClassicQualityIcon,
-} from '@/icons/icons';
+import { ApiIcon, ClassicQualityIcon, EditIcon, ViewIcon } from '@/icons/icons';
 import type { BFFDataRecord } from '@/types/record';
 import { useUser } from '@/utils/rootLoaderDataUtils';
 import { useTranslation } from 'react-i18next';
