@@ -71,26 +71,32 @@ export const loadSearchView = async ({
       ? `permissionUnit_${member.memberPermissionUnit}`
       : '',
   };
+  const activeFilterDefaultFilters = { ...defaultFilters };
   const searchQueryDefaultFilters = { ...defaultFilters };
+  const isSearchRequest = ['q', 'start', 'rows'].some((key) =>
+    searchParams.has(key),
+  );
   const activeFilterSearchParams = new URLSearchParams(searchParams);
   if (!auth) {
     Object.keys(defaultFilters).forEach((filterName) =>
       activeFilterSearchParams.delete(filterName),
     );
-  } else {
+  } else if (isSearchRequest) {
     Object.keys(defaultFilters).forEach((filterName) => {
       if (
-        activeFilterSearchParams.has(filterName) &&
+        !activeFilterSearchParams.has(filterName) ||
         activeFilterSearchParams.get(filterName) === ''
       ) {
+        delete activeFilterDefaultFilters[filterName];
         delete searchQueryDefaultFilters[filterName];
+        activeFilterSearchParams.delete(filterName);
       }
     });
   }
   const activeFilters = await createActiveFilters(
     searchFormDefinition,
     activeFilterSearchParams,
-    defaultFilters,
+    activeFilterDefaultFilters,
     dependencies,
     auth,
     language,

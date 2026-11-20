@@ -212,10 +212,11 @@ describe('loadSearchView', () => {
     });
     vi.stubEnv('CORA_EXTERNAL_SYSTEM_URL', 'https://cora.example.com');
     const searchParams = new URLSearchParams();
-    searchParams.set('visibilitySearchTerm', '');
-    searchParams.set('permissionUnitLinkedRecordIdSearchTerm', '');
+    searchParams.set('q', '');
+    searchParams.set('start', '1');
+    searchParams.set('rows', '20');
 
-    await loadSearchView({
+    const searchView = await loadSearchView({
       dependencies: createMockDependencies(
         'publicSearch',
         'outputAdminSearch',
@@ -234,7 +235,100 @@ describe('loadSearchView', () => {
       t: ((key: string) => key) as TFunction,
     });
 
+    expect(searchView?.activeFilters).toEqual([]);
     expect(vi.mocked(performSearch)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        searchQuery: {
+          searchRoot: {
+            include: {
+              includePart: {
+                mainSearchTerm: { value: '**' },
+              },
+            },
+            start: { value: '1' },
+            rows: { value: '20' },
+          },
+        },
+      }),
+    );
+  });
+
+  it('keeps defaults removed when clearing filters one at a time', async () => {
+    vi.mocked(performSearch).mockResolvedValue({
+      data: [],
+      fromNo: 0,
+      toNo: 0,
+      totalNo: 0,
+      containDataOfType: 'mixed',
+    });
+    vi.stubEnv('CORA_EXTERNAL_SYSTEM_URL', 'https://cora.example.com');
+    const dependencies = createMockDependencies(
+      'publicSearch',
+      'outputAdminSearch',
+      true,
+    );
+    const recordType = {
+      id: 'diva-output',
+      searchId: 'divaOutputSearch',
+    } as BFFRecordType;
+    const member = {
+      memberPermissionUnit: 'someMemberPermissionUnit',
+    } as BFFMember;
+    const t = ((key: string) => key) as TFunction;
+    const firstSearchParams = new URLSearchParams();
+    firstSearchParams.set('q', '');
+    firstSearchParams.set('start', '1');
+    firstSearchParams.set('rows', '20');
+    firstSearchParams.set(
+      'permissionUnitLinkedRecordIdSearchTerm',
+      'permissionUnit_someMemberPermissionUnit',
+    );
+
+    await loadSearchView({
+      dependencies,
+      recordType,
+      searchParams: firstSearchParams,
+      auth: {} as Auth,
+      language: 'sv',
+      member,
+      t,
+    });
+
+    expect(vi.mocked(performSearch)).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        searchQuery: {
+          searchRoot: {
+            include: {
+              includePart: {
+                permissionUnitLinkedRecordIdSearchTerm: {
+                  value: 'permissionUnit_someMemberPermissionUnit',
+                },
+                mainSearchTerm: { value: '**' },
+              },
+            },
+            start: { value: '1' },
+            rows: { value: '20' },
+          },
+        },
+      }),
+    );
+
+    const secondSearchParams = new URLSearchParams();
+    secondSearchParams.set('q', '');
+    secondSearchParams.set('start', '1');
+    secondSearchParams.set('rows', '20');
+
+    await loadSearchView({
+      dependencies,
+      recordType,
+      searchParams: secondSearchParams,
+      auth: {} as Auth,
+      language: 'sv',
+      member,
+      t,
+    });
+
+    expect(vi.mocked(performSearch)).toHaveBeenLastCalledWith(
       expect.objectContaining({
         searchQuery: {
           searchRoot: {
