@@ -143,6 +143,64 @@ describe('loadSearchView', () => {
     );
   });
 
+  it('adds defaults to the query when they are not search form filters', async () => {
+    vi.mocked(performSearch).mockClear();
+    vi.mocked(performSearch).mockResolvedValue({
+      data: [],
+      fromNo: 0,
+      toNo: 0,
+      totalNo: 0,
+      containDataOfType: 'mixed',
+    });
+    vi.stubEnv('CORA_EXTERNAL_SYSTEM_URL', 'https://cora.example.com');
+
+    const searchView = await loadSearchView({
+      dependencies: createMockDependencies(
+        'publicSearch',
+        'outputPublicSearch',
+      ),
+      recordType: {
+        id: 'diva-output',
+        searchId: 'divaOutputSearch',
+      } as BFFRecordType,
+      searchParams: new URLSearchParams(),
+      auth: undefined,
+      language: 'sv',
+      member: {
+        memberPermissionUnit: 'someMemberPermissionUnit',
+      } as BFFMember,
+      t: ((key: string) => key) as TFunction,
+    });
+
+    expect(searchView).toBeDefined();
+    expect(
+      searchView?.searchFormDefinition.filters.map((filter) => filter.name),
+    ).not.toContain('visibilitySearchTerm');
+    expect(
+      searchView?.searchFormDefinition.filters.map((filter) => filter.name),
+    ).not.toContain('permissionUnitLinkedRecordIdSearchTerm');
+    expect(searchView?.activeFilters).toEqual([]);
+    expect(vi.mocked(performSearch)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        searchQuery: {
+          searchRoot: {
+            include: {
+              includePart: {
+                visibilitySearchTerm: { value: 'published' },
+                permissionUnitLinkedRecordIdSearchTerm: {
+                  value: 'permissionUnit_someMemberPermissionUnit',
+                },
+                mainSearchTerm: { value: '**' },
+              },
+            },
+            start: { value: '1' },
+            rows: { value: '20' },
+          },
+        },
+      }),
+    );
+  });
+
   it('can override permission unit with auth', async () => {
     vi.mocked(performSearch).mockClear();
     vi.mocked(performSearch).mockResolvedValue({
