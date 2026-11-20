@@ -32,6 +32,7 @@ describe('createActiveFilters', () => {
     const result = await createActiveFilters(
       searchFormDefinition,
       searchParams,
+      {},
       dependencies,
       auth,
       language,
@@ -49,6 +50,41 @@ describe('createActiveFilters', () => {
         value: 'value2',
         textId: 'filter2Text',
         valueTextId: 'value2',
+      },
+    ]);
+  });
+
+  it('creates an active filter from a default value', async () => {
+    const searchFormDefinition = {
+      filters: [
+        {
+          name: 'filter1',
+          labelTextId: 'filter1Text',
+          type: 'text',
+        },
+      ],
+    } as SearchFormDefinition;
+    const searchParams = new URLSearchParams();
+    const defaultFilters = { filter1: 'defaultValue' };
+    const dependencies = {} as Dependencies;
+    const auth = undefined;
+    const language = 'en';
+
+    const result = await createActiveFilters(
+      searchFormDefinition,
+      searchParams,
+      defaultFilters,
+      dependencies,
+      auth,
+      language,
+    );
+
+    expect(result).toEqual([
+      {
+        name: 'filter1',
+        value: 'defaultValue',
+        textId: 'filter1Text',
+        valueTextId: 'defaultValue',
       },
     ]);
   });
@@ -79,6 +115,7 @@ describe('createActiveFilters', () => {
     const result = await createActiveFilters(
       searchFormDefinition,
       searchParams,
+      {},
       dependencies,
       auth,
       language,
@@ -122,6 +159,7 @@ describe('createActiveFilters', () => {
     const result = await createActiveFilters(
       searchFormDefinition,
       searchParams,
+      {},
       dependencies,
       auth,
       language,
@@ -172,6 +210,7 @@ describe('createActiveFilters', () => {
     const result = await createActiveFilters(
       searchFormDefinition,
       searchParams,
+      {},
       dependencies,
       auth,
       language,
@@ -217,6 +256,7 @@ describe('createActiveFilters', () => {
     const result = await createActiveFilters(
       searchFormDefinition,
       searchParams,
+      {},
       dependencies,
       auth,
       language,

@@ -65,7 +65,12 @@ export const loadSearchView = async ({
   const q = searchParams.get('q') ?? '';
   const start = Number(searchParams.get('start')) || 1;
   const rows = Number(searchParams.get('rows')) || 20;
-  const defaultFilters: Record<string, string> = {};
+  const defaultFilters: Record<string, string> = {
+    visibilitySearchTerm: 'published',
+    permissionUnitLinkedRecordIdSearchTerm: member?.memberPermissionUnit
+      ? `permissionUnit_${member.memberPermissionUnit}`
+      : '',
+  };
   const activeFilters = await createActiveFilters(
     searchFormDefinition,
     searchParams,

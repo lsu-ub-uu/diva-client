@@ -1,6 +1,7 @@
 import type {
   BFFMetadataGroup,
   BFFMetadataTextVariable,
+  BFFMember,
   BFFPresentation,
   BFFPresentationGroup,
   BFFPresentationTextVar,
@@ -78,6 +79,53 @@ describe('loadSearchView', () => {
     expect(validationErrors.size).toBe(0);
     expect(apiUrl).toBe(
       'https://cora.example.com/rest/record/searchResult/someSearchId?searchData=%7B%22name%22:%22searchRoot%22,%22children%22:%5B%5D%7D',
+    );
+  });
+
+  it('uses default visibility and member permission unit filters', async () => {
+    vi.mocked(performSearch).mockResolvedValue({
+      data: [],
+      fromNo: 0,
+      toNo: 0,
+      totalNo: 0,
+      containDataOfType: 'mixed',
+    });
+    vi.stubEnv('CORA_EXTERNAL_SYSTEM_URL', 'https://cora.example.com');
+
+    const searchView = await loadSearchView({
+      dependencies: createMockDependencies(),
+      recordType: {
+        id: 'someRecordTypeId',
+        searchId: 'someSearchId',
+      } as BFFRecordType,
+      searchParams: new URLSearchParams(),
+      auth: undefined,
+      language: 'sv',
+      member: {
+        memberPermissionUnit: 'someMemberPermissionUnit',
+      } as BFFMember,
+      t: ((key: string) => key) as TFunction,
+    });
+
+    expect(searchView).toBeDefined();
+    expect(vi.mocked(performSearch)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        searchQuery: {
+          searchRoot: {
+            include: {
+              includePart: {
+                visibilitySearchTerm: { value: 'published' },
+                permissionUnitLinkedRecordIdSearchTerm: {
+                  value: 'permissionUnit_someMemberPermissionUnit',
+                },
+                mainSearchTerm: { value: '**' },
+              },
+            },
+            start: { value: '1' },
+            rows: { value: '20' },
+          },
+        },
+      }),
     );
   });
 

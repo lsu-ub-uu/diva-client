@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest';
 import { createSearchQuery } from '../createSearchQuery.server';
 import type { SearchFormDefinition } from '../createSearchFormDefinition.server';
 import type { ActiveFilter } from '../createActiveFilters.server';
-import type { BFFMember } from '@/cora/bffTypes.server';
 import type { FilterDefinition } from '../createFilterDefinition.server';
 
 describe('createSearchQuery', () => {
@@ -12,7 +11,7 @@ describe('createSearchQuery', () => {
       mainSearchTerm: { name: 'mainSearchTerm' },
     } as SearchFormDefinition;
     const q = 'test query';
-    const member = undefined;
+    const defaultFilters: Record<string, string> = {};
     const activeFilters = [] as ActiveFilter[];
     const start = 0;
     const rows = 10;
@@ -20,7 +19,7 @@ describe('createSearchQuery', () => {
     const query = createSearchQuery(
       searchFormDefinition,
       q,
-      member,
+      defaultFilters,
       activeFilters,
       start,
       rows,
@@ -45,7 +44,7 @@ describe('createSearchQuery', () => {
       mainSearchTerm: { name: 'mainSearchTerm' },
     } as SearchFormDefinition;
     const q = 'test query';
-    const member = undefined;
+    const defaultFilters: Record<string, string> = {};
     const activeFilters = [] as ActiveFilter[];
     const start = 40;
     const rows = 20;
@@ -53,7 +52,7 @@ describe('createSearchQuery', () => {
     const query = createSearchQuery(
       searchFormDefinition,
       q,
-      member,
+      defaultFilters,
       activeFilters,
       start,
       rows,
@@ -78,7 +77,7 @@ describe('createSearchQuery', () => {
       mainSearchTerm: { name: 'mainSearchTerm' },
     } as SearchFormDefinition;
     const q = '';
-    const member = undefined;
+    const defaultFilters: Record<string, string> = {};
     const activeFilters = [] as ActiveFilter[];
     const start = 0;
     const rows = 10;
@@ -86,7 +85,7 @@ describe('createSearchQuery', () => {
     const query = createSearchQuery(
       searchFormDefinition,
       q,
-      member,
+      defaultFilters,
       activeFilters,
       start,
       rows,
@@ -105,15 +104,16 @@ describe('createSearchQuery', () => {
     });
   });
 
-  it('searches within member permission unit', () => {
+  it('searches using default filters', () => {
     const searchFormDefinition = {
       searchRootName: 'testSearch',
       mainSearchTerm: { name: 'mainSearchTerm' },
     } as SearchFormDefinition;
     const q = 'test query';
-    const member = {
-      memberPermissionUnit: 'memberPermissionUnit',
-    } as BFFMember;
+    const defaultFilters: Record<string, string> = {
+      visibilitySearchTerm: 'published',
+      permissionUnitLinkedRecordIdSearchTerm: 'permissionUnit_memberPermissionUnit',
+    };
     const activeFilters = [] as ActiveFilter[];
     const start = 0;
     const rows = 10;
@@ -121,7 +121,7 @@ describe('createSearchQuery', () => {
     const query = createSearchQuery(
       searchFormDefinition,
       q,
-      member,
+      defaultFilters,
       activeFilters,
       start,
       rows,
@@ -132,6 +132,10 @@ describe('createSearchQuery', () => {
         include: {
           includePart: {
             mainSearchTerm: { value: 'test query' },
+            visibilitySearchTerm: { value: 'published' },
+            permissionUnitLinkedRecordIdSearchTerm: {
+              value: 'permissionUnit_memberPermissionUnit',
+            },
           },
         },
         start: { value: '0' },
@@ -147,7 +151,7 @@ describe('createSearchQuery', () => {
       filters: [] as FilterDefinition[],
     } as SearchFormDefinition;
     const q = 'test query';
-    const member = undefined;
+    const defaultFilters: Record<string, string> = {};
     const activeFilters = [
       { name: 'filter1', value: 'value1' },
       { name: 'filter2', value: 'value2' },
@@ -158,7 +162,7 @@ describe('createSearchQuery', () => {
     const query = createSearchQuery(
       searchFormDefinition,
       q,
-      member,
+      defaultFilters,
       activeFilters,
       start,
       rows,
@@ -199,7 +203,7 @@ describe('createSearchQuery', () => {
       ],
     } as SearchFormDefinition;
     const q = 'test query';
-    const member = undefined;
+    const defaultFilters: Record<string, string> = {};
     const activeFilters = [
       {
         name: 'testFilter',
@@ -212,7 +216,7 @@ describe('createSearchQuery', () => {
     const query = createSearchQuery(
       searchFormDefinition,
       q,
-      member,
+      defaultFilters,
       activeFilters,
       start,
       rows,
