@@ -49,6 +49,7 @@ export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
         formData.append(filter.name, filter.value);
       }
     });
+    formData.append(filterName, '');
     submit(formData, { method: 'GET', replace: true });
   };
 
@@ -57,6 +58,7 @@ export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
     formData.append('q', query);
     formData.append('start', start.toString());
     formData.append('rows', rows.toString());
+    activeFilters.forEach((filter) => formData.append(filter.name, ''));
     submit(formData, { method: 'GET', replace: true });
   };
 

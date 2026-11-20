@@ -9,6 +9,7 @@ import type {
   BFFSearch,
   Dependencies,
 } from '@/cora/bffTypes.server';
+import type { Auth } from '@/auth/Auth';
 import type { TFunction } from 'i18next';
 import { listToPool } from 'server/dependencies/util/listToPool';
 import { describe, expect, it, vi } from 'vitest';
@@ -82,7 +83,8 @@ describe('loadSearchView', () => {
     );
   });
 
-  it('uses default visibility and member permission unit filters', async () => {
+  it('uses default search filters without auth', async () => {
+    vi.mocked(performSearch).mockClear();
     vi.mocked(performSearch).mockResolvedValue({
       data: [],
       fromNo: 0,
@@ -91,14 +93,25 @@ describe('loadSearchView', () => {
       containDataOfType: 'mixed',
     });
     vi.stubEnv('CORA_EXTERNAL_SYSTEM_URL', 'https://cora.example.com');
+    const searchParams = new URLSearchParams();
+    searchParams.set('q', 'differentSearchTerm');
+    searchParams.set('visibilitySearchTerm', 'draft');
+    searchParams.set(
+      'permissionUnitLinkedRecordIdSearchTerm',
+      'permissionUnit_otherPermissionUnit',
+    );
 
     const searchView = await loadSearchView({
-      dependencies: createMockDependencies(),
+      dependencies: createMockDependencies(
+        'publicSearch',
+        'outputPublicSearch',
+        true,
+      ),
       recordType: {
-        id: 'someRecordTypeId',
-        searchId: 'someSearchId',
+        id: 'diva-output',
+        searchId: 'divaOutputSearch',
       } as BFFRecordType,
-      searchParams: new URLSearchParams(),
+      searchParams,
       auth: undefined,
       language: 'sv',
       member: {
@@ -110,6 +123,7 @@ describe('loadSearchView', () => {
     expect(searchView).toBeDefined();
     expect(vi.mocked(performSearch)).toHaveBeenCalledWith(
       expect.objectContaining({
+        searchId: 'outputPublicSearch',
         searchQuery: {
           searchRoot: {
             include: {
@@ -118,6 +132,114 @@ describe('loadSearchView', () => {
                 permissionUnitLinkedRecordIdSearchTerm: {
                   value: 'permissionUnit_someMemberPermissionUnit',
                 },
+                mainSearchTerm: { value: 'differentSearchTerm' },
+              },
+            },
+            start: { value: '1' },
+            rows: { value: '20' },
+          },
+        },
+      }),
+    );
+  });
+
+  it('can override permission unit with auth', async () => {
+    vi.mocked(performSearch).mockClear();
+    vi.mocked(performSearch).mockResolvedValue({
+      data: [],
+      fromNo: 0,
+      toNo: 0,
+      totalNo: 0,
+      containDataOfType: 'mixed',
+    });
+    vi.stubEnv('CORA_EXTERNAL_SYSTEM_URL', 'https://cora.example.com');
+    const searchParams = new URLSearchParams();
+    searchParams.set(
+      'permissionUnitLinkedRecordIdSearchTerm',
+      'permissionUnit_otherPermissionUnit',
+    );
+
+    const searchView = await loadSearchView({
+      dependencies: createMockDependencies(
+        'publicSearch',
+        'outputAdminSearch',
+        true,
+      ),
+      recordType: {
+        id: 'diva-output',
+        searchId: 'divaOutputSearch',
+      } as BFFRecordType,
+      searchParams,
+      auth: {} as Auth,
+      language: 'sv',
+      member: {
+        memberPermissionUnit: 'someMemberPermissionUnit',
+      } as BFFMember,
+      t: ((key: string) => key) as TFunction,
+    });
+
+    expect(searchView).toBeDefined();
+    expect(vi.mocked(performSearch)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        searchId: 'outputAdminSearch',
+        searchQuery: {
+          searchRoot: {
+            include: {
+              includePart: {
+                visibilitySearchTerm: { value: 'published' },
+                permissionUnitLinkedRecordIdSearchTerm: {
+                  value: 'permissionUnit_otherPermissionUnit',
+                },
+                mainSearchTerm: { value: '**' },
+              },
+            },
+            start: { value: '1' },
+            rows: { value: '20' },
+          },
+        },
+      }),
+    );
+  });
+
+  it('allows auth to remove default search filters', async () => {
+    vi.mocked(performSearch).mockClear();
+    vi.mocked(performSearch).mockResolvedValue({
+      data: [],
+      fromNo: 0,
+      toNo: 0,
+      totalNo: 0,
+      containDataOfType: 'mixed',
+    });
+    vi.stubEnv('CORA_EXTERNAL_SYSTEM_URL', 'https://cora.example.com');
+    const searchParams = new URLSearchParams();
+    searchParams.set('visibilitySearchTerm', '');
+    searchParams.set('permissionUnitLinkedRecordIdSearchTerm', '');
+
+    await loadSearchView({
+      dependencies: createMockDependencies(
+        'publicSearch',
+        'outputAdminSearch',
+        true,
+      ),
+      recordType: {
+        id: 'diva-output',
+        searchId: 'divaOutputSearch',
+      } as BFFRecordType,
+      searchParams,
+      auth: {} as Auth,
+      language: 'sv',
+      member: {
+        memberPermissionUnit: 'someMemberPermissionUnit',
+      } as BFFMember,
+      t: ((key: string) => key) as TFunction,
+    });
+
+    expect(vi.mocked(performSearch)).toHaveBeenCalledWith(
+      expect.objectContaining({
+        searchQuery: {
+          searchRoot: {
+            include: {
+              includePart: {
                 mainSearchTerm: { value: '**' },
               },
             },
@@ -328,11 +450,13 @@ describe('loadSearchView', () => {
 
 const createMockDependencies = (
   searchGroup: BFFSearch['searchGroup'] = 'publicSearch',
+  searchId = 'someSearchId',
+  includeDefaultFilterInputs = false,
 ): Dependencies => {
   return {
     searchPool: listToPool([
       {
-        id: 'someSearchId',
+        id: searchId,
         metadataId: 'someSearchRootGroupId',
         presentationId: 'someSearchPresentationId',
         searchGroup,
@@ -354,6 +478,12 @@ const createMockDependencies = (
           { childId: 'someMainSearchTermId', repeatMin: '0', repeatMax: '1' },
           { childId: 'someFilter1Id', repeatMin: '0', repeatMax: '1' },
           { childId: 'someFilter2Id', repeatMin: '0', repeatMax: '1' },
+          ...(includeDefaultFilterInputs
+            ? [
+              { childId: 'visibilityFilterId', repeatMin: '0', repeatMax: '1' },
+              { childId: 'permissionUnitFilterId', repeatMin: '0', repeatMax: '1' },
+            ]
+            : []),
         ],
       } as BFFMetadataGroup,
       {
@@ -375,6 +505,23 @@ const createMockDependencies = (
         type: 'textVariable',
         textId: 'filter2TextId',
       } as BFFMetadataTextVariable,
+      ...(includeDefaultFilterInputs
+        ? [
+          {
+            id: 'visibilityFilterId',
+            nameInData: 'visibilitySearchTerm',
+            type: 'textVariable',
+            textId: 'visibilityFilterTextId',
+            regEx: '.*',
+          } as BFFMetadataTextVariable,
+          {
+            id: 'permissionUnitFilterId',
+            nameInData: 'permissionUnitLinkedRecordIdSearchTerm',
+            type: 'textVariable',
+            textId: 'permissionUnitFilterTextId',
+          } as BFFMetadataTextVariable,
+        ]
+        : []),
     ]),
     presentationPool: listToPool<BFFPresentation>([
       {
@@ -414,6 +561,16 @@ const createMockDependencies = (
           {
             refGroups: [{ childId: 'someFilter2PresentationId', type: 'presentation' }],
           },
+          ...(includeDefaultFilterInputs
+            ? [
+              {
+                refGroups: [{ childId: 'visibilityFilterPresentationId', type: 'presentation' }],
+              },
+              {
+                refGroups: [{ childId: 'permissionUnitFilterPresentationId', type: 'presentation' }],
+              },
+            ]
+            : []),
         ],
       } as BFFPresentationGroup,
       {
@@ -437,6 +594,24 @@ const createMockDependencies = (
         mode: 'input',
         inputType: 'input',
       } as BFFPresentationTextVar,
+      ...(includeDefaultFilterInputs
+        ? [
+          {
+            id: 'visibilityFilterPresentationId',
+            type: 'pVar',
+            presentationOf: 'visibilityFilterId',
+            mode: 'input',
+            inputType: 'input',
+          } as BFFPresentationTextVar,
+          {
+            id: 'permissionUnitFilterPresentationId',
+            type: 'pVar',
+            presentationOf: 'permissionUnitFilterId',
+            mode: 'input',
+            inputType: 'input',
+          } as BFFPresentationTextVar,
+        ]
+        : []),
     ]),
   } as Dependencies;
 };

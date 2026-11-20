@@ -35,12 +35,6 @@ export const Filters = ({
     if (!form) return;
 
     const formData = new FormData(form);
-
-    for (const [key, value] of Array.from(formData.entries())) {
-      if (typeof value === 'string' && value.trim() === '') {
-        formData.delete(key);
-      }
-    }
     submit(formData, { method: 'GET', replace: true });
   }, 400);
 

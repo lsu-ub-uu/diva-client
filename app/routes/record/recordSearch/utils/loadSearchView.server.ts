@@ -71,9 +71,25 @@ export const loadSearchView = async ({
       ? `permissionUnit_${member.memberPermissionUnit}`
       : '',
   };
+  const searchQueryDefaultFilters = { ...defaultFilters };
+  const activeFilterSearchParams = new URLSearchParams(searchParams);
+  if (!auth) {
+    Object.keys(defaultFilters).forEach((filterName) =>
+      activeFilterSearchParams.delete(filterName),
+    );
+  } else {
+    Object.keys(defaultFilters).forEach((filterName) => {
+      if (
+        activeFilterSearchParams.has(filterName) &&
+        activeFilterSearchParams.get(filterName) === ''
+      ) {
+        delete searchQueryDefaultFilters[filterName];
+      }
+    });
+  }
   const activeFilters = await createActiveFilters(
     searchFormDefinition,
-    searchParams,
+    activeFilterSearchParams,
     defaultFilters,
     dependencies,
     auth,
@@ -89,7 +105,7 @@ export const loadSearchView = async ({
   const searchQuery = createSearchQuery(
     searchFormDefinition,
     q,
-    defaultFilters,
+    searchQueryDefaultFilters,
     activeFilters,
     start,
     rows,
