@@ -71,8 +71,6 @@ export const loadSearchView = async ({
       ? `permissionUnit_${member.memberPermissionUnit}`
       : '',
   };
-  const activeFilterDefaultFilters = { ...defaultFilters };
-  const searchQueryDefaultFilters = { ...defaultFilters };
   const isSearchRequest = ['q', 'start', 'rows'].some((key) =>
     searchParams.has(key),
   );
@@ -81,22 +79,21 @@ export const loadSearchView = async ({
     Object.keys(defaultFilters).forEach((filterName) =>
       activeFilterSearchParams.delete(filterName),
     );
-  } else if (isSearchRequest) {
-    Object.keys(defaultFilters).forEach((filterName) => {
-      if (
-        !activeFilterSearchParams.has(filterName) ||
-        activeFilterSearchParams.get(filterName) === ''
-      ) {
-        delete activeFilterDefaultFilters[filterName];
-        delete searchQueryDefaultFilters[filterName];
-        activeFilterSearchParams.delete(filterName);
-      }
-    });
   }
+  const activeDefaultFilters = Object.fromEntries(
+    Object.entries(defaultFilters).filter(
+      ([filterName]) => shouldIncludeDefaultFilter(
+        filterName,
+        auth,
+        isSearchRequest,
+        activeFilterSearchParams,
+      ),
+    ),
+  );
   const activeFilters = await createActiveFilters(
     searchFormDefinition,
     activeFilterSearchParams,
-    activeFilterDefaultFilters,
+    activeDefaultFilters,
     dependencies,
     auth,
     language,
@@ -111,7 +108,7 @@ export const loadSearchView = async ({
   const searchQuery = createSearchQuery(
     searchFormDefinition,
     q,
-    searchQueryDefaultFilters,
+    activeDefaultFilters,
     activeFilters,
     start,
     rows,
@@ -154,4 +151,17 @@ export const loadSearchView = async ({
     validationErrors,
     apiUrl,
   };
+};
+
+const shouldIncludeDefaultFilter = (
+  filterName: string,
+  auth: Auth | undefined,
+  isSearchRequest: boolean,
+  searchParams: URLSearchParams,
+): boolean => {
+  return (
+    !auth ||
+    !isSearchRequest ||
+    (searchParams.has(filterName) && searchParams.get(filterName) !== '')
+  );
 };
