@@ -1,9 +1,4 @@
 import type { Auth } from '@/auth/Auth';
-import {
-  commitSession,
-  getNotification,
-  getSession,
-} from '@/auth/sessions.server';
 import { transformCoraAuth } from '@/cora/transform/transformCoraAuth';
 import { loginWithAppToken } from '@/data/loginWithAppToken.server';
 import { loginWithUsernameAndPassword } from '@/data/loginWithUsernameAndPassword.server';
@@ -26,29 +21,22 @@ import { WebRedirectLoginOptions } from './WebRedirectLoginOptions';
 import { Breadcrumbs } from '@/components/Layout/Breadcrumbs/Breadcrumbs';
 import { logError } from '@/logging/logger.server';
 
-export async function loader({ request, url, context }: Route.LoaderArgs) {
+export async function loader({ url, context }: Route.LoaderArgs) {
   const { t } = context.get(i18nContext);
+  const session = context.get(sessionContext);
   const returnTo = url.searchParams.get('returnTo');
   const loginUnit = url.searchParams.get('loginUnit');
-  const session = await getSession(request.headers.get('Cookie'));
 
-  if (session.has('auth')) {
+  if (session.auth) {
     return redirect(returnTo || '/');
   }
 
-  return data(
-    {
-      breadcrumb: t('divaClient_LoginText'),
-      notification: getNotification(session),
-      returnTo,
-      loginUnit,
-    },
-    {
-      headers: {
-        'Set-Cookie': await commitSession(session),
-      },
-    },
-  );
+  return data({
+    breadcrumb: t('divaClient_LoginText'),
+    notification: session.notification,
+    returnTo,
+    loginUnit,
+  });
 }
 
 export const meta = ({ loaderData }: Route.MetaArgs) => {
