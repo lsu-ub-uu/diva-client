@@ -67,7 +67,7 @@ export const loadSearchView = async ({
 
   const activeDefaultFilters = Object.fromEntries(
     Object.entries(defaultFilters).filter(([filterName]) =>
-      shouldIncludeDefaultFilter(filterName, activeFilterSearchParams),
+      isDefaultFilterActive(filterName, activeFilterSearchParams),
     ),
   );
   const activeFilters = await createActiveFilters(
@@ -134,7 +134,7 @@ export const loadSearchView = async ({
   };
 };
 
-const shouldIncludeDefaultFilter = (
+const isDefaultFilterActive = (
   filterName: string,
   searchParams: URLSearchParams,
 ): boolean => {

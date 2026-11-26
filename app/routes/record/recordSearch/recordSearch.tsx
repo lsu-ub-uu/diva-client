@@ -54,6 +54,7 @@ export const loader = async ({
       title: t(recordType.pluralTextId),
       validationTypes,
       searchView,
+      searchParamsString: url.search,
     };
   } catch (error) {
     throw createRouteErrorResponse(error);
@@ -64,7 +65,7 @@ export const links = () => [{ rel: 'stylesheet', href: css }];
 
 export default function RecordSearch({ loaderData }: Route.ComponentProps) {
   const { t } = useTranslation();
-  const { title, recordTypeTextId, validationTypes, searchView } = loaderData;
+  const { title, recordTypeTextId, validationTypes, searchView, searchParamsString } = loaderData;
   const recordTypeLoaderData = useRouteLoaderData<typeof recordTypeLoader>(
     'routes/record/recordType',
   );
@@ -84,7 +85,7 @@ export default function RecordSearch({ loaderData }: Route.ComponentProps) {
         <h1>{title}</h1>
       </div>
       {searchView && recordTypeUserRights.includes('search') ? (
-        <RecordSearchView searchView={searchView} />
+        <RecordSearchView searchView={searchView} searchParamsString={searchParamsString} />
       ) : (
         <div className='grid-col-6 grid-col-l-12'>
           <Alert severity='info'>

@@ -10,9 +10,13 @@ import {
 
 interface RecordSearchViewProps {
   searchView: SearchView;
+  searchParamsString: string;
 }
 
-export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
+export const RecordSearchView = ({
+  searchView,
+  searchParamsString,
+}: RecordSearchViewProps) => {
   const {
     searchFormDefinition,
     query,
@@ -42,14 +46,18 @@ export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
 
   const handleRemoveFilter = (filterName: string) => {
     const formData = new FormData();
-    formData.append('q', query);
-    formData.append('rows', rows.toString());
-    activeFilters.forEach((filter) => {
-      formData.append(
-        filter.name,
-        filter.name === filterName ? '' : filter.value,
-      );
-    });
+    const searchParams = new URLSearchParams(searchParamsString);
+
+    for (const [key, value] of searchParams.entries()) {
+      if (key !== filterName && key !== 'start') {
+        formData.append(key, value);
+      }
+    }
+
+    if (defaultFilters[filterName]) {
+      formData.append(filterName, '');
+    }
+
     submit(formData, { method: 'GET', replace: true });
   };
 

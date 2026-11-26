@@ -4,19 +4,17 @@ import type { ActiveFilter } from './createActiveFilters.server';
 export const createSearchQuery = (
   searchFormDefinition: SearchFormDefinition,
   q: string,
-  defaultFilters: Record<string, string>,
+  activeDefaultFilters: Record<string, string>,
   activeFilters: ActiveFilter[],
   start: number,
   rows: number,
 ) => {
-  console.log('defaultFilters:', defaultFilters);
-  console.log('activeFilters:', activeFilters);
   return {
     [searchFormDefinition.searchRootName]: {
       include: {
         includePart: {
           ...Object.fromEntries(
-            Object.entries(defaultFilters).map(([key, value]) => [
+            Object.entries(activeDefaultFilters).map(([key, value]) => [
               key,
               { value },
             ]),
