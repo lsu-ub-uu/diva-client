@@ -39,8 +39,6 @@ export const Filters = ({
     const formData = new FormData(form);
     for (const [key, value] of Array.from(formData.entries())) {
       if (typeof value === 'string' && value.trim() === '') {
-        // Only remove empty values if they match the default value
-        // If the user explicitly cleared a non-default value, keep it in the URL
         if (defaultFilters[key] === undefined || defaultFilters[key] === '') {
           formData.delete(key);
         }
