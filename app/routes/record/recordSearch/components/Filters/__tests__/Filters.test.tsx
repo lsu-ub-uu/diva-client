@@ -29,6 +29,7 @@ describe('Filters', () => {
     const activeFilters: ActiveFilter[] = [];
     const query = '';
     const rows = 10;
+    const defaultFilters: Record<string, string> = {};
     const RoutesStub = createRoutesStub([
       {
         path: '/',
@@ -41,6 +42,7 @@ describe('Filters', () => {
             rows={rows}
             onClose={vi.fn()}
             validationErrors={new Map()}
+            defaultFilters={defaultFilters}
           />
         ),
       },
@@ -69,6 +71,7 @@ describe('Filters', () => {
         regEx: '.*',
       },
     ];
+    const defaultFilters: Record<string, string> = {};
     const RoutesStub = createRoutesStub([
       {
         path: '/',
@@ -81,6 +84,7 @@ describe('Filters', () => {
             rows={10}
             onClose={vi.fn()}
             validationErrors={new Map()}
+            defaultFilters={defaultFilters}
           />
         ),
       },

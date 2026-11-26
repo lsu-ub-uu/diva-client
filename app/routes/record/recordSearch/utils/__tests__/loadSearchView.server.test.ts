@@ -1,7 +1,6 @@
 import type {
   BFFMetadataGroup,
   BFFMetadataTextVariable,
-  BFFMember,
   BFFPresentation,
   BFFPresentationGroup,
   BFFPresentationTextVar,
@@ -39,8 +38,8 @@ describe('loadSearchView', () => {
     const searchParams = new URLSearchParams();
     const auth = undefined;
     const language = 'sv';
-    const member = undefined;
     const t = ((key: string) => key) as TFunction;
+    const defaultFilters: Record<string, string> = {};
 
     const searchView = await loadSearchView({
       dependencies,
@@ -48,8 +47,8 @@ describe('loadSearchView', () => {
       searchParams,
       auth,
       language,
-      member,
       t,
+      defaultFilters,
     });
     expect(searchView).toBeDefined();
     const {
@@ -92,8 +91,8 @@ describe('loadSearchView', () => {
     });
     vi.stubEnv('CORA_EXTERNAL_SYSTEM_URL', 'https://cora.example.com');
     const searchParams = new URLSearchParams();
-    searchParams.set('q', 'differentSearchTerm');
-    searchParams.set('visibilitySearchTerm', 'draft');
+    searchParams.set('q', 'someSearchQuery');
+    searchParams.set('visibilitySearchTerm', 'published');
     searchParams.set(
       'permissionUnitLinkedRecordIdSearchTerm',
       'permissionUnit_otherPermissionUnit',
@@ -112,33 +111,34 @@ describe('loadSearchView', () => {
       searchParams,
       auth: undefined,
       language: 'sv',
-      member: {
-        memberPermissionUnit: 'someMemberPermissionUnit',
-      } as BFFMember,
       t: ((key: string) => key) as TFunction,
+      defaultFilters: {
+        visibilitySearchTerm: 'published',
+        permissionUnitLinkedRecordIdSearchTerm:
+          'permissionUnit_someMemberPermissionUnit',
+      },
     });
 
     expect(searchView).toBeDefined();
-    expect(vi.mocked(performSearch)).toHaveBeenCalledWith(
-      expect.objectContaining({
-        searchId: 'outputPublicSearch',
-        searchQuery: {
-          searchRoot: {
-            include: {
-              includePart: {
-                visibilitySearchTerm: { value: 'published' },
-                permissionUnitLinkedRecordIdSearchTerm: {
-                  value: 'permissionUnit_someMemberPermissionUnit',
-                },
-                mainSearchTerm: { value: 'differentSearchTerm' },
-              },
+    const performSearchCall = vi.mocked(performSearch).mock.calls[0][0];
+    expect(performSearchCall.auth).toEqual(undefined);
+    expect(performSearchCall.decorated).toEqual(true);
+    expect(performSearchCall.searchId).toEqual('outputPublicSearch');
+    expect(performSearchCall.searchQuery).toEqual({
+      searchRoot: {
+        include: {
+          includePart: expect.objectContaining({
+            visibilitySearchTerm: { value: 'published' },
+            permissionUnitLinkedRecordIdSearchTerm: {
+              value: 'permissionUnit_otherPermissionUnit',
             },
-            start: { value: '1' },
-            rows: { value: '20' },
-          },
+            mainSearchTerm: { value: 'someSearchQuery' },
+          }),
         },
-      }),
-    );
+        start: { value: '1' },
+        rows: { value: '20' },
+      },
+    });
   });
 
   it('adds defaults to the query when they are not search form filters', async () => {
@@ -164,10 +164,12 @@ describe('loadSearchView', () => {
       searchParams: new URLSearchParams(),
       auth: undefined,
       language: 'sv',
-      member: {
-        memberPermissionUnit: 'someMemberPermissionUnit',
-      } as BFFMember,
       t: ((key: string) => key) as TFunction,
+      defaultFilters: {
+        visibilitySearchTerm: 'published',
+        permissionUnitLinkedRecordIdSearchTerm:
+          'permissionUnit_someMemberPermissionUnit',
+      },
     });
 
     expect(searchView).toBeDefined();
@@ -199,7 +201,7 @@ describe('loadSearchView', () => {
     );
   });
 
-  it('can override permission unit with auth', async () => {
+  it('uses admin search when auth is provided', async () => {
     vi.mocked(performSearch).mockClear();
     vi.mocked(performSearch).mockResolvedValue({
       data: [],
@@ -228,10 +230,12 @@ describe('loadSearchView', () => {
       searchParams,
       auth: {} as Auth,
       language: 'sv',
-      member: {
-        memberPermissionUnit: 'someMemberPermissionUnit',
-      } as BFFMember,
       t: ((key: string) => key) as TFunction,
+      defaultFilters: {
+        visibilitySearchTerm: 'published',
+        permissionUnitLinkedRecordIdSearchTerm:
+          'permissionUnit_someMemberPermissionUnit',
+      },
     });
 
     expect(searchView).toBeDefined();
@@ -257,7 +261,7 @@ describe('loadSearchView', () => {
     );
   });
 
-  it('allows auth to remove default search filters', async () => {
+  it('uses admin search to allow more search options when auth is provided', async () => {
     vi.mocked(performSearch).mockClear();
     vi.mocked(performSearch).mockResolvedValue({
       data: [],
@@ -285,26 +289,41 @@ describe('loadSearchView', () => {
       searchParams,
       auth: {} as Auth,
       language: 'sv',
-      member: {
-        memberPermissionUnit: 'someMemberPermissionUnit',
-      } as BFFMember,
       t: ((key: string) => key) as TFunction,
+      defaultFilters: {
+        visibilitySearchTerm: 'published',
+        permissionUnitLinkedRecordIdSearchTerm:
+          'permissionUnit_someMemberPermissionUnit',
+      },
     });
 
-    expect(searchView?.activeFilters).toEqual([]);
+    expect(searchView?.activeFilters).toEqual([
+      {
+        name: 'visibilitySearchTerm',
+        textId: 'visibilityFilterTextId',
+        value: 'published',
+        valueTextId: 'published',
+      },
+      {
+        name: 'permissionUnitLinkedRecordIdSearchTerm',
+        textId: 'permissionUnitFilterTextId',
+        value: 'permissionUnit_someMemberPermissionUnit',
+        valueTextId: 'permissionUnit_someMemberPermissionUnit',
+      },
+    ]);
     expect(vi.mocked(performSearch)).toHaveBeenCalledWith(
       expect.objectContaining({
-        searchQuery: {
-          searchRoot: {
-            include: {
-              includePart: {
+        searchQuery: expect.objectContaining({
+          searchRoot: expect.objectContaining({
+            include: expect.objectContaining({
+              includePart: expect.objectContaining({
                 mainSearchTerm: { value: '**' },
-              },
-            },
+              }),
+            }),
             start: { value: '1' },
             rows: { value: '20' },
-          },
-        },
+          }),
+        }),
       }),
     );
   });
@@ -327,10 +346,12 @@ describe('loadSearchView', () => {
       id: 'diva-output',
       searchId: 'divaOutputSearch',
     } as BFFRecordType;
-    const member = {
-      memberPermissionUnit: 'someMemberPermissionUnit',
-    } as BFFMember;
     const t = ((key: string) => key) as TFunction;
+    const defaultFilters = {
+      visibilitySearchTerm: 'published',
+      permissionUnitLinkedRecordIdSearchTerm:
+        'permissionUnit_someMemberPermissionUnit',
+    };
     const firstSearchParams = new URLSearchParams();
     firstSearchParams.set('q', '');
     firstSearchParams.set('start', '1');
@@ -346,26 +367,26 @@ describe('loadSearchView', () => {
       searchParams: firstSearchParams,
       auth: {} as Auth,
       language: 'sv',
-      member,
       t,
+      defaultFilters,
     });
 
     expect(vi.mocked(performSearch)).toHaveBeenLastCalledWith(
       expect.objectContaining({
-        searchQuery: {
-          searchRoot: {
-            include: {
-              includePart: {
+        searchQuery: expect.objectContaining({
+          searchRoot: expect.objectContaining({
+            include: expect.objectContaining({
+              includePart: expect.objectContaining({
                 permissionUnitLinkedRecordIdSearchTerm: {
                   value: 'permissionUnit_someMemberPermissionUnit',
                 },
                 mainSearchTerm: { value: '**' },
-              },
-            },
+              }),
+            }),
             start: { value: '1' },
             rows: { value: '20' },
-          },
-        },
+          }),
+        }),
       }),
     );
 
@@ -380,23 +401,23 @@ describe('loadSearchView', () => {
       searchParams: secondSearchParams,
       auth: {} as Auth,
       language: 'sv',
-      member,
       t,
+      defaultFilters,
     });
 
     expect(vi.mocked(performSearch)).toHaveBeenLastCalledWith(
       expect.objectContaining({
-        searchQuery: {
-          searchRoot: {
-            include: {
-              includePart: {
+        searchQuery: expect.objectContaining({
+          searchRoot: expect.objectContaining({
+            include: expect.objectContaining({
+              includePart: expect.objectContaining({
                 mainSearchTerm: { value: '**' },
-              },
-            },
+              }),
+            }),
             start: { value: '1' },
             rows: { value: '20' },
-          },
-        },
+          }),
+        }),
       }),
     );
   });
@@ -426,8 +447,8 @@ describe('loadSearchView', () => {
     searchParams.set('filter2', 'value2');
     const auth = undefined;
     const language = 'sv';
-    const member = undefined;
     const t = ((key: string) => key) as TFunction;
+    const defaultFilters: Record<string, string> = {};
 
     const searchView = await loadSearchView({
       dependencies,
@@ -435,8 +456,8 @@ describe('loadSearchView', () => {
       searchParams,
       auth,
       language,
-      member,
       t,
+      defaultFilters,
     });
 
     expect(searchView).toBeDefined();
@@ -504,8 +525,8 @@ describe('loadSearchView', () => {
     searchParams.set('q', 'invalid$$$$');
     const auth = undefined;
     const language = 'sv';
-    const member = undefined;
     const t = ((key: string) => key) as TFunction;
+    const defaultFilters: Record<string, string> = {};
 
     const searchView = await loadSearchView({
       dependencies,
@@ -513,8 +534,8 @@ describe('loadSearchView', () => {
       searchParams,
       auth,
       language,
-      member,
       t,
+      defaultFilters,
     });
 
     expect(searchView).toBeDefined();
@@ -552,8 +573,8 @@ describe('loadSearchView', () => {
     const searchParams = new URLSearchParams();
     const auth = undefined;
     const language = 'sv';
-    const member = undefined;
     const t = ((key: string) => key) as TFunction;
+    const defaultFilters: Record<string, string> = {};
 
     const searchView = await loadSearchView({
       dependencies,
@@ -561,8 +582,8 @@ describe('loadSearchView', () => {
       searchParams,
       auth,
       language,
-      member,
       t,
+      defaultFilters,
     });
 
     expect(searchView).toBeUndefined();
@@ -577,8 +598,8 @@ describe('loadSearchView', () => {
     const searchParams = new URLSearchParams();
     const auth = undefined;
     const language = 'sv';
-    const member = undefined;
     const t = ((key: string) => key) as TFunction;
+    const defaultFilters: Record<string, string> = {};
 
     const searchView = await loadSearchView({
       dependencies,
@@ -586,8 +607,8 @@ describe('loadSearchView', () => {
       searchParams,
       auth,
       language,
-      member,
       t,
+      defaultFilters,
     });
 
     expect(searchView).toBeUndefined();
