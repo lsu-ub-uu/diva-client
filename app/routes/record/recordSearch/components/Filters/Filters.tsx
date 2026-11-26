@@ -16,6 +16,7 @@ interface FiltersProps {
   rows: number;
   onClose: () => void;
   validationErrors: Map<string, string>;
+  defaultFilters: Record<string, string>;
 }
 
 export const Filters = ({
@@ -25,6 +26,7 @@ export const Filters = ({
   rows,
   onClose,
   validationErrors,
+  defaultFilters,
 }: FiltersProps) => {
   const { t } = useTranslation();
   const submit = useSubmit();
@@ -35,10 +37,11 @@ export const Filters = ({
     if (!form) return;
 
     const formData = new FormData(form);
-
     for (const [key, value] of Array.from(formData.entries())) {
       if (typeof value === 'string' && value.trim() === '') {
-        formData.delete(key);
+        if (defaultFilters[key] === undefined || defaultFilters[key] === '') {
+          formData.delete(key);
+        }
       }
     }
     submit(formData, { method: 'GET', replace: true });

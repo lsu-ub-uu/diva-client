@@ -1,9 +1,5 @@
 import type { Auth } from '@/auth/Auth';
-import type {
-  BFFMember,
-  BFFRecordType,
-  Dependencies,
-} from '@/cora/bffTypes.server';
+import type { BFFRecordType, Dependencies } from '@/cora/bffTypes.server';
 import { externalCoraApiUrl } from '@/cora/helper.server';
 import { createCoraSearchQuery } from '@/data/searchRecords.server';
 import type { TFunction } from 'i18next';
@@ -29,8 +25,8 @@ interface LoadSearchViewParams {
   searchParams: URLSearchParams;
   auth: Auth | undefined;
   language: 'en' | 'sv';
-  member: BFFMember | undefined;
   t: TFunction;
+  defaultFilters: Record<string, string>;
 }
 
 export interface SearchView {
@@ -43,6 +39,7 @@ export interface SearchView {
   activeFilters: ActiveFilter[];
   validationErrors: Map<string, string>;
   apiUrl: string;
+  defaultFilters: Record<string, string>;
 }
 
 export const loadSearchView = async ({
@@ -51,8 +48,8 @@ export const loadSearchView = async ({
   searchParams,
   auth,
   language,
-  member,
   t,
+  defaultFilters,
 }: LoadSearchViewParams): Promise<SearchView | undefined> => {
   const search = getSearchForRecordType(dependencies, recordType, auth);
 
@@ -66,9 +63,17 @@ export const loadSearchView = async ({
   const start = Number(searchParams.get('start')) || 1;
   const rows = Number(searchParams.get('rows')) || 20;
 
+  const activeFilterSearchParams = new URLSearchParams(searchParams);
+
+  const activeDefaultFilters = Object.fromEntries(
+    Object.entries(defaultFilters).filter(([filterName]) =>
+      isDefaultFilterActive(filterName, activeFilterSearchParams),
+    ),
+  );
   const activeFilters = await createActiveFilters(
     searchFormDefinition,
-    searchParams,
+    activeFilterSearchParams,
+    activeDefaultFilters,
     dependencies,
     auth,
     language,
@@ -83,7 +88,7 @@ export const loadSearchView = async ({
   const searchQuery = createSearchQuery(
     searchFormDefinition,
     q,
-    member,
+    activeDefaultFilters,
     activeFilters,
     start,
     rows,
@@ -125,5 +130,13 @@ export const loadSearchView = async ({
     activeFilters,
     validationErrors,
     apiUrl,
+    defaultFilters,
   };
+};
+
+const isDefaultFilterActive = (
+  filterName: string,
+  searchParams: URLSearchParams,
+): boolean => {
+  return !searchParams.has(filterName);
 };

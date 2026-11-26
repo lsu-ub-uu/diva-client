@@ -47,15 +47,15 @@ export interface BFFRecordType extends BFFBase {
 export interface BFFMetadataBase extends BFFBase {
   nameInData: string;
   type:
-    | 'group'
-    | 'numberVariable'
-    | 'resourceLink'
-    | 'collectionItem'
-    | 'recordLink'
-    | 'anyTypeRecordLink'
-    | 'textVariable'
-    | 'collectionVariable'
-    | 'itemCollection';
+  | 'group'
+  | 'numberVariable'
+  | 'resourceLink'
+  | 'collectionItem'
+  | 'recordLink'
+  | 'anyTypeRecordLink'
+  | 'textVariable'
+  | 'collectionVariable'
+  | 'itemCollection';
   textId: string;
   defTextId: string;
 }
@@ -143,13 +143,13 @@ export interface BFFMetadataChildReference {
 
 export interface BFFPresentationBase extends BFFBase {
   type:
-    | 'pGroup'
-    | 'pVar'
-    | 'pNumVar'
-    | 'pCollVar'
-    | 'container'
-    | 'pRecordLink'
-    | 'pResourceLink';
+  | 'pGroup'
+  | 'pVar'
+  | 'pNumVar'
+  | 'pCollVar'
+  | 'container'
+  | 'pRecordLink'
+  | 'pResourceLink';
   mode: 'input' | 'output';
   emptyTextId?: string;
   specifiedLabelTextId?: string;
@@ -166,6 +166,41 @@ export interface BFFPresentationTextVar extends BFFPresentationOfSingleMetadata 
   type: 'pVar';
   inputType: 'input' | 'textarea';
 }
+
+export interface BFFPresentationNumVar extends BFFPresentationOfSingleMetadata {
+  type: 'pNumVar';
+}
+
+export interface BFFPresentationCollVar extends BFFPresentationOfSingleMetadata {
+  type: 'pCollVar';
+}
+
+export interface BFFPresentationContainer extends BFFPresentationOfSingleMetadata {
+  type: 'container';
+  repeat: 'children' | 'this';
+  presentationStyle?: PresentationStyle;
+  children: BFFPresentationChildReference[];
+}
+
+export interface BFFPresentationSurroundingContainer extends Omit<
+  BFFPresentationContainer,
+  'presentationOf'
+> {
+  presentationsOf?: string[];
+}
+
+export interface BFFPresentationGroup extends BFFPresentationOfSingleMetadata {
+  type: 'pGroup';
+  presentationStyle?: PresentationStyle;
+  children: BFFPresentationChildReference[];
+  specifiedHeadlineTextId?: string;
+  specifiedHeadlineLevel?: string;
+  showHeadline?: string;
+  presentAs?:
+  'map' | 'recordRelation' | 'externalLinkWithValue' | 'onlyTranslatedText';
+}
+
+
 
 export interface BFFPresentationResourceLink extends Omit<
   BFFPresentationOfSingleMetadata,
@@ -196,30 +231,6 @@ export type PresentationSize =
   | 'singleInitiallyVisible'
   | 'singleInitiallyHidden';
 
-export interface BFFPresentationContainer extends BFFPresentationOfSingleMetadata {
-  type: 'container';
-  repeat: 'children' | 'this';
-  presentationStyle?: PresentationStyle;
-  children: BFFPresentationChildReference[];
-}
-
-export interface BFFPresentationSurroundingContainer extends Omit<
-  BFFPresentationContainer,
-  'presentationOf'
-> {
-  presentationsOf?: string[];
-}
-
-export interface BFFPresentationGroup extends BFFPresentationOfSingleMetadata {
-  type: 'pGroup';
-  presentationStyle?: PresentationStyle;
-  children: BFFPresentationChildReference[];
-  specifiedHeadlineTextId?: string;
-  specifiedHeadlineLevel?: string;
-  showHeadline?: string;
-  presentAs?:
-    'map' | 'recordRelation' | 'externalLinkWithValue' | 'onlyTranslatedText';
-}
 
 export type HeadlineLevel = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 

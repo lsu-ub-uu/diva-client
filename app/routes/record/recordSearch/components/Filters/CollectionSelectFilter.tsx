@@ -28,7 +28,7 @@ export const CollectionSelectFilter = ({
 
   return (
     <Fieldset
-      label={t(filter.textId)}
+      label={t(filter.labelTextId)}
       size='small'
       errorMessage={validationError && t(validationError)}
     >

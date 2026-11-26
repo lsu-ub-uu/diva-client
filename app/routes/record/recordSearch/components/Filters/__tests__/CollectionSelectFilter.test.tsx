@@ -9,7 +9,7 @@ describe('CollectionSelectFilter', () => {
       type: 'collection',
       id: 'someCollectionFilterId',
       name: 'someCollectionFilterName',
-      textId: 'collectionFilterText',
+      labelTextId: 'collectionFilterText',
       placeholderTextId: 'collectionFilterPlaceholderText',
       options: [
         { value: 'option1', text: 'Option 1' },
@@ -46,7 +46,7 @@ describe('CollectionSelectFilter', () => {
       type: 'collection',
       id: 'someCollectionFilterId',
       name: 'someCollectionFilterName',
-      textId: 'collectionFilterText',
+      labelTextId: 'collectionFilterText',
       placeholderTextId: 'collectionFilterPlaceholderText',
       options: [
         { value: 'option1', text: 'Option 1' },
@@ -73,7 +73,7 @@ describe('CollectionSelectFilter', () => {
       type: 'collection',
       id: 'someCollectionFilterId',
       name: 'someCollectionFilterName',
-      textId: 'collectionFilterText',
+      labelTextId: 'collectionFilterText',
       placeholderTextId: 'collectionFilterPlaceholderText',
       options: [
         { value: 'option1', text: 'Option 1' },
