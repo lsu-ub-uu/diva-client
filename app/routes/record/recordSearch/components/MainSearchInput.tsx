@@ -65,7 +65,11 @@ export const MainSearchInput = ({
         <div className={styles['search-buttons']}>
           {query.length > 0 && (
             <IconButton
-              tooltip={`Rensa ${t(mainSearchTerm.labelTextId ?? mainSearchTerm.name)}`}
+              tooltip={t('divaClient_clearFilterText', {
+                filterName: t(
+                  mainSearchTerm.labelTextId ?? mainSearchTerm.name,
+                ),
+              })}
               name='q'
               type='button'
               onClick={onClearMainQuery}
