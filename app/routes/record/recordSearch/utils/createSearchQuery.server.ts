@@ -9,13 +9,17 @@ export const createSearchQuery = (
   start: number,
   rows: number,
 ) => {
-
+  console.log('defaultFilters:', defaultFilters);
+  console.log('activeFilters:', activeFilters);
   return {
     [searchFormDefinition.searchRootName]: {
       include: {
         includePart: {
           ...Object.fromEntries(
-            Object.entries(defaultFilters).map(([key, value]) => [key, { value }])
+            Object.entries(defaultFilters).map(([key, value]) => [
+              key,
+              { value },
+            ]),
           ),
           [searchFormDefinition.mainSearchTerm.name]: {
             value: q || '**',

@@ -65,9 +65,7 @@ describe('loadSearchView', () => {
     } = searchView!;
 
     expect(searchFormDefinition.searchRootName).toBe('searchRoot');
-    expect(searchFormDefinition.mainSearchTerm.name).toBe(
-      'mainSearchTerm',
-    );
+    expect(searchFormDefinition.mainSearchTerm.name).toBe('mainSearchTerm');
     expect(searchFormDefinition.filters.length).toBe(2);
     expect(searchFormDefinition.filters[0].name).toBe('filter1');
     expect(searchFormDefinition.filters[1].name).toBe('filter2');
@@ -456,9 +454,7 @@ describe('loadSearchView', () => {
     } = searchView!;
 
     expect(searchFormDefinition.searchRootName).toBe('searchRoot');
-    expect(searchFormDefinition.mainSearchTerm.name).toBe(
-      'mainSearchTerm',
-    );
+    expect(searchFormDefinition.mainSearchTerm.name).toBe('mainSearchTerm');
     expect(searchFormDefinition.filters.length).toBe(2);
     expect(searchFormDefinition.filters[0].name).toBe('filter1');
     expect(searchFormDefinition.filters[1].name).toBe('filter2');
@@ -531,9 +527,7 @@ describe('loadSearchView', () => {
     } = searchView!;
 
     expect(searchFormDefinition.searchRootName).toBe('searchRoot');
-    expect(searchFormDefinition.mainSearchTerm.name).toBe(
-      'mainSearchTerm',
-    );
+    expect(searchFormDefinition.mainSearchTerm.name).toBe('mainSearchTerm');
 
     expect(searchId).toBe('someSearchId');
     expect(query).toBe('invalid$$$$');
@@ -632,9 +626,17 @@ const createMockDependencies = (
           { childId: 'someFilter2Id', repeatMin: '0', repeatMax: '1' },
           ...(includeDefaultFilterInputs
             ? [
-              { childId: 'visibilityFilterId', repeatMin: '0', repeatMax: '1' },
-              { childId: 'permissionUnitFilterId', repeatMin: '0', repeatMax: '1' },
-            ]
+                {
+                  childId: 'visibilityFilterId',
+                  repeatMin: '0',
+                  repeatMax: '1',
+                },
+                {
+                  childId: 'permissionUnitFilterId',
+                  repeatMin: '0',
+                  repeatMax: '1',
+                },
+              ]
             : []),
         ],
       } as BFFMetadataGroup,
@@ -659,20 +661,20 @@ const createMockDependencies = (
       } as BFFMetadataTextVariable,
       ...(includeDefaultFilterInputs
         ? [
-          {
-            id: 'visibilityFilterId',
-            nameInData: 'visibilitySearchTerm',
-            type: 'textVariable',
-            textId: 'visibilityFilterTextId',
-            regEx: '.*',
-          } as BFFMetadataTextVariable,
-          {
-            id: 'permissionUnitFilterId',
-            nameInData: 'permissionUnitLinkedRecordIdSearchTerm',
-            type: 'textVariable',
-            textId: 'permissionUnitFilterTextId',
-          } as BFFMetadataTextVariable,
-        ]
+            {
+              id: 'visibilityFilterId',
+              nameInData: 'visibilitySearchTerm',
+              type: 'textVariable',
+              textId: 'visibilityFilterTextId',
+              regEx: '.*',
+            } as BFFMetadataTextVariable,
+            {
+              id: 'permissionUnitFilterId',
+              nameInData: 'permissionUnitLinkedRecordIdSearchTerm',
+              type: 'textVariable',
+              textId: 'permissionUnitFilterTextId',
+            } as BFFMetadataTextVariable,
+          ]
         : []),
     ]),
     presentationPool: listToPool<BFFPresentation>([
@@ -683,7 +685,9 @@ const createMockDependencies = (
         mode: 'input',
         children: [
           {
-            refGroups: [{ childId: 'someIncludePresentationId', type: 'presentation' }],
+            refGroups: [
+              { childId: 'someIncludePresentationId', type: 'presentation' },
+            ],
           },
         ],
       } as BFFPresentationGroup,
@@ -694,7 +698,12 @@ const createMockDependencies = (
         mode: 'input',
         children: [
           {
-            refGroups: [{ childId: 'someIncludePartPresentationId', type: 'presentation' }],
+            refGroups: [
+              {
+                childId: 'someIncludePartPresentationId',
+                type: 'presentation',
+              },
+            ],
           },
         ],
       } as BFFPresentationGroup,
@@ -705,23 +714,42 @@ const createMockDependencies = (
         mode: 'input',
         children: [
           {
-            refGroups: [{ childId: 'someMainSearchTermPresentationId', type: 'presentation' }],
+            refGroups: [
+              {
+                childId: 'someMainSearchTermPresentationId',
+                type: 'presentation',
+              },
+            ],
           },
           {
-            refGroups: [{ childId: 'someFilter1PresentationId', type: 'presentation' }],
+            refGroups: [
+              { childId: 'someFilter1PresentationId', type: 'presentation' },
+            ],
           },
           {
-            refGroups: [{ childId: 'someFilter2PresentationId', type: 'presentation' }],
+            refGroups: [
+              { childId: 'someFilter2PresentationId', type: 'presentation' },
+            ],
           },
           ...(includeDefaultFilterInputs
             ? [
-              {
-                refGroups: [{ childId: 'visibilityFilterPresentationId', type: 'presentation' }],
-              },
-              {
-                refGroups: [{ childId: 'permissionUnitFilterPresentationId', type: 'presentation' }],
-              },
-            ]
+                {
+                  refGroups: [
+                    {
+                      childId: 'visibilityFilterPresentationId',
+                      type: 'presentation',
+                    },
+                  ],
+                },
+                {
+                  refGroups: [
+                    {
+                      childId: 'permissionUnitFilterPresentationId',
+                      type: 'presentation',
+                    },
+                  ],
+                },
+              ]
             : []),
         ],
       } as BFFPresentationGroup,
@@ -748,21 +776,21 @@ const createMockDependencies = (
       } as BFFPresentationTextVar,
       ...(includeDefaultFilterInputs
         ? [
-          {
-            id: 'visibilityFilterPresentationId',
-            type: 'pVar',
-            presentationOf: 'visibilityFilterId',
-            mode: 'input',
-            inputType: 'input',
-          } as BFFPresentationTextVar,
-          {
-            id: 'permissionUnitFilterPresentationId',
-            type: 'pVar',
-            presentationOf: 'permissionUnitFilterId',
-            mode: 'input',
-            inputType: 'input',
-          } as BFFPresentationTextVar,
-        ]
+            {
+              id: 'visibilityFilterPresentationId',
+              type: 'pVar',
+              presentationOf: 'visibilityFilterId',
+              mode: 'input',
+              inputType: 'input',
+            } as BFFPresentationTextVar,
+            {
+              id: 'permissionUnitFilterPresentationId',
+              type: 'pVar',
+              presentationOf: 'permissionUnitFilterId',
+              mode: 'input',
+              inputType: 'input',
+            } as BFFPresentationTextVar,
+          ]
         : []),
     ]),
   } as Dependencies;

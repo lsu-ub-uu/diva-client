@@ -1,9 +1,5 @@
 import type { Auth } from '@/auth/Auth';
-import type {
-  BFFMember,
-  BFFRecordType,
-  Dependencies,
-} from '@/cora/bffTypes.server';
+import type { BFFRecordType, Dependencies } from '@/cora/bffTypes.server';
 import { externalCoraApiUrl } from '@/cora/helper.server';
 import { createCoraSearchQuery } from '@/data/searchRecords.server';
 import type { TFunction } from 'i18next';
@@ -29,8 +25,8 @@ interface LoadSearchViewParams {
   searchParams: URLSearchParams;
   auth: Auth | undefined;
   language: 'en' | 'sv';
-  member: BFFMember | undefined;
   t: TFunction;
+  defaultFilters: Record<string, string>;
 }
 
 export interface SearchView {
@@ -43,6 +39,7 @@ export interface SearchView {
   activeFilters: ActiveFilter[];
   validationErrors: Map<string, string>;
   apiUrl: string;
+  defaultFilters: Record<string, string>;
 }
 
 export const loadSearchView = async ({
@@ -51,8 +48,8 @@ export const loadSearchView = async ({
   searchParams,
   auth,
   language,
-  member,
   t,
+  defaultFilters,
 }: LoadSearchViewParams): Promise<SearchView | undefined> => {
   const search = getSearchForRecordType(dependencies, recordType, auth);
 
@@ -65,29 +62,12 @@ export const loadSearchView = async ({
   const q = searchParams.get('q') ?? '';
   const start = Number(searchParams.get('start')) || 1;
   const rows = Number(searchParams.get('rows')) || 20;
-  const defaultFilters: Record<string, string> = {
-    visibilitySearchTerm: 'published',
-    permissionUnitLinkedRecordIdSearchTerm: member?.memberPermissionUnit
-      ? `permissionUnit_${member.memberPermissionUnit}`
-      : '',
-  };
-  const isSearchRequest = ['q', 'start', 'rows'].some((key) =>
-    searchParams.has(key),
-  );
+
   const activeFilterSearchParams = new URLSearchParams(searchParams);
-  if (!auth) {
-    Object.keys(defaultFilters).forEach((filterName) =>
-      activeFilterSearchParams.delete(filterName),
-    );
-  }
+
   const activeDefaultFilters = Object.fromEntries(
-    Object.entries(defaultFilters).filter(
-      ([filterName]) => shouldIncludeDefaultFilter(
-        filterName,
-        auth,
-        isSearchRequest,
-        activeFilterSearchParams,
-      ),
+    Object.entries(defaultFilters).filter(([filterName]) =>
+      shouldIncludeDefaultFilter(filterName, activeFilterSearchParams),
     ),
   );
   const activeFilters = await createActiveFilters(
@@ -117,20 +97,20 @@ export const loadSearchView = async ({
   const searchResults: PerformSearchResult =
     validationErrors.size === 0
       ? await performSearch({
-        dependencies,
-        searchId: search.id,
-        searchQuery,
-        auth,
-        decorated: recordType.id === 'diva-output',
-        t,
-      })
+          dependencies,
+          searchId: search.id,
+          searchQuery,
+          auth,
+          decorated: recordType.id === 'diva-output',
+          t,
+        })
       : {
-        data: [],
-        fromNo: 0,
-        toNo: 0,
-        totalNo: 0,
-        containDataOfType: 'mixed',
-      };
+          data: [],
+          fromNo: 0,
+          toNo: 0,
+          totalNo: 0,
+          containDataOfType: 'mixed',
+        };
 
   const apiUrl =
     searchQuery &&
@@ -150,18 +130,13 @@ export const loadSearchView = async ({
     activeFilters,
     validationErrors,
     apiUrl,
+    defaultFilters,
   };
 };
 
 const shouldIncludeDefaultFilter = (
   filterName: string,
-  auth: Auth | undefined,
-  isSearchRequest: boolean,
   searchParams: URLSearchParams,
 ): boolean => {
-  return (
-    !auth ||
-    !isSearchRequest ||
-    (searchParams.has(filterName) && searchParams.get(filterName) !== '')
-  );
+  return !searchParams.has(filterName);
 };

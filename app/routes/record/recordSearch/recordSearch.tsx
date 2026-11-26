@@ -31,14 +31,21 @@ export const loader = async ({
 
     const validationTypes = getValidationTypes(params.recordType, dependencies);
 
+    const defaultFilters: Record<string, string> = {
+      visibilitySearchTerm: 'published',
+      permissionUnitLinkedRecordIdSearchTerm: member?.memberPermissionUnit
+        ? `permissionUnit_${member.memberPermissionUnit}`
+        : '',
+    };
+
     const searchView = await loadSearchView({
       dependencies,
       recordType,
       searchParams,
       auth,
       language,
-      member,
       t,
+      defaultFilters,
     });
 
     return {

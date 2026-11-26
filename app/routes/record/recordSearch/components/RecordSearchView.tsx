@@ -22,6 +22,7 @@ export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
     activeFilters,
     validationErrors,
     apiUrl,
+    defaultFilters,
   } = searchView;
 
   const submit = useSubmit();
@@ -42,12 +43,12 @@ export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
   const handleRemoveFilter = (filterName: string) => {
     const formData = new FormData();
     formData.append('q', query);
-    formData.append('start', start.toString());
     formData.append('rows', rows.toString());
     activeFilters.forEach((filter) => {
-      if (filter.name !== filterName) {
-        formData.append(filter.name, filter.value);
-      }
+      formData.append(
+        filter.name,
+        filter.name === filterName ? '' : filter.value,
+      );
     });
     submit(formData, { method: 'GET', replace: true });
   };
@@ -55,14 +56,12 @@ export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
   const handleClearAllFilters = () => {
     const formData = new FormData();
     formData.append('q', query);
-    formData.append('start', start.toString());
     formData.append('rows', rows.toString());
     submit(formData, { method: 'GET', replace: true });
   };
 
   const handleClearMainQuery = () => {
     const formData = new FormData();
-    formData.append('start', start.toString());
     formData.append('rows', rows.toString());
     activeFilters.forEach((filter) => {
       formData.append(filter.name, filter.value);
@@ -98,6 +97,7 @@ export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
           rows={rows}
           onClose={closeDrawerDialog}
           validationErrors={validationErrors}
+          defaultFilters={defaultFilters}
         />
       </div>
       <DrawerDialog
@@ -112,6 +112,7 @@ export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
           rows={rows}
           onClose={closeDrawerDialog}
           validationErrors={validationErrors}
+          defaultFilters={defaultFilters}
         />
       </DrawerDialog>
     </>
