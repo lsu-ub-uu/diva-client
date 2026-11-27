@@ -22,7 +22,7 @@ import type { TFunction } from 'i18next';
 import { describe, expect, it } from 'vitest';
 
 const mockT = ((key: string, options?: { defaultValue?: string }) =>
-  options?.defaultValue ?? key) as TFunction;
+  options?.defaultValue ?? key) as unknown as TFunction;
 
 describe('createNotificationFromHttpError', () => {
   it('uses response body as details for HttpError with non-HTML body', () => {
