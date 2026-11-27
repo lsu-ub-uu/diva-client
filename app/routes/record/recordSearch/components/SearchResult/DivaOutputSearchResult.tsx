@@ -56,6 +56,9 @@ export const DivaOutputSearchResult = ({
             language={language}
           />
         )}
+        {output.localLabel && (
+          <LocalLabelPills localLabels={output.localLabel} />
+        )}
         {output.attachments?.attachment?.length && (
           <AttachmentsPill attachments={output.attachments} />
         )}
@@ -151,9 +154,7 @@ const DataQualityPill = ({
   return (
     <Pill
       backgroundColor={
-        is2026
-          ? 'var(--color-alert-success-bg)'
-          : 'var(--color-alert-warning-icon)'
+        is2026 ? 'var(--color-alert-success-bg)' : 'var(--color-warning-main)'
       }
       border={
         is2026
@@ -175,6 +176,27 @@ const DataQualityPill = ({
       {dataQuality.__valueText?.[language]}
     </Pill>
   );
+};
+
+const LocalLabelPills = ({
+  localLabels,
+}: {
+  localLabels: NonNullable<DivaOutputGroup['localLabel']>;
+}) => {
+  return localLabels.map(({ linkedRecord, value }) => {
+    const label = linkedRecord.localLabel.localLabel?.value;
+
+    return label ? (
+      <Pill
+        key={value}
+        backgroundColor='var(--color-card)'
+        border='var(--color-thin-border)'
+        color='var(--color-text)'
+      >
+        {label}
+      </Pill>
+    ) : null;
+  });
 };
 
 const AttachmentsPill = ({

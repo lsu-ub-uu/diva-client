@@ -139,6 +139,16 @@ describe('DivaOutputSearchResult', () => {
               },
             ],
           },
+          localLabel: [
+            {
+              value: 'diva-localLabel_1',
+              linkedRecord: {
+                localLabel: {
+                  localLabel: { value: 'Research data' },
+                },
+              },
+            },
+          ],
           __text: {
             sv: 'DiVA-output',
             en: 'DiVA-output',
@@ -167,6 +177,7 @@ describe('DivaOutputSearchResult', () => {
       '/binary/binary:25405698184842996/thumbnail',
     );
     expect(screen.getByText('1 / 2 attachments')).toBeInTheDocument();
+    expect(screen.getByText('Research data')).toBeInTheDocument();
   });
 
   it('shows authors', () => {
