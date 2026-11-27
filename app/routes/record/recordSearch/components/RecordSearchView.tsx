@@ -10,9 +10,13 @@ import {
 
 interface RecordSearchViewProps {
   searchView: SearchView;
+  searchParamsString: string;
 }
 
-export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
+export const RecordSearchView = ({
+  searchView,
+  searchParamsString,
+}: RecordSearchViewProps) => {
   const {
     searchFormDefinition,
     query,
@@ -22,6 +26,7 @@ export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
     activeFilters,
     validationErrors,
     apiUrl,
+    defaultFilters,
   } = searchView;
 
   const submit = useSubmit();
@@ -41,28 +46,30 @@ export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
 
   const handleRemoveFilter = (filterName: string) => {
     const formData = new FormData();
-    formData.append('q', query);
-    formData.append('start', start.toString());
-    formData.append('rows', rows.toString());
-    activeFilters.forEach((filter) => {
-      if (filter.name !== filterName) {
-        formData.append(filter.name, filter.value);
+    const searchParams = new URLSearchParams(searchParamsString);
+
+    for (const [key, value] of searchParams.entries()) {
+      if (key !== filterName && key !== 'start') {
+        formData.append(key, value);
       }
-    });
+    }
+
+    if (defaultFilters[filterName]) {
+      formData.append(filterName, '');
+    }
+
     submit(formData, { method: 'GET', replace: true });
   };
 
   const handleClearAllFilters = () => {
     const formData = new FormData();
     formData.append('q', query);
-    formData.append('start', start.toString());
     formData.append('rows', rows.toString());
     submit(formData, { method: 'GET', replace: true });
   };
 
   const handleClearMainQuery = () => {
     const formData = new FormData();
-    formData.append('start', start.toString());
     formData.append('rows', rows.toString());
     activeFilters.forEach((filter) => {
       formData.append(filter.name, filter.value);
@@ -98,6 +105,7 @@ export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
           rows={rows}
           onClose={closeDrawerDialog}
           validationErrors={validationErrors}
+          defaultFilters={defaultFilters}
         />
       </div>
       <DrawerDialog
@@ -112,6 +120,7 @@ export const RecordSearchView = ({ searchView }: RecordSearchViewProps) => {
           rows={rows}
           onClose={closeDrawerDialog}
           validationErrors={validationErrors}
+          defaultFilters={defaultFilters}
         />
       </DrawerDialog>
     </>

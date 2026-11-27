@@ -1,4 +1,4 @@
-import type { BFFMetadata } from '@/cora/bffTypes.server';
+import type { FilterDefinition } from '../utils/createFilterDefinition.server';
 import { SearchIcon, WarningIcon, CloseIcon } from '@/icons/icons';
 import { useTranslation } from 'react-i18next';
 import styles from './MainSearchInput.module.css';
@@ -10,7 +10,7 @@ import { CircularLoader } from '@/components/Loader/CircularLoader';
 
 interface MainSearchInputProps {
   query: string;
-  mainSearchTerm: BFFMetadata;
+  mainSearchTerm: FilterDefinition;
   searching: boolean;
   onClearMainQuery: () => void;
   validationError?: string;
@@ -36,7 +36,9 @@ export const MainSearchInput = ({
 
   return (
     <Fieldset
-      label={t(mainSearchTerm.textId)}
+      label={
+        mainSearchTerm.labelTextId ? t(mainSearchTerm.labelTextId) : undefined
+      }
       size='large'
       errorMessage={validationError && t(validationError)}
       hideErrorIcon
@@ -45,7 +47,11 @@ export const MainSearchInput = ({
         <Input
           type='search'
           name='q'
-          placeholder={t(mainSearchTerm.defTextId)}
+          placeholder={
+            mainSearchTerm.placeholderTextId
+              ? t(mainSearchTerm.placeholderTextId)
+              : undefined
+          }
           defaultValue={query}
           onChange={() => {
             userTypedRef.current = true;
@@ -59,7 +65,11 @@ export const MainSearchInput = ({
         <div className={styles['search-buttons']}>
           {query.length > 0 && (
             <IconButton
-              tooltip={`Rensa ${t(mainSearchTerm.textId)}`}
+              tooltip={t('divaClient_clearFilterText', {
+                filterName: t(
+                  mainSearchTerm.labelTextId ?? mainSearchTerm.name,
+                ),
+              })}
               name='q'
               type='button'
               onClick={onClearMainQuery}

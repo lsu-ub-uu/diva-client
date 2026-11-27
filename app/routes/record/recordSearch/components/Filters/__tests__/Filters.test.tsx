@@ -19,7 +19,7 @@ describe('Filters', () => {
       {
         id: 'filter1',
         name: 'Filter 1',
-        textId: 'Filter1Text',
+        labelTextId: 'Filter1Text',
         type: 'text',
         placeholderTextId: 'Filter1Placeholder',
         repeat: { repeatMin: 0, repeatMax: 1 },
@@ -29,6 +29,7 @@ describe('Filters', () => {
     const activeFilters: ActiveFilter[] = [];
     const query = '';
     const rows = 10;
+    const defaultFilters: Record<string, string> = {};
     const RoutesStub = createRoutesStub([
       {
         path: '/',
@@ -41,6 +42,7 @@ describe('Filters', () => {
             rows={rows}
             onClose={vi.fn()}
             validationErrors={new Map()}
+            defaultFilters={defaultFilters}
           />
         ),
       },
@@ -52,6 +54,53 @@ describe('Filters', () => {
 
     await waitFor(() => {
       expect(loaderSpy).toHaveBeenCalled();
+    });
+  });
+
+  it('removes empty filter params from the submitted URL', async () => {
+    const user = userEvent.setup();
+    const loaderSpy = vi.fn().mockResolvedValue({});
+    const filters: FilterDefinition[] = [
+      {
+        id: 'filter1',
+        name: 'filter1',
+        labelTextId: 'Filter1Text',
+        type: 'text',
+        placeholderTextId: 'Filter1Placeholder',
+        repeat: { repeatMin: 0, repeatMax: 1 },
+        regEx: '.*',
+      },
+    ];
+    const defaultFilters: Record<string, string> = {};
+    const RoutesStub = createRoutesStub([
+      {
+        path: '/',
+        loader: loaderSpy,
+        Component: () => (
+          <Filters
+            filters={filters}
+            activeFilters={[]}
+            query=''
+            rows={10}
+            onClose={vi.fn()}
+            validationErrors={new Map()}
+            defaultFilters={defaultFilters}
+          />
+        ),
+      },
+    ]);
+
+    await act(() => render(<RoutesStub />));
+
+    const input = screen.getByRole('textbox', { name: 'Filter1Text' });
+    await user.type(input, 'published');
+    await user.clear(input);
+
+    await waitFor(() => {
+      const request = loaderSpy.mock.calls.at(-1)?.[0].request as Request;
+      const searchParams = new URL(request.url).searchParams;
+      expect(searchParams.get('filter1')).toBeNull();
+      expect(searchParams.has('clearDefaultFilter')).toBe(false);
     });
   });
 });

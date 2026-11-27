@@ -3,6 +3,10 @@
   align-items: center;
   gap: var(--gap);
 
+  h2 {
+    white-space: nowrap;
+  }
+
   @media (width < 1200px) {
     flex-direction: column;
     align-items: flex-start;

@@ -15,11 +15,11 @@ describe('createActiveFilters', () => {
       filters: [
         {
           name: 'filter1',
-          textId: 'filter1Text',
+          labelTextId: 'filter1Text',
           type: 'text',
         },
-        { name: 'filter2', textId: 'filter2Text', type: 'text' },
-        { name: 'filter3', textId: 'filter3Text', type: 'text' },
+        { name: 'filter2', labelTextId: 'filter2Text', type: 'text' },
+        { name: 'filter3', labelTextId: 'filter3Text', type: 'text' },
       ],
     } as SearchFormDefinition;
     const searchParams = new URLSearchParams();
@@ -32,6 +32,7 @@ describe('createActiveFilters', () => {
     const result = await createActiveFilters(
       searchFormDefinition,
       searchParams,
+      {},
       dependencies,
       auth,
       language,
@@ -53,20 +54,55 @@ describe('createActiveFilters', () => {
     ]);
   });
 
+  it('creates an active filter from a default value', async () => {
+    const searchFormDefinition = {
+      filters: [
+        {
+          name: 'filter1',
+          labelTextId: 'filter1Text',
+          type: 'text',
+        },
+      ],
+    } as SearchFormDefinition;
+    const searchParams = new URLSearchParams();
+    const defaultFilters = { filter1: 'defaultValue' };
+    const dependencies = {} as Dependencies;
+    const auth = undefined;
+    const language = 'en';
+
+    const result = await createActiveFilters(
+      searchFormDefinition,
+      searchParams,
+      defaultFilters,
+      dependencies,
+      auth,
+      language,
+    );
+
+    expect(result).toEqual([
+      {
+        name: 'filter1',
+        value: 'defaultValue',
+        textId: 'filter1Text',
+        valueTextId: 'defaultValue',
+      },
+    ]);
+  });
+
   it('creates active filters for a collection filter', async () => {
     const searchFormDefinition = {
       filters: [
         {
           name: 'filter1',
-          textId: 'filter1Text',
+          labelTextId: 'filter1Text',
           type: 'collection',
           options: [
             { value: 'value1', text: 'Value 1' },
             { value: 'value2', text: 'Value 2' },
           ],
         },
-        { name: 'filter2', textId: 'filter2Text', type: 'text' },
-        { name: 'filter3', textId: 'filter3Text', type: 'text' },
+        { name: 'filter2', labelTextId: 'filter2Text', type: 'text' },
+        { name: 'filter3', labelTextId: 'filter3Text', type: 'text' },
       ],
     } as SearchFormDefinition;
     const searchParams = new URLSearchParams();
@@ -79,6 +115,7 @@ describe('createActiveFilters', () => {
     const result = await createActiveFilters(
       searchFormDefinition,
       searchParams,
+      {},
       dependencies,
       auth,
       language,
@@ -101,15 +138,15 @@ describe('createActiveFilters', () => {
       filters: [
         {
           name: 'filter1',
-          textId: 'filter1Text',
+          labelTextId: 'filter1Text',
           type: 'autocomplete',
           presentationPath: {
             sv: 'root.titleSv.value',
             en: 'root.titleEn.value',
           },
         },
-        { name: 'filter2', textId: 'filter2Text', type: 'text' },
-        { name: 'filter3', textId: 'filter3Text', type: 'text' },
+        { name: 'filter2', labelTextId: 'filter2Text', type: 'text' },
+        { name: 'filter3', labelTextId: 'filter3Text', type: 'text' },
       ],
     } as SearchFormDefinition;
     const searchParams = new URLSearchParams();
@@ -122,6 +159,7 @@ describe('createActiveFilters', () => {
     const result = await createActiveFilters(
       searchFormDefinition,
       searchParams,
+      {},
       dependencies,
       auth,
       language,
@@ -151,15 +189,15 @@ describe('createActiveFilters', () => {
       filters: [
         {
           name: 'filter1',
-          textId: 'filter1Text',
+          labelTextId: 'filter1Text',
           type: 'autocomplete',
           presentationPath: {
             sv: 'root.titleSv.value',
             en: 'root.titleEn.value',
           },
         },
-        { name: 'filter2', textId: 'filter2Text', type: 'text' },
-        { name: 'filter3', textId: 'filter3Text', type: 'text' },
+        { name: 'filter2', labelTextId: 'filter2Text', type: 'text' },
+        { name: 'filter3', labelTextId: 'filter3Text', type: 'text' },
       ],
     } as SearchFormDefinition;
     const searchParams = new URLSearchParams();
@@ -172,6 +210,7 @@ describe('createActiveFilters', () => {
     const result = await createActiveFilters(
       searchFormDefinition,
       searchParams,
+      {},
       dependencies,
       auth,
       language,
@@ -196,15 +235,15 @@ describe('createActiveFilters', () => {
       filters: [
         {
           name: 'filter1',
-          textId: 'filter1Text',
+          labelTextId: 'filter1Text',
           type: 'autocomplete',
           presentationPath: {
             sv: 'root.titleSv.value',
             en: 'root.titleEn.value',
           },
         },
-        { name: 'filter2', textId: 'filter2Text', type: 'text' },
-        { name: 'filter3', textId: 'filter3Text', type: 'text' },
+        { name: 'filter2', labelTextId: 'filter2Text', type: 'text' },
+        { name: 'filter3', labelTextId: 'filter3Text', type: 'text' },
       ],
     } as SearchFormDefinition;
     const searchParams = new URLSearchParams();
@@ -217,6 +256,7 @@ describe('createActiveFilters', () => {
     const result = await createActiveFilters(
       searchFormDefinition,
       searchParams,
+      {},
       dependencies,
       auth,
       language,

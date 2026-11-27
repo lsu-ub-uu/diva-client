@@ -1,17 +1,17 @@
 import type {
   BFFMetadataGroup,
-  BFFMetadataTextVariable,
+  BFFPresentationGroup,
   BFFSearch,
+  Dependencies
 } from '@/cora/bffTypes.server';
 import {
   createFilters,
-  type FilterDefinition,
+  type FilterDefinition
 } from './createFilterDefinition.server';
-import type { Dependencies } from '@/cora/bffTypes.server';
 
 export interface SearchFormDefinition {
   searchRootName: string;
-  mainSearchTerm: BFFMetadataTextVariable;
+  mainSearchTerm: FilterDefinition;
   filters: FilterDefinition[];
 }
 
@@ -22,22 +22,29 @@ export const createSearchFormDefinition = (
   const searchMetadata = dependencies.metadataPool.get(
     search.metadataId,
   ) as BFFMetadataGroup;
+  const searchPresentation = dependencies.presentationPool.get(
+    search.presentationId,
+  ) as BFFPresentationGroup;
   const includeGroup = dependencies.metadataPool.get(
     searchMetadata.children[0].childId,
   ) as BFFMetadataGroup;
   const includePartGroup = dependencies.metadataPool.get(
     includeGroup.children[0].childId,
   ) as BFFMetadataGroup;
+  const includePGroup = dependencies.presentationPool.get(
+    searchPresentation.children[0].refGroups[0].childId,
+  ) as BFFPresentationGroup;
+  const includePartPGroup = dependencies.presentationPool.get(
+    includePGroup.children[0].refGroups[0].childId,
+  ) as BFFPresentationGroup;
 
-  const mainSearchTerm = dependencies.metadataPool.get(
-    includePartGroup.children[0].childId,
-  ) as BFFMetadataTextVariable;
 
-  const filterSearchTermRefs = includePartGroup.children.slice(1);
+
+  const filterDefinition = createFilters(includePartPGroup.children, includePartGroup.children, dependencies);
 
   return {
     searchRootName: searchMetadata.nameInData,
-    mainSearchTerm,
-    filters: createFilters(filterSearchTermRefs, dependencies),
+    mainSearchTerm: filterDefinition[0],
+    filters: filterDefinition.slice(1),
   };
 };
