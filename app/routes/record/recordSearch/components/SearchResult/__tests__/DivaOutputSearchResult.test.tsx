@@ -106,6 +106,9 @@ describe('DivaOutputSearchResult', () => {
                           id: 'binary:25405698184842996',
                         },
                       },
+                      recordInfo: {
+                        visibility: { value: 'published' },
+                      },
                       thumbnail: {
                         thumbnail: {
                           name: 'thumbnail',
@@ -120,6 +123,19 @@ describe('DivaOutputSearchResult', () => {
                   sv: 'Bifogad fil',
                   en: 'Attachment file',
                 },
+              },
+              {
+                file: {
+                  value: 'binary:unpublished',
+                  linkedRecord: {
+                    binary: {
+                      recordInfo: {
+                        visibility: { value: 'unpublished' },
+                      },
+                    },
+                  },
+                },
+                _label: 'attachment',
               },
             ],
           },
@@ -150,6 +166,7 @@ describe('DivaOutputSearchResult', () => {
       'src',
       '/binary/binary:25405698184842996/thumbnail',
     );
+    expect(screen.getByText('1 / 2 attachments')).toBeInTheDocument();
   });
 
   it('shows authors', () => {

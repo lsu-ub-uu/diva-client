@@ -479,7 +479,7 @@ export type OutputTypeCollection =
   | 'conference_other';
 
 export interface DivaOrganisation {
-  organisation: OrganisationUpdateGroup;
+  organisation: OrganisationGroup;
 }
 
 export type LanguageSweEngCollection = 'swe' | 'eng';
@@ -780,7 +780,7 @@ export interface RelatedOrganisationParentGroup {
   organisation?: {
     value: string;
     linkedRecord: {
-      organisation: OrganisationUpdateGroup;
+      organisation: OrganisationGroup;
     };
     displayName?: { sv: string; en: string };
     __text?: { sv: string; en: string };
@@ -793,7 +793,7 @@ export interface RelatedOrganisationEarlierGroup {
   organisation?: {
     value: string;
     linkedRecord: {
-      organisation: OrganisationUpdateGroup;
+      organisation: OrganisationGroup;
     };
     displayName?: { sv: string; en: string };
     __text?: { sv: string; en: string };
@@ -802,10 +802,9 @@ export interface RelatedOrganisationEarlierGroup {
   __text?: { sv: string; en: string };
 }
 
-export type OrganisationTypeCollection =
-  'topOrganisation' | 'partOfOrganisation';
+export type OrganisationTypeCollection = 'topOrganisation' | 'organisation';
 
-export interface RecordInfoOrganisationUpdateGroup {
+export interface RecordInfoOrganisationGroup {
   id: { value: string; __text?: { sv: string; en: string } };
   type: { value: 'diva-organisation'; __text?: { sv: string; en: string } };
   validationType: { value: string; __text?: { sv: string; en: string } };
@@ -823,7 +822,7 @@ export interface RecordInfoOrganisationUpdateGroup {
   __text?: { sv: string; en: string };
 }
 
-export interface OrganisationUpdateGroup {
+export interface OrganisationGroup {
   authority?: AuthorityCorporateLangGroup[];
   variant?: VariantCorporateLangGroup[];
   startDate?: StartDateGroup;
@@ -850,7 +849,7 @@ export interface OrganisationUpdateGroup {
     _type: 'localId';
     __text?: { sv: string; en: string };
   };
-  related_type_parentOrg?: RelatedOrganisationParentGroup[];
+  related_type_parentOrg?: RelatedOrganisationParentGroup;
   related_type_earlier?: RelatedOrganisationEarlierGroup[];
   genre_type_organisationType?: {
     value: OrganisationTypeCollection;
@@ -858,7 +857,7 @@ export interface OrganisationUpdateGroup {
     __text?: { sv: string; en: string };
     __valueText?: { sv: string; en: string };
   };
-  recordInfo: RecordInfoOrganisationUpdateGroup;
+  recordInfo: RecordInfoOrganisationGroup;
   __text?: { sv: string; en: string };
 }
 
@@ -913,7 +912,7 @@ export interface SeriesUpdateGroup {
   organisation?: {
     value: string;
     linkedRecord: {
-      organisation: OrganisationUpdateGroup;
+      organisation: OrganisationGroup;
     };
     displayName?: { sv: string; en: string };
     __text?: { sv: string; en: string };
@@ -1563,7 +1562,7 @@ export interface AffiliationGroup {
   organisation?: {
     value: string;
     linkedRecord: {
-      organisation: OrganisationUpdateGroup;
+      organisation: OrganisationGroup;
     };
     displayName?: { sv: string; en: string };
     __text?: { sv: string; en: string };
@@ -1662,7 +1661,7 @@ export interface AffiliationPersonalGroup {
   organisation?: {
     value: string;
     linkedRecord: {
-      organisation: OrganisationUpdateGroup;
+      organisation: OrganisationGroup;
     };
     displayName?: { sv: string; en: string };
     __text?: { sv: string; en: string };
@@ -1741,7 +1740,7 @@ export interface NameOrganisationProjectGroup {
   organisation?: {
     value: string;
     linkedRecord: {
-      organisation: OrganisationUpdateGroup;
+      organisation: OrganisationGroup;
     };
     displayName?: { sv: string; en: string };
     __text?: { sv: string; en: string };
@@ -2489,7 +2488,7 @@ export interface NameOrganisationGroup {
   organisation?: {
     value: string;
     linkedRecord: {
-      organisation: OrganisationUpdateGroup;
+      organisation: OrganisationGroup;
     };
     displayName?: { sv: string; en: string };
     __text?: { sv: string; en: string };
@@ -2887,7 +2886,7 @@ export interface NameOrganisationDegreeGrantingInstitutionGroup {
   organisation?: {
     value: string;
     linkedRecord: {
-      organisation: OrganisationUpdateGroup;
+      organisation: OrganisationGroup;
     };
     displayName?: { sv: string; en: string };
     __text?: { sv: string; en: string };
