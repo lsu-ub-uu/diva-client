@@ -5,6 +5,7 @@ interface SearchHiddenInputsProps {
   rows?: number;
   start?: number;
   activeFilters?: ActiveFilter[];
+  clearedDefaultFilters?: string[];
 }
 
 export const SearchHiddenInputs = ({
@@ -12,6 +13,7 @@ export const SearchHiddenInputs = ({
   rows,
   start,
   activeFilters,
+  clearedDefaultFilters,
 }: SearchHiddenInputsProps) => {
   return (
     <>
@@ -25,6 +27,9 @@ export const SearchHiddenInputs = ({
           name={filter.name}
           value={filter.value}
         />
+      ))}
+      {clearedDefaultFilters?.map((name) => (
+        <input key={name} type='hidden' name={name} value='' />
       ))}
     </>
   );

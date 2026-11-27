@@ -41,6 +41,7 @@ interface PaginationProps {
   query: string;
   onQueryChange: (form: HTMLFormElement) => void;
   activeFilters: ActiveFilter[];
+  clearedDefaultFilters?: string[];
 }
 
 const ROWS_START_INPUT_NAME = 'start';
@@ -54,6 +55,7 @@ export const Pagination = ({
   query,
   onQueryChange,
   activeFilters,
+  clearedDefaultFilters,
 }: PaginationProps) => {
   const { t } = useTranslation();
 
@@ -98,6 +100,7 @@ export const Pagination = ({
           query={query}
           start={start}
           activeFilters={activeFilters}
+          clearedDefaultFilters={clearedDefaultFilters}
         />
       </Form>
 
@@ -142,6 +145,7 @@ export const Pagination = ({
           query={query}
           rows={rowsPerPage}
           activeFilters={activeFilters}
+          clearedDefaultFilters={clearedDefaultFilters}
         />
       </Form>
     </div>

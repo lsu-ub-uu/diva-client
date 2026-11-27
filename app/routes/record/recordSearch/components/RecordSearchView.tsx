@@ -30,6 +30,12 @@ export const RecordSearchView = ({
   } = searchView;
 
   const searchParams = new URLSearchParams(searchParamsString);
+  const isDefaultFilterCleared = (filterName: string) =>
+    searchParams.get(filterName) === '';
+
+  const clearedDefaultFilters = Object.keys(defaultFilters).filter(
+    isDefaultFilterCleared,
+  );
 
   const submit = useSubmit();
   const navigation = useNavigation();
@@ -65,7 +71,7 @@ export const RecordSearchView = ({
 
   const isDefaultFilterActiveOrCleared = (filterName: string) =>
     activeFilters.some((f) => f.name === filterName) ||
-    searchParams.get(filterName) === '';
+    isDefaultFilterCleared(filterName);
 
   const handleClearAllFilters = () => {
     const formData = new FormData();
@@ -112,6 +118,7 @@ export const RecordSearchView = ({
           rows={rows}
           start={start}
           activeFilters={activeFilters}
+          clearedDefaultFilters={clearedDefaultFilters}
           onRemoveFilter={handleRemoveFilter}
           onClearAllFilters={handleClearAllFilters}
           apiUrl={apiUrl}

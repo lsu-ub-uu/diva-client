@@ -19,6 +19,7 @@ interface RecordSearchMainProps {
   rows: number;
   start: number;
   activeFilters: ActiveFilter[];
+  clearedDefaultFilters: string[];
   onRemoveFilter: (name: string) => void;
   onClearAllFilters: () => void;
   showFilterDialog: () => void;
@@ -36,6 +37,7 @@ export const RecordSearchMain = ({
   rows,
   start,
   activeFilters,
+  clearedDefaultFilters,
   onRemoveFilter,
   onClearAllFilters,
   showFilterDialog,
@@ -61,6 +63,7 @@ export const RecordSearchMain = ({
           rows={rows}
           start={1}
           activeFilters={activeFilters}
+          clearedDefaultFilters={clearedDefaultFilters}
         />
       </Form>
 
@@ -85,6 +88,7 @@ export const RecordSearchMain = ({
           query={query}
           onQueryChange={onQueryChange}
           activeFilters={activeFilters}
+          clearedDefaultFilters={clearedDefaultFilters}
         />
       )}
 
@@ -104,6 +108,7 @@ export const RecordSearchMain = ({
           query={query}
           onQueryChange={onQueryChange}
           activeFilters={activeFilters}
+          clearedDefaultFilters={clearedDefaultFilters}
         />
       )}
     </>
