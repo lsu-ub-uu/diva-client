@@ -29,6 +29,8 @@ export const RecordSearchView = ({
     defaultFilters,
   } = searchView;
 
+  const searchParams = new URLSearchParams(searchParamsString);
+
   const submit = useSubmit();
   const navigation = useNavigation();
   const { showDrawerDialog, closeDrawerDialog, drawerDialogRef } =
@@ -61,19 +63,39 @@ export const RecordSearchView = ({
     submit(formData, { method: 'GET', replace: true });
   };
 
+  const isDefaultFilterActiveOrCleared = (filterName: string) =>
+    activeFilters.some((f) => f.name === filterName) ||
+    searchParams.get(filterName) === '';
+
   const handleClearAllFilters = () => {
     const formData = new FormData();
     formData.append('q', query);
     formData.append('rows', rows.toString());
+
+    for (const filterName of Object.keys(defaultFilters)) {
+      if (isDefaultFilterActiveOrCleared(filterName)) {
+        formData.append(filterName, '');
+      }
+    }
+
     submit(formData, { method: 'GET', replace: true });
   };
 
   const handleClearMainQuery = () => {
     const formData = new FormData();
+
     formData.append('rows', rows.toString());
+
     activeFilters.forEach((filter) => {
       formData.append(filter.name, filter.value);
     });
+
+    for (const filterName of Object.keys(defaultFilters)) {
+      if (isDefaultFilterActiveOrCleared(filterName)) {
+        formData.append(filterName, '');
+      }
+    }
+
     submit(formData, { method: 'GET', replace: true });
   };
 
