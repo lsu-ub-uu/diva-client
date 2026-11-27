@@ -52,7 +52,9 @@ describe('MainSearchInput', () => {
         onClearMainQuery={onClear}
       />,
     );
-    const clearBtn = screen.getByRole('button', { name: /rensa/i });
+    const clearBtn = screen.getByRole('button', {
+      name: 'divaClient_clearFilterText',
+    });
     await user.click(clearBtn);
     expect(onClear).toHaveBeenCalled();
   });
