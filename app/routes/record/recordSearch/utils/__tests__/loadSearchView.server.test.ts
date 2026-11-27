@@ -201,6 +201,65 @@ describe('loadSearchView', () => {
     );
   });
 
+  it('ignores cleared defaults only when they are absent from the filter form', async () => {
+    vi.mocked(performSearch).mockResolvedValue({
+      data: [],
+      fromNo: 0,
+      toNo: 0,
+      totalNo: 0,
+      containDataOfType: 'mixed',
+    });
+    vi.stubEnv('CORA_EXTERNAL_SYSTEM_URL', 'https://cora.example.com');
+
+    const searchView = await loadSearchView({
+      dependencies: createMockDependencies(),
+      recordType: {
+        id: 'someRecordTypeId',
+        searchId: 'someSearchId',
+      } as BFFRecordType,
+      searchParams: new URLSearchParams({
+        visibilitySearchTerm: '',
+        permissionUnitLinkedRecordIdSearchTerm: 'custom',
+        filter1: '',
+        filter2: 'selected',
+      }),
+      auth: undefined,
+      language: 'sv',
+      t: ((key: string) => key) as TFunction,
+      defaultFilters: {
+        visibilitySearchTerm: 'published',
+        permissionUnitLinkedRecordIdSearchTerm: 'defaultUnit',
+        filter1: 'defaultFilter1',
+      },
+    });
+
+    expect(searchView?.activeFilters).toEqual([
+      {
+        name: 'filter2',
+        textId: 'filter2TextId',
+        value: 'selected',
+        valueTextId: 'selected',
+      },
+    ]);
+    expect(vi.mocked(performSearch)).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        searchQuery: {
+          searchRoot: {
+            include: {
+              includePart: {
+                visibilitySearchTerm: { value: 'published' },
+                mainSearchTerm: { value: '**' },
+                filter2: { value: 'selected' },
+              },
+            },
+            start: { value: '1' },
+            rows: { value: '20' },
+          },
+        },
+      }),
+    );
+  });
+
   it('uses admin search when auth is provided', async () => {
     vi.mocked(performSearch).mockClear();
     vi.mocked(performSearch).mockResolvedValue({

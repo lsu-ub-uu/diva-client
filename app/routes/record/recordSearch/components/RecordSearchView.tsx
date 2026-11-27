@@ -29,6 +29,14 @@ export const RecordSearchView = ({
     defaultFilters,
   } = searchView;
 
+  const searchParams = new URLSearchParams(searchParamsString);
+  const isDefaultFilterCleared = (filterName: string) =>
+    searchParams.get(filterName) === '';
+
+  const clearedDefaultFilters = Object.keys(defaultFilters).filter(
+    isDefaultFilterCleared,
+  );
+
   const submit = useSubmit();
   const navigation = useNavigation();
   const { showDrawerDialog, closeDrawerDialog, drawerDialogRef } =
@@ -61,19 +69,39 @@ export const RecordSearchView = ({
     submit(formData, { method: 'GET', replace: true });
   };
 
+  const isDefaultFilterActiveOrCleared = (filterName: string) =>
+    activeFilters.some((f) => f.name === filterName) ||
+    isDefaultFilterCleared(filterName);
+
   const handleClearAllFilters = () => {
     const formData = new FormData();
     formData.append('q', query);
     formData.append('rows', rows.toString());
+
+    for (const filterName of Object.keys(defaultFilters)) {
+      if (isDefaultFilterActiveOrCleared(filterName)) {
+        formData.append(filterName, '');
+      }
+    }
+
     submit(formData, { method: 'GET', replace: true });
   };
 
   const handleClearMainQuery = () => {
     const formData = new FormData();
+
     formData.append('rows', rows.toString());
+
     activeFilters.forEach((filter) => {
       formData.append(filter.name, filter.value);
     });
+
+    for (const filterName of Object.keys(defaultFilters)) {
+      if (isDefaultFilterActiveOrCleared(filterName)) {
+        formData.append(filterName, '');
+      }
+    }
+
     submit(formData, { method: 'GET', replace: true });
   };
 
@@ -90,6 +118,7 @@ export const RecordSearchView = ({
           rows={rows}
           start={start}
           activeFilters={activeFilters}
+          clearedDefaultFilters={clearedDefaultFilters}
           onRemoveFilter={handleRemoveFilter}
           onClearAllFilters={handleClearAllFilters}
           apiUrl={apiUrl}
